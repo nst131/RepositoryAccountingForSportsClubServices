@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using ServiceAccountingDA.Interfaces;
+using System.Collections.Generic;
 
 namespace ServiceAccountingDA.Models
 {
-    public class Client : BaseEntity
+    public class Client : BaseEntity, ITelephone
     {
         public int Id { get; set; }
         public string Name { get; set; }

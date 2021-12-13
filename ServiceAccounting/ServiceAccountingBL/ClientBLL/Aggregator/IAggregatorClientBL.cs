@@ -8,5 +8,6 @@ namespace ServiceAccountingBL.ClientBLL.Aggregator
     {
         IClientCrudBL ClientCrudBL { get; }
         IClientValidator<CreateClientDtoBL> CreateClientValidator { get; }
+        IClientValidator<UpdateClientDtoBL> UpdateClientValidator { get; }
     }
 }

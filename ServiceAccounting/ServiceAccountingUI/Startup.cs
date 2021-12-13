@@ -26,9 +26,9 @@ namespace ServiceAccountingUI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ServiceAccountingUI", Version = "v1" });
             });
-
+           
             services.RegistrationBL();
-            services.RegistrationDL();
+            services.RegistrationDA();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -4,9 +4,10 @@ namespace ServiceAccountingDA.Context
 {
     public static class ServiceRegistrationDA
     {
-        public static void RegistrationDL(this IServiceCollection services)
+        public static void RegistrationDA(this IServiceCollection services)
         {
-            services.AddScoped<ServiceAccountingContextFactory>();
+            //new ServiceAccountingContextFactory().CreateDbContext(new string[0]);
+            services.AddDbContext<ServiceAccountingContext>();
             services.AddScoped<IServiceAccountingContext, ServiceAccountingContext>();
         }
     }

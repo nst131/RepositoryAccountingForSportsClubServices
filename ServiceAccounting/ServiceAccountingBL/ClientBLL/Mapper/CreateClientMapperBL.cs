@@ -16,16 +16,5 @@ namespace ServiceAccountingBL.ClientBLL.Mapper
                 TypeSexId = createClientDtoBL.TypeSexId
             };
         }
-
-        public static ClientDtoBL Map<Result>(Client client)
-                where Result : ClientDtoBL
-        {
-            return new ClientDtoBL()
-            {
-                Id = client.Id,
-                Name = client.Name,
-                SerName = client.SerName,
-            };
-        }
     }
 }
