@@ -1,9 +1,9 @@
 ﻿using System.Runtime.Serialization;
 
-namespace ServiceAccountingUI.ClientUI.Dto
+namespace ServiceAccountingUI.ResponsibleUI.Dto
 {
     [DataContract]
-    public class ClientDtoUI
+    public class ResponsibleDtoUI
     {
         [DataMember(IsRequired = true, Name = nameof(Id), Order = 0, EmitDefaultValue = true)]
         public int Id { get; set; }

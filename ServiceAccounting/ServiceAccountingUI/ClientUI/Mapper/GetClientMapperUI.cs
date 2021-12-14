@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ServiceAccountingUI.ClientUI.Mapper
 {
-    public static class GetGlientMapperUI
+    public static class GetClientMapperUI
     {
         public static GetClientDtoUI Map<Result>(GetClientDtoBL client)
                 where Result : GetClientDtoUI

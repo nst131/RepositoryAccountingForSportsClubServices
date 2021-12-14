@@ -48,9 +48,9 @@ namespace ServiceAccountingDA.Configuration
 
             builder.HasData(new Client[]
             {
-                new Client(){Id = 1, Name = "Alexander", SerName = "Nikylskiy", Telephone = "296138957", TypeSexId = 1},
-                new Client(){Id = 2, Name = "Vitaliy", SerName = "Romanovskiy", Telephone = "297138090", TypeSexId = 1},
-                new Client(){Id = 3, Name = "Maria", SerName = "Gavrilova", Telephone = "297861344", TypeSexId = 2}
+                new Client(){Id = 1, Name = "Alexander", SerName = "Nikylskiy", Telephone = "29 613-89-57", TypeSexId = 1},
+                new Client(){Id = 2, Name = "Vitaliy", SerName = "Romanovskiy", Telephone = "29 713-80-90", TypeSexId = 1},
+                new Client(){Id = 3, Name = "Maria", SerName = "Gavrilova", Telephone = "29 786-13-44", TypeSexId = 2}
             });
         }
     }

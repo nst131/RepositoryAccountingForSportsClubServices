@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace ServiceAccountingUI.ClientUI.Dto
+namespace ServiceAccountingUI.TrainerUI.Dto
 {
     [DataContract]
-    public class CreateClientDtoUI
+    public class CreateTrainerDtoUI
     {
         [DataMember(IsRequired = true, Name = nameof(Name), Order = 0, EmitDefaultValue = false)]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Длина строки должна быть от 3 до 50 символов")]
@@ -20,5 +20,8 @@ namespace ServiceAccountingUI.ClientUI.Dto
 
         [DataMember(IsRequired = true, Name = nameof(TypeSexId), Order = 3, EmitDefaultValue = true)]
         public int TypeSexId { get; set; }
+
+        [DataMember(IsRequired = true, Name = nameof(ServiceId), Order = 4, EmitDefaultValue = true)]
+        public int ServiceId { get; set; }
     }
 }

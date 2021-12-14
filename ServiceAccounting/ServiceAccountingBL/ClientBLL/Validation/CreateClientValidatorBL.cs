@@ -33,7 +33,7 @@ namespace ServiceAccountingBL.ClientBLL.Validation
             if (await Task.Factory.StartNew(() => !context.Set<TypeOfSex>().AsNoTracking().ToList().Exists(x => x.Id == createClientDtoBL.TypeSexId)))
                 throw new ElementByIdNotFoundException($"{nameof(TypeOfSex)} by Id not Found");
 
-            var regex = new Regex("([0-9]{2})[0-9]{3}-[0-9]{2}-[0-9]{2}");
+            var regex = new Regex("[0-9]{2} [0-9]{3}-[0-9]{2}-[0-9]{2}");
 
             if (!regex.IsMatch(createClientDtoBL.Telephone))
                 throw new ElementNotValidByRegexException($"{nameof(CreateClientDtoBL.Telephone)} is not valid by regex");

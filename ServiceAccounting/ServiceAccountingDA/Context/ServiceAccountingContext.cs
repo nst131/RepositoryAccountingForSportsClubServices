@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ServiceAccountingDA.Configuration;
 using ServiceAccountingDA.Models;
 using System;
@@ -10,7 +11,14 @@ namespace ServiceAccountingDA.Context
 {
     public class ServiceAccountingContext : DbContext, IServiceAccountingContext
     {
-        public ServiceAccountingContext(DbContextOptions<ServiceAccountingContext> options) : base(options) { }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var builder = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json")
+                    .Build();
+            string connectionString = builder.GetConnectionString("DefaultConnection");
+            optionsBuilder.UseSqlServer(connectionString);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

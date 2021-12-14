@@ -30,7 +30,7 @@ namespace ServiceAccountingUI.Controllers
             if (clientDtoBL is null)
                 throw new ElementByIdNotFoundException();
 
-            var clientDtoUI = GetGlientMapperUI.Map<GetClientDtoUI>(clientDtoBL);
+            var clientDtoUI = GetClientMapperUI.Map<GetClientDtoUI>(clientDtoBL);
             return new JsonResult(clientDtoUI);
         }
 
@@ -43,7 +43,7 @@ namespace ServiceAccountingUI.Controllers
             if (allClientsDtoBL is null)
                 throw new ElementByIdNotFoundException();
 
-            var allClientDtoUI = GetGlientMapperUI.Map<ICollection<GetClientDtoUI>>(allClientsDtoBL);
+            var allClientDtoUI = GetClientMapperUI.Map<ICollection<GetClientDtoUI>>(allClientsDtoBL);
             return new JsonResult(allClientDtoUI);
         }
 
@@ -73,6 +73,18 @@ namespace ServiceAccountingUI.Controllers
             var clientDtoUI = UpdateClientMapperUI.Map<ClientDtoUI>(clientDtoBL);
 
             return new JsonResult(clientDtoUI);
+        }
+
+        [HttpDelete]
+        [Route("[action]")]
+        public async Task<IActionResult> DeleteClient(int id)
+        {
+            if (id < 0)
+                throw new ElementOutOfRangeException();
+
+            await clientCrudBL.DeleteClient(id);
+
+            return new JsonResult("Delete was success");
         }
     }
 }

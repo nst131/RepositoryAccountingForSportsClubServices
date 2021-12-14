@@ -1,11 +1,10 @@
 ﻿using ServiceAccountingBL.ClientBLL.Dto;
 using ServiceAccountingDA.Models;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace ServiceAccountingBL.ClientBLL.Mapper
 {
-    public static class GetClientMappetBL
+    public static class GetClientMapperBL
     {
         public static GetClientDtoBL Map<Result>(Client client)
             where Result : GetClientDtoBL

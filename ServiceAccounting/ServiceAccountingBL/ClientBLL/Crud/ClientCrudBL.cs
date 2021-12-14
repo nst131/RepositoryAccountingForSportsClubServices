@@ -7,7 +7,6 @@ using ServiceAccountingBL.Exceptions;
 using ServiceAccountingDA.Context;
 using ServiceAccountingDA.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServiceAccountingBL.ClientBLL.Crud
@@ -45,13 +44,13 @@ namespace ServiceAccountingBL.ClientBLL.Crud
             return ClientMapperBL.Map<ClientDtoBL>(updatedClient.Entity);
         }
 
-        public async Task<ClientDtoBL> DeleteClient(int id)
+        public async Task DeleteClient(int id)
         {
             try
             {
                 var client = await context.Set<Client>().FirstOrDefaultAsync(x => x.Id == id);
-                var deletedClient = await Task.Factory.StartNew(() => context.Set<Client>().Remove(client));
-                return ClientMapperBL.Map<ClientDtoBL>(deletedClient.Entity);
+                await Task.Factory.StartNew(() => context.Set<Client>().Remove(client));
+                await context.SaveChangesAsync();
             }
             catch
             {
@@ -66,7 +65,7 @@ namespace ServiceAccountingBL.ClientBLL.Crud
                 var client = await context.Set<Client>()
                     .Include(x => x.TypeSex)
                     .FirstOrDefaultAsync(x => x.Id == id);
-                return GetClientMappetBL.Map<GetClientDtoBL>(client);
+                return GetClientMapperBL.Map<GetClientDtoBL>(client);
             }
             catch
             {
@@ -78,8 +77,11 @@ namespace ServiceAccountingBL.ClientBLL.Crud
         {
             if(await context.Set<Client>().AnyAsync())
             {
-                var allClients = await context.Set<Client>().ToListAsync();
-                return GetClientMappetBL.Map<ICollection<GetClientDtoBL>>(allClients);
+                var allClients = await context.Set<Client>()
+                    .Include(x => x.TypeSex)
+                    .ToListAsync();
+                    
+                return GetClientMapperBL.Map<ICollection<GetClientDtoBL>>(allClients);
             }
 
             return new List<GetClientDtoBL>();

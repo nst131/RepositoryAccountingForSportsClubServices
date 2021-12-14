@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace ServiceAccountingUI.ClientUI.Dto
+namespace ServiceAccountingUI.TrainerUI.Dto
 {
     [DataContract]
-    public class UpdateClientDtoUI
+    public class UpdateTrainerDtoUI
     {
         [DataMember(IsRequired = true, Name = nameof(Id), Order = 0, EmitDefaultValue = true)]
         public int Id { get; set; }
@@ -23,5 +23,8 @@ namespace ServiceAccountingUI.ClientUI.Dto
 
         [DataMember(IsRequired = true, Name = nameof(TypeSexId), Order = 4, EmitDefaultValue = true)]
         public int TypeSexId { get; set; }
+
+        [DataMember(IsRequired = true, Name = nameof(ServiceId), Order = 5, EmitDefaultValue = false)]
+        public int ServiceId { get; set; }
     }
 }
