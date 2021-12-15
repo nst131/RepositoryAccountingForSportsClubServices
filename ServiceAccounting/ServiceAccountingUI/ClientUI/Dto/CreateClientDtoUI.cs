@@ -19,6 +19,7 @@ namespace ServiceAccountingUI.ClientUI.Dto
         public string Telephone { get; set; }
 
         [DataMember(IsRequired = true, Name = nameof(TypeSexId), Order = 3, EmitDefaultValue = true)]
+        [Range(1, 2, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]
         public int TypeSexId { get; set; }
     }
 }

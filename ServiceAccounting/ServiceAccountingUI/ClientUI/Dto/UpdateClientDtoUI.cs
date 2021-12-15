@@ -7,6 +7,7 @@ namespace ServiceAccountingUI.ClientUI.Dto
     public class UpdateClientDtoUI
     {
         [DataMember(IsRequired = true, Name = nameof(Id), Order = 0, EmitDefaultValue = true)]
+        [Range(1, int.MaxValue, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]
         public int Id { get; set; }
 
         [DataMember(IsRequired = true, Name = nameof(Name), Order = 1, EmitDefaultValue = false)]
@@ -22,6 +23,7 @@ namespace ServiceAccountingUI.ClientUI.Dto
         public string Telephone { get; set; }
 
         [DataMember(IsRequired = true, Name = nameof(TypeSexId), Order = 4, EmitDefaultValue = true)]
+        [Range(1, 2, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]
         public int TypeSexId { get; set; }
     }
 }

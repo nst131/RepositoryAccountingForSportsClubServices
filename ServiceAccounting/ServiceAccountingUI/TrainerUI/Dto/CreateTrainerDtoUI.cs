@@ -22,6 +22,7 @@ namespace ServiceAccountingUI.TrainerUI.Dto
         public int TypeSexId { get; set; }
 
         [DataMember(IsRequired = true, Name = nameof(ServiceId), Order = 4, EmitDefaultValue = true)]
+        [Range(1, 2, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]
         public int ServiceId { get; set; }
     }
 }

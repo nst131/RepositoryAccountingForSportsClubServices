@@ -1,9 +1,11 @@
 ﻿using ServiceAccountingBL.AdditionalValidation;
 using ServiceAccountingDA.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ServiceAccountingUI.CustomAttributes
 {
+    [AttributeUsage(AttributeTargets.Property)]
     public class UniqueTelephone : ValidationAttribute
     {
         private readonly Role role;

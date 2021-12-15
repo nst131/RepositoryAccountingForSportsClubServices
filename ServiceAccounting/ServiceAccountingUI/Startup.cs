@@ -20,8 +20,7 @@ namespace ServiceAccountingUI
 
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers();
+            object p = services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ServiceAccountingUI", Version = "v1" });

@@ -3,6 +3,10 @@ using ServiceAccountingBL.ClientBLL.Aggregator;
 using ServiceAccountingBL.ClientBLL.Crud;
 using ServiceAccountingBL.ClientBLL.Dto;
 using ServiceAccountingBL.ClientBLL.Validation;
+using ServiceAccountingBL.ClubCardBLL.Aggregator;
+using ServiceAccountingBL.ClubCardBLL.Crud;
+using ServiceAccountingBL.ClubCardBLL.Dto;
+using ServiceAccountingBL.ClubCardBLL.Validation;
 using ServiceAccountingBL.ResponsibleBLL.Aggregator;
 using ServiceAccountingBL.ResponsibleBLL.Crud;
 using ServiceAccountingBL.ResponsibleBLL.Dto;
@@ -45,6 +49,15 @@ namespace ServiceAccountingBL
                 .AddScoped(serviceProvider => new Lazy<IResponsibleValidator<CreateResponsibleDtoBL>>(() => serviceProvider.GetRequiredService<IResponsibleValidator<CreateResponsibleDtoBL>>()));
             services.AddScoped<IResponsibleValidator<UpdateResponsibleDtoBL>, UpdateResponsibleValidatorBL>()
                 .AddScoped(serviceProvider => new Lazy<IResponsibleValidator<UpdateResponsibleDtoBL>>(() => serviceProvider.GetRequiredService<IResponsibleValidator<UpdateResponsibleDtoBL>>()));
+
+            //ClubCard
+            services.AddScoped<IAggregatorClubCardBL, AggregatorClubCardBL>();
+            services.AddScoped<IClubCardCrudBL, ClubCardCrudBL>()
+                 .AddScoped(serviceProvider => new Lazy<IClubCardCrudBL>(() => serviceProvider.GetRequiredService<IClubCardCrudBL>()));
+            services.AddScoped<IClubCardValidator<CreateClubCardDtoBL>, CreateClubCardValidatorBL>()
+                .AddScoped(serviceProvider => new Lazy<IClubCardValidator<CreateClubCardDtoBL>>(() => serviceProvider.GetRequiredService<IClubCardValidator<CreateClubCardDtoBL>>()));
+            services.AddScoped<IClubCardValidator<UpdateClubCardDtoBL>, UpdateClubCardValidatorBL>()
+                .AddScoped(serviceProvider => new Lazy<IClubCardValidator<UpdateClubCardDtoBL>>(() => serviceProvider.GetRequiredService<IClubCardValidator<UpdateClubCardDtoBL>>()));
         }
     }
 }
