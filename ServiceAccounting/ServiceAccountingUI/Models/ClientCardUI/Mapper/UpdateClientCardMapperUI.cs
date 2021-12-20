@@ -23,8 +23,8 @@ namespace ServiceAccountingUI.Models.ClientCardUI.Mapper
             return new()
             {
                 Id = dto.Id,
-                DateActivation = dto.DateActivation,
-                DateExpiration = dto.DateExpiration
+                DateActivation = dto.DateActivation.ToLocalTime(),
+                DateExpiration = dto.DateExpiration.ToLocalTime()
             };
         }
     }

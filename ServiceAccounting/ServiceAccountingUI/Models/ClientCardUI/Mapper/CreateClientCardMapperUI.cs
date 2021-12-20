@@ -9,6 +9,7 @@ namespace ServiceAccountingUI.Models.ClientCardUI.Mapper
         public static AcceptCreateClientCardDtoBL Map<Result>(AcceptCreateClientCardDtoUI dto)
             where Result : AcceptCreateClientCardDtoBL
         {
+            //In AcceptCreateClientCardDtoUI -> DateActivation = DateTime.Now
             return new()
             {
                 DateActivation = dto.DateActivation,
@@ -23,8 +24,8 @@ namespace ServiceAccountingUI.Models.ClientCardUI.Mapper
             return new()
             {
                 Id = dto.Id,
-                DateActivation = dto.DateActivation,
-                DateExpiration = dto.DateExpiration
+                DateActivation = dto.DateActivation.ToLocalTime(),
+                DateExpiration = dto.DateExpiration.ToLocalTime()
             };
         }
 

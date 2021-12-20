@@ -40,6 +40,12 @@ using ServiceAccountingBL.Models.TrainerBLL.Dto;
 using ServiceAccountingBL.Models.TrainerBLL.Fetchers;
 using ServiceAccountingBL.Models.TrainerBLL.Mapper;
 using ServiceAccountingBL.Models.TrainerBLL.Validation;
+using ServiceAccountingBL.Models.VisitBLL.Aggregator;
+using ServiceAccountingBL.Models.VisitBLL.Crud;
+using ServiceAccountingBL.Models.VisitBLL.Dto;
+using ServiceAccountingBL.Models.VisitBLL.Fetchers;
+using ServiceAccountingBL.Models.VisitBLL.Mapper;
+using ServiceAccountingBL.Models.VisitBLL.Validation;
 
 namespace ServiceAccountingBL
 {
@@ -158,6 +164,25 @@ namespace ServiceAccountingBL
                 .AddScoped(serviceProvider => new Lazy<IClientCardFetchersBL>(serviceProvider.GetRequiredService<IClientCardFetchersBL>));
             services.AddScoped<IClientCardCrudBL, ClientCardCrudBL>()
                 .AddScoped(serviceProvider => new Lazy<IClientCardCrudBL>(serviceProvider.GetRequiredService<IClientCardCrudBL>));
+
+            //Visit
+            services.AddScoped<IAggregatorVisitBL, AggregatorVisitBL>();
+            services.AddScoped<IValidator<AcceptCreateVisitDtoBL>, CreateVisitValidatorBL>();
+            services.AddScoped<IValidator<AcceptUpdateVisitDtoBL>, UpdateVisitValidatorBL>();
+            services.AddScoped<IMapper<AcceptCreateVisitDtoBL, Visit>, CreateVisitMapperBL>();
+            services.AddScoped<IMapper<Visit, ResponseVisitDtoBL>, ResponseVisitMapperBL>();
+            services.AddScoped<IMapper<AcceptUpdateVisitDtoBL, Visit>, UpdateVisitMapperBL>();
+
+            services.AddScoped<ICreater<AcceptCreateVisitDtoBL, ResponseVisitDtoBL>, Creater<Visit, AcceptCreateVisitDtoBL, ResponseVisitDtoBL>>()
+                .AddScoped(serviceProvider => new Lazy<ICreater<AcceptCreateVisitDtoBL, ResponseVisitDtoBL>>(serviceProvider.GetRequiredService<ICreater<AcceptCreateVisitDtoBL, ResponseVisitDtoBL>>));
+            services.AddScoped<IUpdater<AcceptUpdateVisitDtoBL, ResponseVisitDtoBL>, Updater<Visit, AcceptUpdateVisitDtoBL, ResponseVisitDtoBL>>()
+                .AddScoped(serviceProvider => new Lazy<IUpdater<AcceptUpdateVisitDtoBL, ResponseVisitDtoBL>>(serviceProvider.GetRequiredService<IUpdater<AcceptUpdateVisitDtoBL, ResponseVisitDtoBL>>));
+            services.AddScoped<IRemover<Visit>, Remover<Visit>>()
+                .AddScoped(serviceProvider => new Lazy<IRemover<Visit>>(serviceProvider.GetRequiredService<IRemover<Visit>>));
+            services.AddScoped<IVisitFetchersBL, VisitFetchersBL>()
+                .AddScoped(serviceProvider => new Lazy<IVisitFetchersBL>(serviceProvider.GetRequiredService<IVisitFetchersBL>));
+            services.AddScoped<IVisitCrudBL, VisitCrudBL>()
+                .AddScoped(serviceProvider => new Lazy<IVisitCrudBL>(serviceProvider.GetRequiredService<IVisitCrudBL>));
         }
     }
 }
