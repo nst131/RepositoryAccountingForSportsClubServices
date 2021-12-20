@@ -17,17 +17,17 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Fetchers
             this.context = context;
         }
 
-        public async Task<ICollection<GetTrainerDtoBL>> GetTrainerAll()
+        public async Task<ICollection<ResponseGetTrainerDtoBL>> GetTrainerAll()
         {
             if (!await context.Set<Trainer>().AnyAsync()) 
-                return new List<GetTrainerDtoBL>();
+                return new List<ResponseGetTrainerDtoBL>();
 
             var allTrainers = await context.Set<Trainer>()
                 .Include(x => x.TypeSex)
                 .Include(x => x.Service)
                 .ToListAsync();
 
-            return ReadTrainerMapperBL.Map<ICollection<GetTrainerDtoBL>>(allTrainers);
+            return ReadTrainerMapperBL.Map<ICollection<ResponseGetTrainerDtoBL>>(allTrainers);
 
         }
     }

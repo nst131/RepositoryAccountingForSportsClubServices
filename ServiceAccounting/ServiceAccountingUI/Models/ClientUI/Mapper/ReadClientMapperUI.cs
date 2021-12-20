@@ -7,7 +7,7 @@ namespace ServiceAccountingUI.Models.ClientUI.Mapper
 {
     public static class ReadClientMapperUI
     {
-        public static ResponseGetClientDtoUI Map<Result>(GetClientDtoBL client)
+        public static ResponseGetClientDtoUI Map<Result>(ResponseGetClientDtoBL client)
             where Result : ResponseGetClientDtoUI
         {
             return new()
@@ -20,7 +20,7 @@ namespace ServiceAccountingUI.Models.ClientUI.Mapper
             };
         }
 
-        public static ICollection<ResponseGetClientDtoUI> Map<Result>(ICollection<GetClientDtoBL> clients)
+        public static ICollection<ResponseGetClientDtoUI> Map<Result>(ICollection<ResponseGetClientDtoBL> clients)
             where Result : ICollection<ResponseGetClientDtoUI>
         {
             return clients.Select(client => Map<ResponseGetClientDtoUI>(client)).ToList();

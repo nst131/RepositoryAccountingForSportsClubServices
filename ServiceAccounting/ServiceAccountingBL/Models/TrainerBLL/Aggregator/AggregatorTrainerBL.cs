@@ -11,14 +11,14 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Aggregator
     {
         private readonly Lazy<ITrainerCrudBL> trainerCrudBL;
         private readonly Lazy<ITrainerFetchersBL> trainerFetchersBL;
-        private readonly Lazy<ICreater<CreateTrainerDtoBL, TrainerDtoBL>> createTrainer;
-        private readonly Lazy<IUpdater<UpdateTrainerDtoBL, TrainerDtoBL>> updateTrainer;
+        private readonly Lazy<ICreater<AcceptCreateTrainerDtoBL, ResponseTrainerDtoBL>> createTrainer;
+        private readonly Lazy<IUpdater<AcceptUpdateTrainerDtoBL, ResponseTrainerDtoBL>> updateTrainer;
         private readonly Lazy<IRemover<Trainer>> removeTrainer;
 
         public AggregatorTrainerBL(Lazy<ITrainerCrudBL> trainerCrudBL,
             Lazy<ITrainerFetchersBL> trainerFetchersBL,
-            Lazy<ICreater<CreateTrainerDtoBL, TrainerDtoBL>> createTrainer,
-            Lazy<IUpdater<UpdateTrainerDtoBL, TrainerDtoBL>> updateTrainer,
+            Lazy<ICreater<AcceptCreateTrainerDtoBL, ResponseTrainerDtoBL>> createTrainer,
+            Lazy<IUpdater<AcceptUpdateTrainerDtoBL, ResponseTrainerDtoBL>> updateTrainer,
             Lazy<IRemover<Trainer>> removeTrainer)
         {
             this.trainerCrudBL = trainerCrudBL;
@@ -30,8 +30,8 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Aggregator
 
         public ITrainerCrudBL TrainerCrudBL => trainerCrudBL.Value;
         public ITrainerFetchersBL TrainerFetchersBL => trainerFetchersBL.Value;
-        public ICreater<CreateTrainerDtoBL, TrainerDtoBL> CreateTrainer => createTrainer.Value;
-        public IUpdater<UpdateTrainerDtoBL, TrainerDtoBL> UpdateTrainer => updateTrainer.Value;
+        public ICreater<AcceptCreateTrainerDtoBL, ResponseTrainerDtoBL> CreateTrainer => createTrainer.Value;
+        public IUpdater<AcceptUpdateTrainerDtoBL, ResponseTrainerDtoBL> UpdateTrainer => updateTrainer.Value;
         public IRemover<Trainer> RemoveTrainer => removeTrainer.Value;
     }
 }

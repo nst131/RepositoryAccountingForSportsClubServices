@@ -10,8 +10,8 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Aggregator
     {
         ITrainerCrudBL TrainerCrudBL { get; }
         ITrainerFetchersBL TrainerFetchersBL { get; }
-        ICreater<CreateTrainerDtoBL, TrainerDtoBL> CreateTrainer { get; }
-        IUpdater<UpdateTrainerDtoBL, TrainerDtoBL> UpdateTrainer { get; }
+        ICreater<AcceptCreateTrainerDtoBL, ResponseTrainerDtoBL> CreateTrainer { get; }
+        IUpdater<AcceptUpdateTrainerDtoBL, ResponseTrainerDtoBL> UpdateTrainer { get; }
         IRemover<Trainer> RemoveTrainer { get; }
     }
 }

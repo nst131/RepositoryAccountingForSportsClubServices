@@ -5,9 +5,9 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Crud
 {
     public interface IResponsibleCrudBL
     {
-        Task<ResponsibleDtoBL> CreateResponsible(CreateResponsibleDtoBL createResponsibleDtoBL);
+        Task<ResponseResponsibleDtoBL> CreateResponsible(AcceptCreateResponsibleDtoBL createResponsibleDtoBL);
         Task DeleteResponsible(int id);
-        Task<GetResponsibleDtoBL> GetResponsible(int id);
-        Task<ResponsibleDtoBL> UpdateResponsible(UpdateResponsibleDtoBL updateResponsibleDtoBL);
+        Task<ResponseGetResponsibleDtoBL> GetResponsible(int id);
+        Task<ResponseResponsibleDtoBL> UpdateResponsible(AcceptUpdateResponsibleDtoBL updateResponsibleDtoBL);
     }
 }

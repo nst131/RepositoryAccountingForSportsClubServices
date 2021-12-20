@@ -10,7 +10,7 @@ using ServiceAccountingDA.Models;
 
 namespace ServiceAccountingBL.Models.TrainerBLL.Validation
 {
-    public class UpdateTrainerValidatorBL : IValidator<UpdateTrainerDtoBL>
+    public class UpdateTrainerValidatorBL : IValidator<AcceptUpdateTrainerDtoBL>
     {
         public readonly IServiceAccountingContext context;
 
@@ -19,19 +19,19 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Validation
             this.context = context;
         }
 
-        public async Task Validate(UpdateTrainerDtoBL updateTrainerDtoBL)
+        public async Task Validate(AcceptUpdateTrainerDtoBL updateTrainerDtoBL)
         {
             if (updateTrainerDtoBL is null)
-                throw new ElementNullReferenceException($"{nameof(UpdateTrainerDtoBL)} is null");
+                throw new ElementNullReferenceException($"{nameof(AcceptUpdateTrainerDtoBL)} is null");
 
             if (await Task.Factory.StartNew(() => !context.Set<Trainer>().AsNoTracking().ToList().Exists(x => x.Id == updateTrainerDtoBL.Id)))
                 throw new ElementByIdNotFoundException($"{nameof(Trainer)} by Id not Found");
 
             if (string.IsNullOrWhiteSpace(updateTrainerDtoBL.Name))
-                throw new ElementNotAssignException($"{nameof(UpdateTrainerDtoBL.Name)} is not assigned");
+                throw new ElementNotAssignException($"{nameof(AcceptUpdateTrainerDtoBL.Name)} is not assigned");
 
             if (string.IsNullOrWhiteSpace(updateTrainerDtoBL.SerName))
-                throw new ElementNotAssignException($"{nameof(UpdateTrainerDtoBL.SerName)} is not assigned");
+                throw new ElementNotAssignException($"{nameof(AcceptUpdateTrainerDtoBL.SerName)} is not assigned");
 
             if (await Task.Factory.StartNew(() => !context.Set<TypeOfSex>().AsNoTracking().ToList().Exists(x => x.Id == updateTrainerDtoBL.TypeSexId)))
                 throw new ElementByIdNotFoundException($"{nameof(TypeOfSex)} by Id not Found");
@@ -39,7 +39,7 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Validation
             var regex = new Regex("[0-9]{2} [0-9]{3}-[0-9]{2}-[0-9]{2}");
 
             if (!regex.IsMatch(updateTrainerDtoBL.Telephone))
-                throw new ElementNotValidByRegexException($"{nameof(UpdateTrainerDtoBL.Telephone)} is not valid by regex");
+                throw new ElementNotValidByRegexException($"{nameof(AcceptUpdateTrainerDtoBL.Telephone)} is not valid by regex");
 
             if (await Task.Factory.StartNew(() => !context.Set<Service>().AsNoTracking().ToList().Exists(x => x.Id == updateTrainerDtoBL.ServiceId)))
                 throw new ElementByIdNotFoundException($"{nameof(Service)} by Id not Found");

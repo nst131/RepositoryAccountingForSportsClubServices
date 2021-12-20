@@ -5,8 +5,8 @@ namespace ServiceAccountingUI.Models.ClientUI.Mapper
 {
     public static class UpdateClientMapperUI
     {
-        public static UpdateClientDtoBL Map<Result>(AcceptUpdateClientDtoUI client)
-            where Result: UpdateClientDtoBL
+        public static AcceptUpdateClientDtoBL Map<Result>(AcceptUpdateClientDtoUI client)
+            where Result: AcceptUpdateClientDtoBL
         {
             return new()
             {
@@ -18,7 +18,7 @@ namespace ServiceAccountingUI.Models.ClientUI.Mapper
             };
         }
 
-        public static ResponseClientDtoUI Map<Result>(ClientDtoBL client)
+        public static ResponseClientDtoUI Map<Result>(ResponseClientDtoBL client)
             where Result: ResponseGetClientDtoUI
         {
             return new()

@@ -10,7 +10,7 @@ using ServiceAccountingDA.Models;
 
 namespace ServiceAccountingBL.Models.TrainerBLL.Validation
 {
-    public class CreateTrainerValidatorBL : IValidator<CreateTrainerDtoBL>
+    public class CreateTrainerValidatorBL : IValidator<AcceptCreateTrainerDtoBL>
     {
         public readonly IServiceAccountingContext context;
 
@@ -19,16 +19,16 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Validation
             this.context = context;
         }
 
-        public async Task Validate(CreateTrainerDtoBL createTrainerDtoBL)
+        public async Task Validate(AcceptCreateTrainerDtoBL createTrainerDtoBL)
         {
             if (createTrainerDtoBL is null)
-                throw new ElementNullReferenceException($"{nameof(CreateTrainerDtoBL)} is null");
+                throw new ElementNullReferenceException($"{nameof(AcceptCreateTrainerDtoBL)} is null");
 
             if (string.IsNullOrWhiteSpace(createTrainerDtoBL.Name))
-                throw new ElementNotAssignException($"{nameof(CreateTrainerDtoBL.Name)} is not assigned");
+                throw new ElementNotAssignException($"{nameof(AcceptCreateTrainerDtoBL.Name)} is not assigned");
 
             if (string.IsNullOrWhiteSpace(createTrainerDtoBL.SerName))
-                throw new ElementNotAssignException($"{nameof(CreateTrainerDtoBL.SerName)} is not assigned");
+                throw new ElementNotAssignException($"{nameof(AcceptCreateTrainerDtoBL.SerName)} is not assigned");
 
             if (await Task.Factory.StartNew(() => !context.Set<TypeOfSex>().AsNoTracking().ToList().Exists(x => x.Id == createTrainerDtoBL.TypeSexId)))
                 throw new ElementByIdNotFoundException($"{nameof(TypeOfSex)} by Id not Found");
@@ -36,7 +36,7 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Validation
             var regex = new Regex("[0-9]{2} [0-9]{3}-[0-9]{2}-[0-9]{2}");
 
             if (!regex.IsMatch(createTrainerDtoBL.Telephone))
-                throw new ElementNotValidByRegexException($"{nameof(CreateTrainerDtoBL.Telephone)} is not valid by regex");
+                throw new ElementNotValidByRegexException($"{nameof(AcceptCreateTrainerDtoBL.Telephone)} is not valid by regex");
 
             if (await Task.Factory.StartNew(() => !context.Set<Service>().AsNoTracking().ToList().Exists(x => x.Id == createTrainerDtoBL.ServiceId)))
                 throw new ElementByIdNotFoundException($"{nameof(Service)} by Id not Found");

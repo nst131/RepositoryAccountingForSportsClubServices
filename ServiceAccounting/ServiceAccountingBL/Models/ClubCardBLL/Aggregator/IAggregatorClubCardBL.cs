@@ -10,8 +10,8 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Aggregator
     {
         IClubCardCrudBL ClubCardCrudBL { get; }
         IClubCardFetchersBL ClubCardFetchersBL { get; }
-        ICreater<CreateClubCardDtoBL, ClubCardDtoBL> CreateClubCard { get; }
-        IUpdater<UpdateClubCardDtoBL, ClubCardDtoBL> UpdateClubCard { get; }
+        ICreater<AcceptCreateClubCardDtoBL, ResponseClubCardDtoBL> CreateClubCard { get; }
+        IUpdater<AcceptUpdateClubCardDtoBL, ResponseClubCardDtoBL> UpdateClubCard { get; }
         IRemover<ClubCard> RemoveClubCard { get; }
     }
 }

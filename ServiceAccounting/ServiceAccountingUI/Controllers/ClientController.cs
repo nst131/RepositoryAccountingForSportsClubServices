@@ -27,7 +27,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<ICollection<ResponseGetClientDtoUI>>> GetAll()
         {
             var allClientsDtoBL = await clientFetchers.GetClientAll();
 
@@ -39,8 +39,8 @@ namespace ServiceAccountingUI.Controllers
         }
 
         [HttpPost]
-        [Route("{Id:int}")]
-        public async Task<IActionResult> Get([FromRoute] AcceptGetClientDtoUI acceptGetClientDtoUI)
+        [Route("[action]/{Id:int}")]
+        public async Task<ActionResult<ResponseGetClientDtoUI>> Get([FromRoute] AcceptGetClientDtoUI acceptGetClientDtoUI)
         {
             if (acceptGetClientDtoUI is null)
                 throw new ElementNullReferenceException();
@@ -56,12 +56,12 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> CreateClient([FromBody] AcceptCreateClientDtoUI createClientDtoUI)
+        public async Task<ActionResult<ResponseClientDtoUI>> Create([FromBody] AcceptCreateClientDtoUI createClientDtoUI)
         {
             if (createClientDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var createClientBL = CreateClientMapperUI.Map<CreateClientDtoBL>(createClientDtoUI);
+            var createClientBL = CreateClientMapperUI.Map<AcceptCreateClientDtoBL>(createClientDtoUI);
             var clientDtoBL =  await clientCrudBL.CreateClient(createClientBL);
             var clientDtoUI = CreateClientMapperUI.Map<ResponseClientDtoUI>(clientDtoBL);
 
@@ -70,12 +70,12 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
-        public async Task<IActionResult> UpdateClient([FromBody] AcceptUpdateClientDtoUI updateClientDtoUI)
+        public async Task<ActionResult<ResponseClientDtoUI>> Update([FromBody] AcceptUpdateClientDtoUI updateClientDtoUI)
         {
             if (updateClientDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var updateClientBL = UpdateClientMapperUI.Map<UpdateClientDtoBL>(updateClientDtoUI);
+            var updateClientBL = UpdateClientMapperUI.Map<AcceptUpdateClientDtoBL>(updateClientDtoUI);
             var clientDtoBL = await clientCrudBL.UpdateClient(updateClientBL);
             var clientDtoUI = UpdateClientMapperUI.Map<ResponseGetClientDtoUI>(clientDtoBL);
 
@@ -83,8 +83,8 @@ namespace ServiceAccountingUI.Controllers
         }
 
         [HttpDelete]
-        [Route("{Id:int}")]
-        public async Task<IActionResult> DeleteClient([FromRoute] AcceptDeleteClientDtoUI deleteClientDtoUI)
+        [Route("[action]/{Id:int}")]
+        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteClientDtoUI deleteClientDtoUI)
         {
             if (deleteClientDtoUI is null)
                 throw new ElementNullReferenceException();

@@ -13,8 +13,8 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Crud
     public class TrainerCrudBL : ITrainerCrudBL
     {
         private readonly IServiceAccountingContext context;
-        private readonly ICreater<CreateTrainerDtoBL, TrainerDtoBL> createTrainer;
-        private readonly IUpdater<UpdateTrainerDtoBL, TrainerDtoBL> updateTrainer;
+        private readonly ICreater<AcceptCreateTrainerDtoBL, ResponseTrainerDtoBL> createTrainer;
+        private readonly IUpdater<AcceptUpdateTrainerDtoBL, ResponseTrainerDtoBL> updateTrainer;
         private readonly IRemover<Trainer> removeTrainer;
 
         public TrainerCrudBL(IServiceAccountingContext context, IAggregatorTrainerBL aggregator)
@@ -25,12 +25,12 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Crud
             this.removeTrainer = aggregator.RemoveTrainer;
         }
 
-        public async Task<TrainerDtoBL> CreateTrainer(CreateTrainerDtoBL createTrainerDtoBL)
+        public async Task<ResponseTrainerDtoBL> CreateTrainer(AcceptCreateTrainerDtoBL createTrainerDtoBL)
         {
             return await createTrainer.Create(createTrainerDtoBL);
         }
 
-        public async Task<TrainerDtoBL> UpdateTrainer(UpdateTrainerDtoBL updateTrainerDtoBL)
+        public async Task<ResponseTrainerDtoBL> UpdateTrainer(AcceptUpdateTrainerDtoBL updateTrainerDtoBL)
         {
             return await updateTrainer.Update(updateTrainerDtoBL);
         }
@@ -40,7 +40,7 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Crud
             await removeTrainer.Remove(id);
         }
 
-        public async Task<GetTrainerDtoBL> GetTrainer(int id)
+        public async Task<ResponseGetTrainerDtoBL> GetTrainer(int id)
         {
             if(id < 0)
                 throw new ElementOutOfRangeException($"Id {nameof(Trainer)} is less 0");
@@ -52,7 +52,7 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Crud
             if(trainer is null)
                 throw new ElementByIdNotFoundException($"{nameof(Trainer)} by Id not Found");
 
-            return ReadTrainerMapperBL.Map<GetTrainerDtoBL>(trainer);
+            return ReadTrainerMapperBL.Map<ResponseGetTrainerDtoBL>(trainer);
         }
     }
 }

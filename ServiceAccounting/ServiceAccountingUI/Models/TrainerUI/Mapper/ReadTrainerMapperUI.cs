@@ -7,7 +7,7 @@ namespace ServiceAccountingUI.Models.TrainerUI.Mapper
 {
     public static class ReadTrainerMapperUI
     {
-        public static ResponseGetTrainerDtoUI Map<Result>(GetTrainerDtoBL trainer)
+        public static ResponseGetTrainerDtoUI Map<Result>(ResponseGetTrainerDtoBL trainer)
         where Result : ResponseGetTrainerDtoUI
         {
             return new ()
@@ -22,7 +22,7 @@ namespace ServiceAccountingUI.Models.TrainerUI.Mapper
             };
         }
 
-        public static ICollection<ResponseGetTrainerDtoUI> Map<Result>(ICollection<GetTrainerDtoBL> trainers)
+        public static ICollection<ResponseGetTrainerDtoUI> Map<Result>(ICollection<ResponseGetTrainerDtoBL> trainers)
                 where Result : ICollection<ResponseGetTrainerDtoUI>
         {
             return trainers.Select(trainer => Map<ResponseGetTrainerDtoUI>(trainer)).ToList();

@@ -5,8 +5,8 @@ namespace ServiceAccountingUI.Models.ResponsibleUI.Mapper
 {
     public static class CreateResponsibleMapperUI
     {
-        public static CreateResponsibleDtoBL Map<Result>(AcceptCreateResponsibleDtoUI responsible)
-            where Result : CreateResponsibleDtoBL
+        public static AcceptCreateResponsibleDtoBL Map<Result>(AcceptCreateResponsibleDtoUI responsible)
+            where Result : AcceptCreateResponsibleDtoBL
         {
             return new ()
             {
@@ -16,7 +16,7 @@ namespace ServiceAccountingUI.Models.ResponsibleUI.Mapper
             };
         }
 
-        public static ResponseResponsibleDtoUI Map<Result>(ResponsibleDtoBL responsible)
+        public static ResponseResponsibleDtoUI Map<Result>(ResponseResponsibleDtoBL responsible)
             where Result : ResponseResponsibleDtoUI
         {
             return new ()

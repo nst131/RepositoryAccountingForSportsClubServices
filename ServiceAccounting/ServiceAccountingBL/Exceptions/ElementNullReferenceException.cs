@@ -4,8 +4,8 @@ namespace ServiceAccountingBL.Exceptions
 {
     public class ElementNullReferenceException : Exception
     {
-        public const string defaultMessage = "Element is null";
-        public ElementNullReferenceException() : base(defaultMessage) { }
+        public const string DefaultMessage = "Element is null";
+        public ElementNullReferenceException() : base(DefaultMessage) { }
         public ElementNullReferenceException(string message) : base(message) { }
     }
 }

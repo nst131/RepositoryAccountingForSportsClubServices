@@ -10,7 +10,7 @@ using ServiceAccountingDA.Models;
 
 namespace ServiceAccountingBL.Models.ResponsibleBLL.Validation
 {
-    public class UpdateResponsibleValidatorBL : IValidator<UpdateResponsibleDtoBL>
+    public class UpdateResponsibleValidatorBL : IValidator<AcceptUpdateResponsibleDtoBL>
     {
         public readonly IServiceAccountingContext context;
 
@@ -19,24 +19,24 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Validation
             this.context = context;
         }
 
-        public async Task Validate(UpdateResponsibleDtoBL updateResponsibleDtoBL)
+        public async Task Validate(AcceptUpdateResponsibleDtoBL updateResponsibleDtoBL)
         {
             if (updateResponsibleDtoBL is null)
-                throw new ElementNullReferenceException($"{nameof(UpdateResponsibleDtoBL)} is null");
+                throw new ElementNullReferenceException($"{nameof(AcceptUpdateResponsibleDtoBL)} is null");
 
             if (await Task.Factory.StartNew(() => !context.Set<Responsible>().AsNoTracking().ToList().Exists(x => x.Id == updateResponsibleDtoBL.Id)))
                 throw new ElementByIdNotFoundException($"{nameof(Responsible)} by Id not Found");
 
             if (string.IsNullOrWhiteSpace(updateResponsibleDtoBL.Name))
-                throw new ElementNotAssignException($"{nameof(UpdateResponsibleDtoBL.Name)} is not assigned");
+                throw new ElementNotAssignException($"{nameof(AcceptUpdateResponsibleDtoBL.Name)} is not assigned");
 
             if (string.IsNullOrWhiteSpace(updateResponsibleDtoBL.SerName))
-                throw new ElementNotAssignException($"{nameof(UpdateResponsibleDtoBL.SerName)} is not assigned");
+                throw new ElementNotAssignException($"{nameof(AcceptUpdateResponsibleDtoBL.SerName)} is not assigned");
 
             var regex = new Regex("[0-9]{2} [0-9]{3}-[0-9]{2}-[0-9]{2}");
 
             if (!regex.IsMatch(updateResponsibleDtoBL.Telephone))
-                throw new ElementNotValidByRegexException($"{nameof(UpdateResponsibleDtoBL.Telephone)} is not valid by regex");
+                throw new ElementNotValidByRegexException($"{nameof(AcceptUpdateResponsibleDtoBL.Telephone)} is not valid by regex");
         }
     }
 }

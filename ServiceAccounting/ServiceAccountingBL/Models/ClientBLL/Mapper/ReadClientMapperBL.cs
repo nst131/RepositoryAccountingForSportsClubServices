@@ -7,8 +7,8 @@ namespace ServiceAccountingBL.Models.ClientBLL.Mapper
 {
     public static class ReadClientMapperBL
     {
-        public static GetClientDtoBL Map<Result>(Client client)
-            where Result : GetClientDtoBL
+        public static ResponseGetClientDtoBL Map<Result>(Client client)
+            where Result : ResponseGetClientDtoBL
         {
             return new ()
             {
@@ -20,10 +20,10 @@ namespace ServiceAccountingBL.Models.ClientBLL.Mapper
             };
         }
 
-        public static ICollection<GetClientDtoBL> Map<Result>(ICollection<Client> allClients)
-            where Result : ICollection<GetClientDtoBL>
+        public static ICollection<ResponseGetClientDtoBL> Map<Result>(ICollection<Client> allClients)
+            where Result : ICollection<ResponseGetClientDtoBL>
         {
-            return allClients.Select(client => Map<GetClientDtoBL>(client)).ToList();
+            return allClients.Select(client => Map<ResponseGetClientDtoBL>(client)).ToList();
         }
     }
 }

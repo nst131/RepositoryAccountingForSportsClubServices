@@ -4,9 +4,9 @@ using ServiceAccountingDA.Models;
 
 namespace ServiceAccountingBL.Models.ClientBLL.Mapper
 {
-    public class ResponseClientMapperBL : IMapper<Client, ClientDtoBL>
+    public class ResponseClientMapperBL : IMapper<Client, ResponseClientDtoBL>
     {
-        public ClientDtoBL Map(Client client)
+        public ResponseClientDtoBL Map(Client client)
         {
             return new ()
             {

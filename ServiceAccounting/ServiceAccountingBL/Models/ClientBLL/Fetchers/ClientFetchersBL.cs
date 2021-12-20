@@ -17,16 +17,16 @@ namespace ServiceAccountingBL.Models.ClientBLL.Fetchers
             this.context = context;
         }
 
-        public async Task<ICollection<GetClientDtoBL>> GetClientAll()
+        public async Task<ICollection<ResponseGetClientDtoBL>> GetClientAll()
         {
             if (!await context.Set<Client>().AnyAsync()) 
-                return new List<GetClientDtoBL>();
+                return new List<ResponseGetClientDtoBL>();
 
             var allClients = await context.Set<Client>()
                 .Include(x => x.TypeSex)
                 .ToListAsync();
 
-            return ReadClientMapperBL.Map<ICollection<GetClientDtoBL>>(allClients);
+            return ReadClientMapperBL.Map<ICollection<ResponseGetClientDtoBL>>(allClients);
 
         }
     }

@@ -17,14 +17,14 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Fetchers
             this.context = context;
         }
 
-        public async Task<ICollection<GetResponsibleDtoBL>> GetResponsibleAll()
+        public async Task<ICollection<ResponseGetResponsibleDtoBL>> GetResponsibleAll()
         {
             if (!await context.Set<Responsible>().AnyAsync())
-                return new List<GetResponsibleDtoBL>();
+                return new List<ResponseGetResponsibleDtoBL>();
 
             var allResponsibles = await context.Set<Responsible>().ToListAsync();
 
-            return ReadResponsibleMapperBL.Map<ICollection<GetResponsibleDtoBL>>(allResponsibles);
+            return ReadResponsibleMapperBL.Map<ICollection<ResponseGetResponsibleDtoBL>>(allResponsibles);
 
         }
     }

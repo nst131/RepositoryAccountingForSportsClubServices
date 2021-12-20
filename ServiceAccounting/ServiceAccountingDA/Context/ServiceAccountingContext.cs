@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using ServiceAccountingDA.Configuration;
 using ServiceAccountingDA.Models;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,9 +15,10 @@ namespace ServiceAccountingDA.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json")
                     .Build();
-            string connectionString = builder.GetConnectionString("DefaultConnection");
+            var connectionString = builder.GetConnectionString("DefaultConnection");
             optionsBuilder.UseSqlServer(connectionString);
         }
 

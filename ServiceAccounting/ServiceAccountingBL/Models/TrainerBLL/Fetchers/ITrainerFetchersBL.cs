@@ -6,6 +6,6 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Fetchers
 {
     public interface ITrainerFetchersBL
     {
-        Task<ICollection<GetTrainerDtoBL>> GetTrainerAll();
+        Task<ICollection<ResponseGetTrainerDtoBL>> GetTrainerAll();
     }
 }

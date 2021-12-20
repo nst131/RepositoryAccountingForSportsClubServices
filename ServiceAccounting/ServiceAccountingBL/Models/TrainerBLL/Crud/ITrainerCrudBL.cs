@@ -5,9 +5,9 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Crud
 {
     public interface ITrainerCrudBL
     {
-        Task<TrainerDtoBL> CreateTrainer(CreateTrainerDtoBL createTrainerDtoBL);
+        Task<ResponseTrainerDtoBL> CreateTrainer(AcceptCreateTrainerDtoBL createTrainerDtoBL);
         Task DeleteTrainer(int id);
-        Task<GetTrainerDtoBL> GetTrainer(int id);
-        Task<TrainerDtoBL> UpdateTrainer(UpdateTrainerDtoBL updateTrainerDtoBL);
+        Task<ResponseGetTrainerDtoBL> GetTrainer(int id);
+        Task<ResponseTrainerDtoBL> UpdateTrainer(AcceptUpdateTrainerDtoBL updateTrainerDtoBL);
     }
 }

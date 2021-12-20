@@ -4,9 +4,9 @@ using ServiceAccountingDA.Models;
 
 namespace ServiceAccountingBL.Models.ClubCardBLL.Mapper
 {
-    public class ResponseClubCardMapperBL : IMapper<ClubCard, ClubCardDtoBL>
+    public class ResponseClubCardMapperBL : IMapper<ClubCard, ResponseClubCardDtoBL>
     {
-        public ClubCardDtoBL Map(ClubCard clubCard)
+        public ResponseClubCardDtoBL Map(ClubCard clubCard)
         {
             return new ()
             {

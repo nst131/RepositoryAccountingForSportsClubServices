@@ -5,9 +5,9 @@ namespace ServiceAccountingBL.Models.ClientBLL.Crud
 {
     public interface IClientCrudBL
     {
-        Task<ClientDtoBL> CreateClient(CreateClientDtoBL createClientDtoBL);
+        Task<ResponseClientDtoBL> CreateClient(AcceptCreateClientDtoBL createClientDtoBL);
         Task DeleteClient(int id);
-        Task<GetClientDtoBL> GetClient(int id);
-        Task<ClientDtoBL> UpdateClient(UpdateClientDtoBL updateClientDtoBL);
+        Task<ResponseGetClientDtoBL> GetClient(int id);
+        Task<ResponseClientDtoBL> UpdateClient(AcceptUpdateClientDtoBL updateClientDtoBL);
     }
 }

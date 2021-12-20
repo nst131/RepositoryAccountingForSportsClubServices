@@ -11,8 +11,8 @@ namespace ServiceAccountingBL.Models.ClientBLL.Aggregator
     {
         IClientCrudBL ClientCrudBL { get; }
         IClientFetchersBL ClientFetchersBL { get; }
-        ICreater<CreateClientDtoBL, ClientDtoBL> CreateClient { get; }
-        IUpdater<UpdateClientDtoBL, ClientDtoBL> UpdateClient { get; }
+        ICreater<AcceptCreateClientDtoBL, ResponseClientDtoBL> CreateClient { get; }
+        IUpdater<AcceptUpdateClientDtoBL, ResponseClientDtoBL> UpdateClient { get; }
         IRemover<Client> RemoveClient { get; }
     }
 }

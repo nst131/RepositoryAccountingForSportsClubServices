@@ -5,9 +5,9 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Crud
 {
     public interface IClubCardCrudBL
     {
-        Task<ClubCardDtoBL> CreateClubCard(CreateClubCardDtoBL createClubCardDtoBL);
+        Task<ResponseClubCardDtoBL> CreateClubCard(AcceptCreateClubCardDtoBL createClubCardDtoBL);
         Task DeleteClubCard(int id);
-        Task<GetClubCardDtoBL> GetClubCard(int id);
-        Task<ClubCardDtoBL> UpdateClubCard(UpdateClubCardDtoBL updateClubCardDtoBL);
+        Task<ResponseGetClubCardDtoBL> GetClubCard(int id);
+        Task<ResponseClubCardDtoBL> UpdateClubCard(AcceptUpdateClubCardDtoBL updateClubCardDtoBL);
     }
 }

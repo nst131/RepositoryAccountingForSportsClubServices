@@ -10,8 +10,8 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Aggregator
     {
         IResponsibleCrudBL ResponsibleCrudBL { get; }
         IResponsibleFetchersBL ResponsibleFetchersBL { get; }
-        ICreater<CreateResponsibleDtoBL, ResponsibleDtoBL> CreateResponsible { get; }
-        IUpdater<UpdateResponsibleDtoBL, ResponsibleDtoBL> UpdateResponsible { get; }
+        ICreater<AcceptCreateResponsibleDtoBL, ResponseResponsibleDtoBL> CreateResponsible { get; }
+        IUpdater<AcceptUpdateResponsibleDtoBL, ResponseResponsibleDtoBL> UpdateResponsible { get; }
         IRemover<Responsible> RemoveResponsible { get; }
     }
 }

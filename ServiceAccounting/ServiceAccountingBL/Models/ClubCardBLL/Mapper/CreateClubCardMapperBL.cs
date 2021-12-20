@@ -4,9 +4,9 @@ using ServiceAccountingDA.Models;
 
 namespace ServiceAccountingBL.Models.ClubCardBLL.Mapper
 {
-    public class CreateClubCardMapperBL : IMapper<CreateClubCardDtoBL, ClubCard>
+    public class CreateClubCardMapperBL : IMapper<AcceptCreateClubCardDtoBL, ClubCard>
     {
-        public ClubCard Map(CreateClubCardDtoBL createClubCardDtoBL)
+        public ClubCard Map(AcceptCreateClubCardDtoBL createClubCardDtoBL)
         {
             return new ()
             {

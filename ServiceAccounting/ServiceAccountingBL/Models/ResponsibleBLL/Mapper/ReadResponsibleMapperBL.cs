@@ -7,8 +7,8 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Mapper
 {
     public static class ReadResponsibleMapperBL
     {
-        public static GetResponsibleDtoBL Map<Result>(Responsible responsible)
-            where Result : GetResponsibleDtoBL
+        public static ResponseGetResponsibleDtoBL Map<Result>(Responsible responsible)
+            where Result : ResponseGetResponsibleDtoBL
         {
             return new ()
             {
@@ -19,10 +19,10 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Mapper
             };
         }
 
-        public static ICollection<GetResponsibleDtoBL> Map<Result>(ICollection<Responsible> allResponsibles)
-             where Result : ICollection<GetResponsibleDtoBL>
+        public static ICollection<ResponseGetResponsibleDtoBL> Map<Result>(ICollection<Responsible> allResponsibles)
+             where Result : ICollection<ResponseGetResponsibleDtoBL>
         {
-            return allResponsibles.Select(responsible => Map<GetResponsibleDtoBL>(responsible)).ToList();
+            return allResponsibles.Select(responsible => Map<ResponseGetResponsibleDtoBL>(responsible)).ToList();
         }
     }
 }

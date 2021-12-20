@@ -26,7 +26,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> GetAllTrainers()
+        public async Task<ActionResult<ICollection<ResponseGetTrainerDtoUI>>> GetAll()
         {
             var allTrainersDtoBL = await trainerFetchersBL.GetTrainerAll();
 
@@ -38,8 +38,8 @@ namespace ServiceAccountingUI.Controllers
         }
 
         [HttpPost]
-        [Route("{Id}")]
-        public async Task<IActionResult> GetTrainerById([FromRoute] AcceptGetTrainerDtoUI getTrainerDtoUI)
+        [Route("[action]/{Id:int}")]
+        public async Task<ActionResult<ResponseGetTrainerDtoUI>> Get([FromRoute] AcceptGetTrainerDtoUI getTrainerDtoUI)
         {
             if (getTrainerDtoUI is null)
                 throw new ElementNullReferenceException();
@@ -55,12 +55,12 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> CreateTrainer([FromBody] AcceptCreateTrainerDtoUI createTrainerDtoUI)
+        public async Task<ActionResult<ResponseTrainerDtoUI>> Create([FromBody] AcceptCreateTrainerDtoUI createTrainerDtoUI)
         {
             if (createTrainerDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var createTrainerBL = CreateTrainerMapperUI.Map<CreateTrainerDtoBL>(createTrainerDtoUI);
+            var createTrainerBL = CreateTrainerMapperUI.Map<AcceptCreateTrainerDtoBL>(createTrainerDtoUI);
             var trainerDtoBL = await trainerCrudBL.CreateTrainer(createTrainerBL);
             var trainerDtoUI = CreateTrainerMapperUI.Map<ResponseTrainerDtoUI>(trainerDtoBL);
 
@@ -69,12 +69,12 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
-        public async Task<IActionResult> UpdateTrainer([FromBody] AcceptUpdateTrainerDtoUI updateTrainerDtoUI)
+        public async Task<ActionResult<ResponseTrainerDtoUI>> Update([FromBody] AcceptUpdateTrainerDtoUI updateTrainerDtoUI)
         {
             if (updateTrainerDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var updateTrainerBL = UpdateTrainerMapperUI.Map<UpdateTrainerDtoBL>(updateTrainerDtoUI);
+            var updateTrainerBL = UpdateTrainerMapperUI.Map<AcceptUpdateTrainerDtoBL>(updateTrainerDtoUI);
             var trainerDtoBL = await trainerCrudBL.UpdateTrainer(updateTrainerBL);
             var trainerDtoUI = UpdateTrainerMapperUI.Map<ResponseTrainerDtoUI>(trainerDtoBL);
 
@@ -82,8 +82,8 @@ namespace ServiceAccountingUI.Controllers
         }
 
         [HttpDelete]
-        [Route("{Id:int}")]
-        public async Task<IActionResult> DeleteTrainer([FromRoute] AcceptDeleteTrainerDtoUI deleteTrainerDtoUI)
+        [Route("[action]/{Id:int}")]
+        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteTrainerDtoUI deleteTrainerDtoUI)
         {
             if(deleteTrainerDtoUI is null)
                 throw new ElementNullReferenceException();

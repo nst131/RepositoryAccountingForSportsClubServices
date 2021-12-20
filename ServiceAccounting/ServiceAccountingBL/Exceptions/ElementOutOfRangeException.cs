@@ -4,8 +4,8 @@ namespace ServiceAccountingBL.Exceptions
 {
     public class ElementOutOfRangeException : Exception
     {
-        public const string defaultMessage = "Element Out Of Range";
-        public ElementOutOfRangeException() : base(defaultMessage) { }
+        public const string DefaultMessage = "Element Out Of Range";
+        public ElementOutOfRangeException() : base(DefaultMessage) { }
         public ElementOutOfRangeException(string message) : base(message) { }
     }
 }

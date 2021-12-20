@@ -6,6 +6,6 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Fetchers
 {
     public interface IResponsibleFetchersBL
     {
-        Task<ICollection<GetResponsibleDtoBL>> GetResponsibleAll();
+        Task<ICollection<ResponseGetResponsibleDtoBL>> GetResponsibleAll();
     }
 }

@@ -26,7 +26,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> GetAllResponsibles()
+        public async Task<ActionResult<ICollection<ResponseGetResponsibleDtoUI>>> GetAll()
         {
             var allResponsiblesDtoBL = await responsibleFetchersBL.GetResponsibleAll();
 
@@ -38,8 +38,8 @@ namespace ServiceAccountingUI.Controllers
         }
 
         [HttpPost]
-        [Route("{Id:int}")]
-        public async Task<IActionResult> GetResponsibleById([FromRoute] AcceptGetResponsibleDtoUI getResponsibleDtoUI)
+        [Route("[action]/{Id:int}")]
+        public async Task<ActionResult<ResponseGetResponsibleDtoUI>> Get([FromRoute] AcceptGetResponsibleDtoUI getResponsibleDtoUI)
         {
             if (getResponsibleDtoUI is null)
                 throw new ElementNullReferenceException();
@@ -55,12 +55,12 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> CreateResponsible([FromBody] AcceptCreateResponsibleDtoUI createResponsibleDtoUI)
+        public async Task<ActionResult<ResponseResponsibleDtoUI>> Create([FromBody] AcceptCreateResponsibleDtoUI createResponsibleDtoUI)
         {
             if (createResponsibleDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var createResponsibleBL = CreateResponsibleMapperUI.Map<CreateResponsibleDtoBL>(createResponsibleDtoUI);
+            var createResponsibleBL = CreateResponsibleMapperUI.Map<AcceptCreateResponsibleDtoBL>(createResponsibleDtoUI);
             var responsibleDtoBL = await responsibleCrudBL.CreateResponsible(createResponsibleBL);
             var responsibleDtoUI = CreateResponsibleMapperUI.Map<ResponseResponsibleDtoUI>(responsibleDtoBL);
 
@@ -69,12 +69,12 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
-        public async Task<IActionResult> UpdateResponsible([FromBody] AcceptUpdateResponsibleDtoUI updateResponsibleDtoUI)
+        public async Task<ActionResult<ResponseResponsibleDtoUI>> Update([FromBody] AcceptUpdateResponsibleDtoUI updateResponsibleDtoUI)
         {
             if (updateResponsibleDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var updateResponsibleBL = UpdateResponsibleMapperUI.Map<UpdateResponsibleDtoBL>(updateResponsibleDtoUI);
+            var updateResponsibleBL = UpdateResponsibleMapperUI.Map<AcceptUpdateResponsibleDtoBL>(updateResponsibleDtoUI);
             var responsibleDtoBL = await responsibleCrudBL.UpdateResponsible(updateResponsibleBL);
             var responsibleDtoUI = UpdateResponsibleMapperUI.Map<ResponseResponsibleDtoUI>(responsibleDtoBL);
 
@@ -82,8 +82,8 @@ namespace ServiceAccountingUI.Controllers
         }
 
         [HttpDelete]
-        [Route("{Id:int}")]
-        public async Task<IActionResult> DeleteResponsible([FromRoute] AcceptDeleteResponsibleDtoUI deleteResponsibleDtoUI)
+        [Route("[action]/{Id:int}")]
+        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteResponsibleDtoUI deleteResponsibleDtoUI)
         {
             if(deleteResponsibleDtoUI is null)
                 throw new ElementNullReferenceException();

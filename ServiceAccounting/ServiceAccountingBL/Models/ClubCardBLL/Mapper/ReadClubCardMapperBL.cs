@@ -7,8 +7,8 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Mapper
 {
     public class ReadClubCardMapperBL
     {
-        public static GetClubCardDtoBL Map<Result>(ClubCard clubCard)
-            where Result : GetClubCardDtoBL
+        public static ResponseGetClubCardDtoBL Map<Result>(ClubCard clubCard)
+            where Result : ResponseGetClubCardDtoBL
         {
             return new ()
             {
@@ -20,10 +20,10 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Mapper
             };
         }
 
-        public static ICollection<GetClubCardDtoBL> Map<Result>(ICollection<ClubCard> allClubCards)
-             where Result : ICollection<GetClubCardDtoBL>
+        public static ICollection<ResponseGetClubCardDtoBL> Map<Result>(ICollection<ClubCard> allClubCards)
+             where Result : ICollection<ResponseGetClubCardDtoBL>
         {
-            return allClubCards.Select(clubCard => Map<GetClubCardDtoBL>(clubCard)).ToList();
+            return allClubCards.Select(clubCard => Map<ResponseGetClubCardDtoBL>(clubCard)).ToList();
         }
     }
 }

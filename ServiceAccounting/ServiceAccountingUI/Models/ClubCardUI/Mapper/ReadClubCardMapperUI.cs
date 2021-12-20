@@ -7,7 +7,7 @@ namespace ServiceAccountingUI.Models.ClubCardUI.Mapper
 {
     public static class ReadClubCardMapperUI
     {
-        public static ResponseGetClubCardDtoUI Map<Result>(GetClubCardDtoBL clubCard)
+        public static ResponseGetClubCardDtoUI Map<Result>(ResponseGetClubCardDtoBL clubCard)
             where Result : ResponseGetClubCardDtoUI
         {
             return new ()
@@ -20,7 +20,7 @@ namespace ServiceAccountingUI.Models.ClubCardUI.Mapper
             };
         }
 
-        public static ICollection<ResponseGetClubCardDtoUI> Map<Result>(ICollection<GetClubCardDtoBL> clubCards)
+        public static ICollection<ResponseGetClubCardDtoUI> Map<Result>(ICollection<ResponseGetClubCardDtoBL> clubCards)
                 where Result : ICollection<ResponseGetClubCardDtoUI>
         {
             return clubCards.Select(x => Map<ResponseGetClubCardDtoUI>(x)).ToList();

@@ -4,9 +4,9 @@ using ServiceAccountingDA.Models;
 
 namespace ServiceAccountingBL.Models.TrainerBLL.Mapper
 {
-    public class CreateTrainerMapperBL : IMapper<CreateTrainerDtoBL, Trainer>
+    public class CreateTrainerMapperBL : IMapper<AcceptCreateTrainerDtoBL, Trainer>
     {
-        public Trainer Map(CreateTrainerDtoBL createTrainerDtoBL)
+        public Trainer Map(AcceptCreateTrainerDtoBL createTrainerDtoBL)
         {
             return new ()
             {

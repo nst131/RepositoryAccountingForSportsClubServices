@@ -13,8 +13,8 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Crud
     public class ClubCardCrudBL : IClubCardCrudBL
     {
         private readonly IServiceAccountingContext context;
-        private readonly ICreater<CreateClubCardDtoBL, ClubCardDtoBL> createClubCard;
-        private readonly IUpdater<UpdateClubCardDtoBL, ClubCardDtoBL> updateClubCard;
+        private readonly ICreater<AcceptCreateClubCardDtoBL, ResponseClubCardDtoBL> createClubCard;
+        private readonly IUpdater<AcceptUpdateClubCardDtoBL, ResponseClubCardDtoBL> updateClubCard;
         private readonly IRemover<ClubCard> removeClubCard;
 
         public ClubCardCrudBL(IServiceAccountingContext context, IAggregatorClubCardBL aggregator)
@@ -25,12 +25,12 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Crud
             this.removeClubCard = aggregator.RemoveClubCard;
         }
 
-        public async Task<ClubCardDtoBL> CreateClubCard(CreateClubCardDtoBL createClubCardDtoBL)
+        public async Task<ResponseClubCardDtoBL> CreateClubCard(AcceptCreateClubCardDtoBL createClubCardDtoBL)
         {
             return await createClubCard.Create(createClubCardDtoBL);
         }
 
-        public async Task<ClubCardDtoBL> UpdateClubCard(UpdateClubCardDtoBL updateClubCardDtoBL)
+        public async Task<ResponseClubCardDtoBL> UpdateClubCard(AcceptUpdateClubCardDtoBL updateClubCardDtoBL)
         {
             return await updateClubCard.Update(updateClubCardDtoBL);
         }
@@ -40,7 +40,7 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Crud
             await removeClubCard.Remove(id);
         }
 
-        public async Task<GetClubCardDtoBL> GetClubCard(int id)
+        public async Task<ResponseGetClubCardDtoBL> GetClubCard(int id)
         {
             if (id < 0)
                 throw new ElementOutOfRangeException($"Id {nameof(ClubCard)} is less 0");
@@ -52,7 +52,7 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Crud
             if (clubCard is null)
                 throw new ElementByIdNotFoundException($"{nameof(ClubCard)} by Id not Found");
 
-            return ReadClubCardMapperBL.Map<GetClubCardDtoBL>(clubCard);
+            return ReadClubCardMapperBL.Map<ResponseGetClubCardDtoBL>(clubCard);
         }
     }
 }

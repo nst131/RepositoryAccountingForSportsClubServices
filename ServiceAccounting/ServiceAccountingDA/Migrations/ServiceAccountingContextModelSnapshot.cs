@@ -91,7 +91,7 @@ namespace ServiceAccountingDA.Migrations
                             Id = 1,
                             Name = "Alexander",
                             SerName = "Nikylskiy",
-                            Telephone = "296138957",
+                            Telephone = "29 613-89-57",
                             TypeSexId = 1
                         },
                         new
@@ -99,7 +99,7 @@ namespace ServiceAccountingDA.Migrations
                             Id = 2,
                             Name = "Vitaliy",
                             SerName = "Romanovskiy",
-                            Telephone = "297138090",
+                            Telephone = "29 713-80-90",
                             TypeSexId = 1
                         },
                         new
@@ -107,7 +107,7 @@ namespace ServiceAccountingDA.Migrations
                             Id = 3,
                             Name = "Maria",
                             SerName = "Gavrilova",
-                            Telephone = "297861344",
+                            Telephone = "29 786-13-44",
                             TypeSexId = 2
                         });
                 });
@@ -210,7 +210,7 @@ namespace ServiceAccountingDA.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ClubCardId")
+                    b.Property<int?>("ClubCardId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PurchaseDate")
@@ -219,7 +219,7 @@ namespace ServiceAccountingDA.Migrations
                     b.Property<int>("ResponsibleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubscriptionId")
+                    b.Property<int?>("SubscriptionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -306,14 +306,14 @@ namespace ServiceAccountingDA.Migrations
                             Id = 1,
                             Name = "Safia",
                             SerName = "Mirinina",
-                            Telephone = "447861212"
+                            Telephone = "44 786-12-12"
                         },
                         new
                         {
                             Id = 2,
                             Name = "Lera",
                             SerName = "Shablovskai",
-                            Telephone = "335141721"
+                            Telephone = "33 514-17-21"
                         });
                 });
 
@@ -611,7 +611,7 @@ namespace ServiceAccountingDA.Migrations
                             Name = "Valeriy",
                             SerName = "Petrenko",
                             ServiceId = 1,
-                            Telephone = "335671309",
+                            Telephone = "33 567-13-09",
                             TypeSexId = 1
                         },
                         new
@@ -620,7 +620,7 @@ namespace ServiceAccountingDA.Migrations
                             Name = "Vitaliy",
                             SerName = "Zazyla",
                             ServiceId = 2,
-                            Telephone = "334571331",
+                            Telephone = "33 457-13-31",
                             TypeSexId = 1
                         },
                         new
@@ -629,7 +629,7 @@ namespace ServiceAccountingDA.Migrations
                             Name = "Nastya",
                             SerName = "Nesterenko",
                             ServiceId = 3,
-                            Telephone = "331872093",
+                            Telephone = "33 187-20-93",
                             TypeSexId = 2
                         },
                         new
@@ -638,7 +638,7 @@ namespace ServiceAccountingDA.Migrations
                             Name = "Olga",
                             SerName = "Bogdan",
                             ServiceId = 4,
-                            Telephone = "447826796",
+                            Telephone = "44 782-67-96",
                             TypeSexId = 2
                         },
                         new
@@ -647,7 +647,7 @@ namespace ServiceAccountingDA.Migrations
                             Name = "Alexey",
                             SerName = "Kikta",
                             ServiceId = 5,
-                            Telephone = "201482090",
+                            Telephone = "29 148-20-90",
                             TypeSexId = 1
                         },
                         new
@@ -656,7 +656,7 @@ namespace ServiceAccountingDA.Migrations
                             Name = "Ivan",
                             SerName = "Mazyrin",
                             ServiceId = 6,
-                            Telephone = "295047029",
+                            Telephone = "29 504-70-29",
                             TypeSexId = 1
                         });
                 });
@@ -836,8 +836,7 @@ namespace ServiceAccountingDA.Migrations
                     b.HasOne("ServiceAccountingDA.Models.ClubCard", "ClubCard")
                         .WithMany("Deals")
                         .HasForeignKey("ClubCardId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ServiceAccountingDA.Models.Responsible", "Responsible")
                         .WithMany("Deals")
@@ -848,8 +847,7 @@ namespace ServiceAccountingDA.Migrations
                     b.HasOne("ServiceAccountingDA.Models.Subscription", "Subscription")
                         .WithMany("Deals")
                         .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Client");
 

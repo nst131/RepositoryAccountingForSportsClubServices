@@ -5,8 +5,8 @@ namespace ServiceAccountingUI.Models.TrainerUI.Mapper
 {
     public static class CreateTrainerMapperUI
     {
-        public static CreateTrainerDtoBL Map<Result>(AcceptCreateTrainerDtoUI trainer)
-            where Result : CreateTrainerDtoBL
+        public static AcceptCreateTrainerDtoBL Map<Result>(AcceptCreateTrainerDtoUI trainer)
+            where Result : AcceptCreateTrainerDtoBL
         {
             return new ()
             {
@@ -18,7 +18,7 @@ namespace ServiceAccountingUI.Models.TrainerUI.Mapper
             };
         }
 
-        public static ResponseTrainerDtoUI Map<Result>(TrainerDtoBL trainer)
+        public static ResponseTrainerDtoUI Map<Result>(ResponseTrainerDtoBL trainer)
             where Result : ResponseTrainerDtoUI
         {
             return new ()

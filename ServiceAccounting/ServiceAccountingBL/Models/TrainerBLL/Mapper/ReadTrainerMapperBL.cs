@@ -7,8 +7,8 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Mapper
 {
     public static class ReadTrainerMapperBL
     {
-        public static GetTrainerDtoBL Map<Result>(Trainer trainer)
-            where Result : GetTrainerDtoBL
+        public static ResponseGetTrainerDtoBL Map<Result>(Trainer trainer)
+            where Result : ResponseGetTrainerDtoBL
         {
             return new ()
             {
@@ -22,10 +22,10 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Mapper
             };
         }
 
-        public static ICollection<GetTrainerDtoBL> Map<Result>(ICollection<Trainer> allTrainers)
-             where Result : ICollection<GetTrainerDtoBL>
+        public static ICollection<ResponseGetTrainerDtoBL> Map<Result>(ICollection<Trainer> allTrainers)
+             where Result : ICollection<ResponseGetTrainerDtoBL>
         {
-            return allTrainers.Select(trainer => Map<GetTrainerDtoBL>(trainer)).ToList();
+            return allTrainers.Select(trainer => Map<ResponseGetTrainerDtoBL>(trainer)).ToList();
         }
     }
 }

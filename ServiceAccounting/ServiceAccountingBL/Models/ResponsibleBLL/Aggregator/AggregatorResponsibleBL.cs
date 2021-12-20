@@ -11,14 +11,14 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Aggregator
     {
         private readonly Lazy<IResponsibleCrudBL> responsibleCrudBL;
         private readonly Lazy<IResponsibleFetchersBL> responsibleFetchersBL;
-        private readonly Lazy<ICreater<CreateResponsibleDtoBL, ResponsibleDtoBL>> createResponsible;
-        private readonly Lazy<IUpdater<UpdateResponsibleDtoBL, ResponsibleDtoBL>> updateResponsible;
+        private readonly Lazy<ICreater<AcceptCreateResponsibleDtoBL, ResponseResponsibleDtoBL>> createResponsible;
+        private readonly Lazy<IUpdater<AcceptUpdateResponsibleDtoBL, ResponseResponsibleDtoBL>> updateResponsible;
         private readonly Lazy<IRemover<Responsible>> removeResponsible;
 
         public AggregatorResponsibleBL(Lazy<IResponsibleCrudBL> responsibleCrudBL,
             Lazy<IResponsibleFetchersBL> responsibleFetchersBL,
-            Lazy<ICreater<CreateResponsibleDtoBL, ResponsibleDtoBL>> createResponsible,
-            Lazy<IUpdater<UpdateResponsibleDtoBL, ResponsibleDtoBL>> updateResponsible,
+            Lazy<ICreater<AcceptCreateResponsibleDtoBL, ResponseResponsibleDtoBL>> createResponsible,
+            Lazy<IUpdater<AcceptUpdateResponsibleDtoBL, ResponseResponsibleDtoBL>> updateResponsible,
             Lazy<IRemover<Responsible>> removeResponsible)
         {
             this.responsibleCrudBL = responsibleCrudBL;
@@ -30,8 +30,8 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Aggregator
 
         public IResponsibleCrudBL ResponsibleCrudBL => responsibleCrudBL.Value;
         public IResponsibleFetchersBL ResponsibleFetchersBL => responsibleFetchersBL.Value;
-        public ICreater<CreateResponsibleDtoBL, ResponsibleDtoBL> CreateResponsible => createResponsible.Value;
-        public IUpdater<UpdateResponsibleDtoBL, ResponsibleDtoBL> UpdateResponsible => updateResponsible.Value;
+        public ICreater<AcceptCreateResponsibleDtoBL, ResponseResponsibleDtoBL> CreateResponsible => createResponsible.Value;
+        public IUpdater<AcceptUpdateResponsibleDtoBL, ResponseResponsibleDtoBL> UpdateResponsible => updateResponsible.Value;
         public IRemover<Responsible> RemoveResponsible => removeResponsible.Value;
     }
 }

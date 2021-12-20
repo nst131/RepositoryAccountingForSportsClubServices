@@ -14,8 +14,8 @@ namespace ServiceAccountingBL.Models.ClientBLL.Crud
     public class ClientCrudBL : IClientCrudBL
     {
         private readonly IServiceAccountingContext context;
-        private readonly ICreater<CreateClientDtoBL, ClientDtoBL> createClient;
-        private readonly IUpdater<UpdateClientDtoBL, ClientDtoBL> updateClient;
+        private readonly ICreater<AcceptCreateClientDtoBL, ResponseClientDtoBL> createClient;
+        private readonly IUpdater<AcceptUpdateClientDtoBL, ResponseClientDtoBL> updateClient;
         private readonly IRemover<Client> removeClient;
 
         public ClientCrudBL(IServiceAccountingContext context, IAggregatorClientBL aggregator)
@@ -26,12 +26,12 @@ namespace ServiceAccountingBL.Models.ClientBLL.Crud
             this.removeClient = aggregator.RemoveClient;
         }
 
-        public async Task<ClientDtoBL> CreateClient(CreateClientDtoBL createClientDtoBL)
+        public async Task<ResponseClientDtoBL> CreateClient(AcceptCreateClientDtoBL createClientDtoBL)
         {
             return await createClient.Create(createClientDtoBL);
         }
 
-        public async Task<ClientDtoBL> UpdateClient(UpdateClientDtoBL updateClientDtoBL)
+        public async Task<ResponseClientDtoBL> UpdateClient(AcceptUpdateClientDtoBL updateClientDtoBL)
         {
             return await updateClient.Update(updateClientDtoBL);
         }
@@ -41,7 +41,7 @@ namespace ServiceAccountingBL.Models.ClientBLL.Crud
             await removeClient.Remove(id);
         }
 
-        public async Task<GetClientDtoBL> GetClient(int id)
+        public async Task<ResponseGetClientDtoBL> GetClient(int id)
         {
             if (id < 0)
                 throw new ElementOutOfRangeException($"Id {nameof(Client)} is less 0");
@@ -53,7 +53,7 @@ namespace ServiceAccountingBL.Models.ClientBLL.Crud
             if(client is null)
                 throw new ElementByIdNotFoundException($"{nameof(Client)} by Id not Found");
 
-            return ReadClientMapperBL.Map<GetClientDtoBL>(client);
+            return ReadClientMapperBL.Map<ResponseGetClientDtoBL>(client);
         }
     }
 }

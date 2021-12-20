@@ -17,16 +17,16 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Fetchers
             this.context = context;
         }
 
-        public async Task<ICollection<GetClubCardDtoBL>> GetClubCardAll()
+        public async Task<ICollection<ResponseGetClubCardDtoBL>> GetClubCardAll()
         {
             if (!await context.Set<ClubCard>().AnyAsync()) 
-                return new List<GetClubCardDtoBL>();
+                return new List<ResponseGetClubCardDtoBL>();
 
             var allClubCards = await context.Set<ClubCard>()
                 .Include(x => x.Service)
                 .ToListAsync();
 
-            return ReadClubCardMapperBL.Map<ICollection<GetClubCardDtoBL>>(allClubCards);
+            return ReadClubCardMapperBL.Map<ICollection<ResponseGetClubCardDtoBL>>(allClubCards);
 
         }
     }

@@ -6,6 +6,6 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Fetchers
 {
     public interface IClubCardFetchersBL
     {
-        Task<ICollection<GetClubCardDtoBL>> GetClubCardAll();
+        Task<ICollection<ResponseGetClubCardDtoBL>> GetClubCardAll();
     }
 }

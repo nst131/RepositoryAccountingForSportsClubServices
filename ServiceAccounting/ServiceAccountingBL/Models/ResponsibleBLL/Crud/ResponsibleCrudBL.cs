@@ -13,8 +13,8 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Crud
     public class ResponsibleCrudBL : IResponsibleCrudBL
     {
         private readonly IServiceAccountingContext context;
-        private readonly ICreater<CreateResponsibleDtoBL, ResponsibleDtoBL> createResponsible;
-        private readonly IUpdater<UpdateResponsibleDtoBL, ResponsibleDtoBL> updateResponsible;
+        private readonly ICreater<AcceptCreateResponsibleDtoBL, ResponseResponsibleDtoBL> createResponsible;
+        private readonly IUpdater<AcceptUpdateResponsibleDtoBL, ResponseResponsibleDtoBL> updateResponsible;
         private readonly IRemover<Responsible> removeResponsible;
 
         public ResponsibleCrudBL(IServiceAccountingContext context, IAggregatorResponsibleBL aggregator)
@@ -25,12 +25,12 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Crud
             this.removeResponsible = aggregator.RemoveResponsible;
         }
 
-        public async Task<ResponsibleDtoBL> CreateResponsible(CreateResponsibleDtoBL createResponsibleDtoBL)
+        public async Task<ResponseResponsibleDtoBL> CreateResponsible(AcceptCreateResponsibleDtoBL createResponsibleDtoBL)
         {
             return await createResponsible.Create(createResponsibleDtoBL);
         }
 
-        public async Task<ResponsibleDtoBL> UpdateResponsible(UpdateResponsibleDtoBL updateResponsibleDtoBL)
+        public async Task<ResponseResponsibleDtoBL> UpdateResponsible(AcceptUpdateResponsibleDtoBL updateResponsibleDtoBL)
         {
             return await updateResponsible.Update(updateResponsibleDtoBL);
         }
@@ -40,7 +40,7 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Crud
             await removeResponsible.Remove(id);
         }
 
-        public async Task<GetResponsibleDtoBL> GetResponsible(int id)
+        public async Task<ResponseGetResponsibleDtoBL> GetResponsible(int id)
         {
             if (id < 0)
                 throw new ElementOutOfRangeException($"Id {nameof(Responsible)} is less 0");
@@ -50,7 +50,7 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Crud
             if(responsible is null)
                 throw new ElementByIdNotFoundException($"{nameof(Responsible)} by Id not Found");
 
-            return ReadResponsibleMapperBL.Map<GetResponsibleDtoBL>(responsible);
+            return ReadResponsibleMapperBL.Map<ResponseGetResponsibleDtoBL>(responsible);
         }
     }
 }

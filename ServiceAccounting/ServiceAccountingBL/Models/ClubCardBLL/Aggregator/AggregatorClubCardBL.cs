@@ -11,14 +11,14 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Aggregator
     {
         private readonly Lazy<IClubCardCrudBL> clubCardCrudBL;
         private readonly Lazy<IClubCardFetchersBL> clubCardFetchersBL;
-        private readonly Lazy<ICreater<CreateClubCardDtoBL, ClubCardDtoBL>> createClubCard;
-        private readonly Lazy<IUpdater<UpdateClubCardDtoBL, ClubCardDtoBL>> updateClubCard;
+        private readonly Lazy<ICreater<AcceptCreateClubCardDtoBL, ResponseClubCardDtoBL>> createClubCard;
+        private readonly Lazy<IUpdater<AcceptUpdateClubCardDtoBL, ResponseClubCardDtoBL>> updateClubCard;
         private readonly Lazy<IRemover<ClubCard>> removeClubCard;
 
         public AggregatorClubCardBL(Lazy<IClubCardCrudBL> ClubCardCrudBL,
             Lazy<IClubCardFetchersBL> ClubCardFetchersBL,
-            Lazy<ICreater<CreateClubCardDtoBL, ClubCardDtoBL>> createClubCard,
-            Lazy<IUpdater<UpdateClubCardDtoBL, ClubCardDtoBL>> updateClubCard,
+            Lazy<ICreater<AcceptCreateClubCardDtoBL, ResponseClubCardDtoBL>> createClubCard,
+            Lazy<IUpdater<AcceptUpdateClubCardDtoBL, ResponseClubCardDtoBL>> updateClubCard,
             Lazy<IRemover<ClubCard>> removeClubCard)
         {
             this.clubCardCrudBL = ClubCardCrudBL;
@@ -30,8 +30,8 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Aggregator
 
         public IClubCardCrudBL ClubCardCrudBL => clubCardCrudBL.Value;
         public IClubCardFetchersBL ClubCardFetchersBL => clubCardFetchersBL.Value;
-        public ICreater<CreateClubCardDtoBL, ClubCardDtoBL> CreateClubCard => createClubCard.Value;
-        public IUpdater<UpdateClubCardDtoBL, ClubCardDtoBL> UpdateClubCard => updateClubCard.Value;
+        public ICreater<AcceptCreateClubCardDtoBL, ResponseClubCardDtoBL> CreateClubCard => createClubCard.Value;
+        public IUpdater<AcceptUpdateClubCardDtoBL, ResponseClubCardDtoBL> UpdateClubCard => updateClubCard.Value;
         public IRemover<ClubCard> RemoveClubCard => removeClubCard.Value;
     }
 }

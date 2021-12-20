@@ -7,7 +7,7 @@ namespace ServiceAccountingUI.Models.ResponsibleUI.Mapper
 {
     public static class ReadResponsibleMapperUI
     {
-        public static ResponseGetResponsibleDtoUI Map<Result>(GetResponsibleDtoBL responsible)
+        public static ResponseGetResponsibleDtoUI Map<Result>(ResponseGetResponsibleDtoBL responsible)
                 where Result : ResponseGetResponsibleDtoUI
         {
             return new ()
@@ -19,7 +19,7 @@ namespace ServiceAccountingUI.Models.ResponsibleUI.Mapper
             };
         }
 
-        public static ICollection<ResponseGetResponsibleDtoUI> Map<Result>(ICollection<GetResponsibleDtoBL> responsibles)
+        public static ICollection<ResponseGetResponsibleDtoUI> Map<Result>(ICollection<ResponseGetResponsibleDtoBL> responsibles)
                 where Result : ICollection<ResponseGetResponsibleDtoUI>
         {
             return responsibles.Select(x => Map<ResponseGetResponsibleDtoUI>(x)).ToList();

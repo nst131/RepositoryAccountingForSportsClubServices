@@ -5,8 +5,8 @@ namespace ServiceAccountingUI.Models.ClubCardUI.Mapper
 {
     public static class UpdateClubCardMapperUI
     {
-        public static UpdateClubCardDtoBL Map<Result>(AcceptUpdateClubCardDtoUI clubCard)
-            where Result : UpdateClubCardDtoBL
+        public static AcceptUpdateClubCardDtoBL Map<Result>(AcceptUpdateClubCardDtoUI clubCard)
+            where Result : AcceptUpdateClubCardDtoBL
         {
             return new ()
             {
@@ -18,7 +18,7 @@ namespace ServiceAccountingUI.Models.ClubCardUI.Mapper
             };
         }
 
-        public static ResponseClubCardDtoUI Map<Result>(ClubCardDtoBL clubCard)
+        public static ResponseClubCardDtoUI Map<Result>(ResponseClubCardDtoBL clubCard)
             where Result : ResponseClubCardDtoUI
         {
             return new ()

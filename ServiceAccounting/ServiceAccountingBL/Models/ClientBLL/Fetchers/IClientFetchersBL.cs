@@ -6,6 +6,6 @@ namespace ServiceAccountingBL.Models.ClientBLL.Fetchers
 {
     public interface IClientFetchersBL
     {
-        Task<ICollection<GetClientDtoBL>> GetClientAll();
+        Task<ICollection<ResponseGetClientDtoBL>> GetClientAll();
     }
 }

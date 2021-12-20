@@ -4,8 +4,8 @@ namespace ServiceAccountingBL.Exceptions
 {
     public class ElementByIdNotFoundException : Exception
     {
-        public const string defaultMessage = "Element not found by Id";
-        public ElementByIdNotFoundException() : base(defaultMessage) { }
+        public const string DefaultMessage = "Element not found by Id";
+        public ElementByIdNotFoundException() : base(DefaultMessage) { }
         public ElementByIdNotFoundException(string message) : base(message) { }
     }
 }

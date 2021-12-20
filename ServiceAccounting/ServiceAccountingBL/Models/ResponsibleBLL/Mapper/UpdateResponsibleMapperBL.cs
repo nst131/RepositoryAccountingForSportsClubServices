@@ -4,9 +4,9 @@ using ServiceAccountingDA.Models;
 
 namespace ServiceAccountingBL.Models.ResponsibleBLL.Mapper
 {
-    public class UpdateResponsibleMapperBL : IMapper<UpdateResponsibleDtoBL, Responsible>
+    public class UpdateResponsibleMapperBL : IMapper<AcceptUpdateResponsibleDtoBL, Responsible>
     {
-        public Responsible Map(UpdateResponsibleDtoBL updateResponsibleDtoBL)
+        public Responsible Map(AcceptUpdateResponsibleDtoBL updateResponsibleDtoBL)
         {
             return new ()
             {

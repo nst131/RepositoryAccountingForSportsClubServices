@@ -1,8 +1,8 @@
-﻿using ServiceAccountingBL.AdditionalValidation;
+﻿using ServiceAccountingBL.AttributeValidation;
 using ServiceAccountingDA.Models;
+using ServiceAccountingUI.BaseModels;
 using System;
 using System.ComponentModel.DataAnnotations;
-using ServiceAccountingUI.BaseModels;
 
 namespace ServiceAccountingUI.CustomAttributes
 {
@@ -22,8 +22,8 @@ namespace ServiceAccountingUI.CustomAttributes
 
             switch (role)
             {
-                case Role.Client: 
-                    if(service != null && service.IsUnique<Client>(value as string).Result)
+                case Role.Client:
+                    if (service != null && service.IsUnique<Client>(value as string).Result)
                         return new ValidationResult($"{nameof(Client)} Telephone has existed yet");
                     break;
                 case Role.Trainer:

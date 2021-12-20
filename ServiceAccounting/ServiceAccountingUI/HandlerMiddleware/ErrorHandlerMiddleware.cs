@@ -1,88 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using ServiceAccountingBL.Exceptions;
+using System;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
 
 namespace ServiceAccountingUI.HandlerMiddleware
 {
     public class ErrorHandlerMiddleware
     {
-        private readonly RequestDelegate _next;
-        private readonly IHostEnvironment _environment;
+        private readonly RequestDelegate next;
+        private readonly IHostEnvironment environment;
+        private readonly ILogger<ErrorHandlerMiddleware> logger;
 
-        public ErrorHandlerMiddleware(RequestDelegate next, IHostEnvironment environment)
+        public ErrorHandlerMiddleware(RequestDelegate next, IHostEnvironment environment, ILogger<ErrorHandlerMiddleware> logger)
         {
-            _next = next;
-            _environment = environment;
+            this.next = next;
+            this.environment = environment;
+            this.logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
         {
             try
             {
-                await _next(context);
+                await next(context);
             }
             catch (Exception error)
             {
-                var response = context.Response;
-                response.ContentType = "application/json";
+                logger.LogError($"Error Message {error.Message}, StackTrace {error.StackTrace}");
 
-                switch (error)
-                {
-                    case UserNotFoundException or
-                     RoleNotFoundException _:
-                        // not found error
-                        response.StatusCode = (int)HttpStatusCode.NotFound;
-
-                        var result = JsonSerializer.Serialize(new
-                        {
-                            message = error?.Message,
-                            details = _environment.IsDevelopment() ? error?.StackTrace : null,
-                            developerMessages = _environment.IsDevelopment() ? GetAllMessages(error) : null,
-                        });
-
-                        await response.WriteAsync(result);
-                        break;
-
-                    default:
-                        // unhandled error
-                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-                        var result2 = JsonSerializer.Serialize(new
-                        {
-                            message = error?.Message,
-                        });
-
-                        await response.WriteAsync(result2);
-
-                        break;
-                }
+                await ErrorHandler(context, error, environment);
             }
         }
 
-        private static IEnumerable<string> GetAllMessages(Exception exception)
+        private static async Task ErrorHandler(HttpContext context, Exception error, IHostEnvironment environment)
         {
-            var current = exception;
-            var messages = new List<string>();
+            var response = context.Response;
+            response.ContentType = "application/json";
 
-            do
+            response.StatusCode = error switch
             {
-                messages.Add(exception.Message);
-                current = current.InnerException;
-            } while (current?.InnerException != null);
+                ElementByIdNotFoundException => (int)HttpStatusCode.NotFound,
+                ElementOutOfRangeException
+                    or ElementNullReferenceException
+                    or ElementNotAssignException => (int)HttpStatusCode.BadRequest,
+                _ => (int)HttpStatusCode.InternalServerError
+            };
 
-            return messages;
+            var result = JsonSerializer.Serialize(new
+            {
+                message = error?.Message,
+                details = environment.IsDevelopment() ? error?.StackTrace : null,
+            });
+
+            await response.WriteAsync(result);
         }
-    }
-
-    public class RoleNotFoundException : Exception
-    {
-    }
-
-    public class UserNotFoundException : Exception
-    {
     }
 }

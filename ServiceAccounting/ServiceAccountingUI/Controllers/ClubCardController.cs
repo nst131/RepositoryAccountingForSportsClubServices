@@ -26,7 +26,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> GetAllClubCards()
+        public async Task<ActionResult<ICollection<ResponseGetClubCardDtoUI>>> GetAll()
         {
             var allClubCardsDtoBL = await clubCardFetchersBL.GetClubCardAll();
 
@@ -38,8 +38,8 @@ namespace ServiceAccountingUI.Controllers
         }
 
         [HttpPost]
-        [Route("{Id:int}")]
-        public async Task<IActionResult> GetClubCardById([FromRoute] AcceptGetClubCardDtoUI getClubCardDtoUI)
+        [Route("[action]/{Id:int}")]
+        public async Task<ActionResult<ResponseGetClubCardDtoUI>> Get([FromRoute] AcceptGetClubCardDtoUI getClubCardDtoUI)
         {
             if(getClubCardDtoUI is null)
                 throw new ElementNullReferenceException();
@@ -55,12 +55,12 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> CreateClubCard([FromBody] AcceptCreateClubCardDtoUI createClubCardDtoUI)
+        public async Task<ActionResult<ResponseClubCardDtoUI>> Create([FromBody] AcceptCreateClubCardDtoUI createClubCardDtoUI)
         {
             if (createClubCardDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var createClubCardBL = CreateClubCardMapperUI.Map<CreateClubCardDtoBL>(createClubCardDtoUI);
+            var createClubCardBL = CreateClubCardMapperUI.Map<AcceptCreateClubCardDtoBL>(createClubCardDtoUI);
             var clubCardDtoBL = await clubCardCrudBL.CreateClubCard(createClubCardBL);
             var clubCardDtoUI = CreateClubCardMapperUI.Map<ResponseClubCardDtoUI>(clubCardDtoBL);
 
@@ -69,12 +69,12 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
-        public async Task<IActionResult> UpdateClubCard([FromBody] AcceptUpdateClubCardDtoUI updateClubCardDtoUI)
+        public async Task<ActionResult<ResponseClubCardDtoUI>> Update([FromBody] AcceptUpdateClubCardDtoUI updateClubCardDtoUI)
         {
             if (updateClubCardDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var updateClubCardBL = UpdateClubCardMapperUI.Map<UpdateClubCardDtoBL>(updateClubCardDtoUI);
+            var updateClubCardBL = UpdateClubCardMapperUI.Map<AcceptUpdateClubCardDtoBL>(updateClubCardDtoUI);
             var clubCardDtoBL = await clubCardCrudBL.UpdateClubCard(updateClubCardBL);
             var clubCardDtoUI = UpdateClubCardMapperUI.Map<ResponseClubCardDtoUI>(clubCardDtoBL);
 
@@ -82,8 +82,8 @@ namespace ServiceAccountingUI.Controllers
         }
 
         [HttpDelete]
-        [Route("{Id:int}")]
-        public async Task<IActionResult> DeleteClubCard([FromRoute] AcceptDeleteClubCardDtoUI deleteClubCardDtoUI)
+        [Route("[action]/{Id:int}")]
+        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteClubCardDtoUI deleteClubCardDtoUI)
         {
             if(deleteClubCardDtoUI is null)
                 throw new ElementNullReferenceException();
