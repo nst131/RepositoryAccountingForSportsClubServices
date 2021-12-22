@@ -1,4 +1,5 @@
-﻿using ServiceAccountingBL.Models.ClientCardBL.Dto;
+﻿using System;
+using ServiceAccountingBL.Models.ClientCardBL.Dto;
 using ServiceAccountingUI.Models.ClientCardUI.Dto;
 
 namespace ServiceAccountingUI.Models.ClientCardUI.Mapper
@@ -11,7 +12,7 @@ namespace ServiceAccountingUI.Models.ClientCardUI.Mapper
             return new()
             {
                 Id = dto.Id,
-                DateActivation = dto.DateActivation,
+                DateActivation = dto.DateActivation ?? DateTime.Now.ToLocalTime(),
                 ClientId = dto.ClientId,
                 ClubCardId = dto.ClubCardId
             };

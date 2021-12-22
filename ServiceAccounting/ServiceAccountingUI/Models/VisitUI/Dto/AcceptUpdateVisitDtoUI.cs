@@ -10,8 +10,8 @@ namespace ServiceAccountingUI.Models.VisitUI.Dto
         [Range(1, int.MaxValue, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]
         public int Id { get; set; }
 
-        [JsonProperty(PropertyName = "arrival", Order = 1, Required = Required.Always)]
-        public DateTime Arrival { get; set; }
+        [JsonProperty(PropertyName = "arrival", Order = 1, Required = Required.AllowNull)]
+        public DateTime? Arrival { get; set; }
 
         [JsonProperty(PropertyName = "clientId", Order = 2, Required = Required.Always)]
         [Range(1, int.MaxValue, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]

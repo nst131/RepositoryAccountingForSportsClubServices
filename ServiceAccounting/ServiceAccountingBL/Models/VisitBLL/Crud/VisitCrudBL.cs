@@ -24,12 +24,12 @@ namespace ServiceAccountingBL.Models.VisitBLL.Crud
             this.updateVisit = aggregator.UpdateVisit;
             this.removeVisit = aggregator.RemoveVisit;
         }
-
+        // In ResponseVisitMapperBL writed Include
         public async Task<ResponseVisitDtoBL> CreateVisit(AcceptCreateVisitDtoBL createVisitDtoBL)
         {
             return await createVisit.Create(createVisitDtoBL);
         }
-
+        // In ResponseVisitMapperBL writed Include
         public async Task<ResponseVisitDtoBL> UpdateVisit(AcceptUpdateVisitDtoBL updateVisitDtoBL)
         {
             return await updateVisit.Update(updateVisitDtoBL);

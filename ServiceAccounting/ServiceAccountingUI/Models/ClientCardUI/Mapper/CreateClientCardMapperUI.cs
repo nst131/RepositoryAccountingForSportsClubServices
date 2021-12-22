@@ -12,7 +12,7 @@ namespace ServiceAccountingUI.Models.ClientCardUI.Mapper
             //In AcceptCreateClientCardDtoUI -> DateActivation = DateTime.Now
             return new()
             {
-                DateActivation = dto.DateActivation,
+                DateActivation = dto.DateActivation ?? DateTime.Now.ToLocalTime(),
                 ClientId = dto.ClientId,
                 ClubCardId = dto.ClubCardId
             };

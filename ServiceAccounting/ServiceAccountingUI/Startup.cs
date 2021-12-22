@@ -19,8 +19,6 @@ namespace ServiceAccountingUI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddNewtonsoftJson();
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ServiceAccountingUI", Version = "v1" });
@@ -28,6 +26,9 @@ namespace ServiceAccountingUI
 
             services.RegistrationBL();
             services.RegistrationDA();
+
+            services.AddMvc().AddNewtonsoftJson();
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         public void Configure(IApplicationBuilder app)

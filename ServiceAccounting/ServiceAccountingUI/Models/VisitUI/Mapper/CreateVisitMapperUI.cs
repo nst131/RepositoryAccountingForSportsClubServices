@@ -1,4 +1,5 @@
-﻿using ServiceAccountingBL.Models.VisitBLL.Dto;
+﻿using System;
+using ServiceAccountingBL.Models.VisitBLL.Dto;
 using ServiceAccountingUI.Models.VisitUI.Dto;
 
 namespace ServiceAccountingUI.Models.VisitUI.Mapper
@@ -10,7 +11,7 @@ namespace ServiceAccountingUI.Models.VisitUI.Mapper
         {
             return new()
             {
-                Arrival = dto.Arrival,
+                Arrival = dto.Arrival ?? DateTime.Now.ToLocalTime(),
                 ClientId = dto.ClientId,
                 ServiceId = dto.ServiceId
             };

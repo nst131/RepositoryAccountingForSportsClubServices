@@ -22,6 +22,12 @@ using ServiceAccountingBL.Models.ClubCardBLL.Dto;
 using ServiceAccountingBL.Models.ClubCardBLL.Fetchers;
 using ServiceAccountingBL.Models.ClubCardBLL.Mapper;
 using ServiceAccountingBL.Models.ClubCardBLL.Validation;
+using ServiceAccountingBL.Models.DealBLL.Aggregator;
+using ServiceAccountingBL.Models.DealBLL.Crud;
+using ServiceAccountingBL.Models.DealBLL.Dto;
+using ServiceAccountingBL.Models.DealBLL.Fetchers;
+using ServiceAccountingBL.Models.DealBLL.Mapper;
+using ServiceAccountingBL.Models.DealBLL.Validation;
 using ServiceAccountingBL.Models.PlaceBLL.Aggregator;
 using ServiceAccountingBL.Models.PlaceBLL.Crud;
 using ServiceAccountingBL.Models.PlaceBLL.Dto;
@@ -34,6 +40,12 @@ using ServiceAccountingBL.Models.ResponsibleBLL.Dto;
 using ServiceAccountingBL.Models.ResponsibleBLL.Fetchers;
 using ServiceAccountingBL.Models.ResponsibleBLL.Mapper;
 using ServiceAccountingBL.Models.ResponsibleBLL.Validation;
+using ServiceAccountingBL.Models.ServiceBLL.Aggregator;
+using ServiceAccountingBL.Models.ServiceBLL.Crud;
+using ServiceAccountingBL.Models.ServiceBLL.Dto;
+using ServiceAccountingBL.Models.ServiceBLL.Fetchers;
+using ServiceAccountingBL.Models.ServiceBLL.Mapper;
+using ServiceAccountingBL.Models.ServiceBLL.Validation;
 using ServiceAccountingBL.Models.TrainerBLL.Aggregator;
 using ServiceAccountingBL.Models.TrainerBLL.Crud;
 using ServiceAccountingBL.Models.TrainerBLL.Dto;
@@ -183,6 +195,44 @@ namespace ServiceAccountingBL
                 .AddScoped(serviceProvider => new Lazy<IVisitFetchersBL>(serviceProvider.GetRequiredService<IVisitFetchersBL>));
             services.AddScoped<IVisitCrudBL, VisitCrudBL>()
                 .AddScoped(serviceProvider => new Lazy<IVisitCrudBL>(serviceProvider.GetRequiredService<IVisitCrudBL>));
+
+            //Service
+            services.AddScoped<IAggregatorServiceBL, AggregatorServiceBL>();
+            services.AddScoped<IValidator<AcceptCreateServiceDtoBL>, CreateServiceValidatorBL>();
+            services.AddScoped<IValidator<AcceptUpdateServiceDtoBL>, UpdateServiceValidatorBL>();
+            services.AddScoped<IMapper<AcceptCreateServiceDtoBL, Service>, CreateServiceMapperBL>();
+            services.AddScoped<IMapper<Service, ResponseServiceDtoBL>, ResponseServiceMapperBL>();
+            services.AddScoped<IMapper<AcceptUpdateServiceDtoBL, Service>, UpdateServiceMapperBL>();
+
+            services.AddScoped<ICreater<AcceptCreateServiceDtoBL, ResponseServiceDtoBL>, Creater<Service, AcceptCreateServiceDtoBL, ResponseServiceDtoBL>>()
+                .AddScoped(serviceProvider => new Lazy<ICreater<AcceptCreateServiceDtoBL, ResponseServiceDtoBL>>(serviceProvider.GetRequiredService<ICreater<AcceptCreateServiceDtoBL, ResponseServiceDtoBL>>));
+            services.AddScoped<IUpdater<AcceptUpdateServiceDtoBL, ResponseServiceDtoBL>, Updater<Service, AcceptUpdateServiceDtoBL, ResponseServiceDtoBL>>()
+                .AddScoped(serviceProvider => new Lazy<IUpdater<AcceptUpdateServiceDtoBL, ResponseServiceDtoBL>>(serviceProvider.GetRequiredService<IUpdater<AcceptUpdateServiceDtoBL, ResponseServiceDtoBL>>));
+            services.AddScoped<IRemover<Service>, Remover<Service>>()
+                .AddScoped(serviceProvider => new Lazy<IRemover<Service>>(serviceProvider.GetRequiredService<IRemover<Service>>));
+            services.AddScoped<IServiceFetchersBL, ServiceFetchersBL>()
+                .AddScoped(serviceProvider => new Lazy<IServiceFetchersBL>(serviceProvider.GetRequiredService<IServiceFetchersBL>));
+            services.AddScoped<IServiceCrudBL, ServiceCrudBL>()
+                .AddScoped(serviceProvider => new Lazy<IServiceCrudBL>(serviceProvider.GetRequiredService<IServiceCrudBL>));
+
+            //Deal
+            services.AddScoped<IAggregatorDealBL, AggregatorDealBL>();
+            services.AddScoped<IValidator<AcceptCreateDealDtoBL>, CreateDealValidatorBL>();
+            services.AddScoped<IValidator<AcceptUpdateDealDtoBL>, UpdateDealValidatorBL>();
+            services.AddScoped<IMapper<AcceptCreateDealDtoBL, Deal>, CreateDealMapperBL>();
+            services.AddScoped<IMapper<Deal, ResponseDealDtoBL>, ResponseDealMapperBL>();
+            services.AddScoped<IMapper<AcceptUpdateDealDtoBL, Deal>, UpdateDealMapperBL>();
+
+            services.AddScoped<ICreater<AcceptCreateDealDtoBL, ResponseDealDtoBL>, Creater<Deal, AcceptCreateDealDtoBL, ResponseDealDtoBL>>()
+                .AddScoped(serviceProvider => new Lazy<ICreater<AcceptCreateDealDtoBL, ResponseDealDtoBL>>(serviceProvider.GetRequiredService<ICreater<AcceptCreateDealDtoBL, ResponseDealDtoBL>>));
+            services.AddScoped<IUpdater<AcceptUpdateDealDtoBL, ResponseDealDtoBL>, Updater<Deal, AcceptUpdateDealDtoBL, ResponseDealDtoBL>>()
+                .AddScoped(serviceProvider => new Lazy<IUpdater<AcceptUpdateDealDtoBL, ResponseDealDtoBL>>(serviceProvider.GetRequiredService<IUpdater<AcceptUpdateDealDtoBL, ResponseDealDtoBL>>));
+            services.AddScoped<IRemover<Deal>, Remover<Deal>>()
+                .AddScoped(serviceProvider => new Lazy<IRemover<Deal>>(serviceProvider.GetRequiredService<IRemover<Deal>>));
+            services.AddScoped<IDealFetchersBL, DealFetchersBL>()
+                .AddScoped(serviceProvider => new Lazy<IDealFetchersBL>(serviceProvider.GetRequiredService<IDealFetchersBL>));
+            services.AddScoped<IDealCrudBL, DealCrudBL>()
+                .AddScoped(serviceProvider => new Lazy<IDealCrudBL>(serviceProvider.GetRequiredService<IDealCrudBL>));
         }
     }
 }

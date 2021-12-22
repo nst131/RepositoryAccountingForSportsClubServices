@@ -10,8 +10,8 @@ namespace ServiceAccountingUI.Models.ClientCardUI.Dto
         [Range(1, int.MaxValue, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]
         public int Id { get; set; }
 
-        [JsonProperty(PropertyName = "dateActivation", Order = 1, Required = Required.Always)]
-        public DateTime DateActivation { get; set; }
+        [JsonProperty(PropertyName = "dateActivation", Order = 1, Required = Required.AllowNull)]
+        public DateTime? DateActivation { get; set; }
 
 
         [JsonProperty(PropertyName = "clubCardId", Order = 2, Required = Required.Always)]
