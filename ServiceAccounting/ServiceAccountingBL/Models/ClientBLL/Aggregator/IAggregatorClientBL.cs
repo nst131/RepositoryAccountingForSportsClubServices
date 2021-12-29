@@ -14,5 +14,6 @@ namespace ServiceAccountingBL.Models.ClientBLL.Aggregator
         ICreater<AcceptCreateClientDtoBL, ResponseClientDtoBL> CreateClient { get; }
         IUpdater<AcceptUpdateClientDtoBL, ResponseClientDtoBL> UpdateClient { get; }
         IRemover<Client> RemoveClient { get; }
+        IGetter<ResponseGetClientDtoBL> GetClient { get; }
     }
 }

@@ -7,8 +7,8 @@ namespace ServiceAccountingDA.Configuration
     internal class ClientConfiguration : IEntityTypeConfiguration<Client>
     {
         private const string tableName = "Client";
-        private const string tableClientsToSubscriptions = "ClientToSubscriptions";
-        private const string tableClientsToTrainings = "ClientsToTrainings";
+        //private const string tableClientsToSubscriptions = "ClientToSubscriptions";
+        //private const string tableClientsToTrainings = "ClientsToTrainings";
 
         public void Configure(EntityTypeBuilder<Client> builder)
         {
@@ -38,13 +38,13 @@ namespace ServiceAccountingDA.Configuration
                 .HasForeignKey(x => x.ClientId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(x => x.Subscriptions)
-                .WithMany(x => x.Clients)
-                .UsingEntity(x => x.ToTable(tableClientsToSubscriptions));
+            //builder.HasMany(x => x.Subscriptions)
+            //    .WithMany(x => x.Clients)
+            //    .UsingEntity(x => x.ToTable(tableClientsToSubscriptions));
 
-            builder.HasMany(x => x.Trainings)
-                .WithMany(x => x.Clients)
-                .UsingEntity(x => x.ToTable(tableClientsToTrainings));
+            //builder.HasMany(x => x.Trainings)
+            //    .WithMany(x => x.Clients)
+            //    .UsingEntity(x => x.ToTable(tableClientsToTrainings));
 
             builder.HasData(new Client[]
             {

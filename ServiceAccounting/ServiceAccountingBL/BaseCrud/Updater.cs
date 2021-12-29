@@ -1,23 +1,24 @@
 ﻿using ServiceAccountingBL.Interfaces;
 using ServiceAccountingDA.Context;
 using System.Threading.Tasks;
+using ServiceAccountingDA.Interfaces;
 
 namespace ServiceAccountingBL.BaseCrud
 {
     public class Updater<Entity, UpdateDto, DtoResponse> : IUpdater<UpdateDto, DtoResponse>
-        where Entity : class
+        where Entity : class, IEntity
         where UpdateDto : class
         where DtoResponse : class
     {
         private readonly IServiceAccountingContext context;
         private readonly IValidator<UpdateDto> validator;
         private readonly IMapper<UpdateDto, Entity> mapperUpdate;
-        private readonly IMapper<Entity, DtoResponse> mapperResponse;
+        private readonly IMapperAsync<Entity, DtoResponse> mapperResponse;
 
         public Updater(IServiceAccountingContext context,
             IValidator<UpdateDto> validator,
-            IMapper<Entity, DtoResponse> mapperResponse,
-            IMapper<UpdateDto, Entity> mapperUpdate)
+            IMapper<UpdateDto, Entity> mapperUpdate,
+            IMapperAsync<Entity, DtoResponse> mapperResponse)
         {
             this.context = context;
             this.validator = validator;
@@ -35,7 +36,7 @@ namespace ServiceAccountingBL.BaseCrud
 
             await context.SaveChangesAsync();
 
-            return mapperResponse.Map(entry.Entity);
+            return await mapperResponse.Map(entry.Entity);
         }
     }
 }

@@ -77,7 +77,7 @@ namespace ServiceAccountingUI.Controllers
 
             var updateDealBL = UpdateDealMapperUI.Map<AcceptUpdateDealDtoBL>(updateDealDtoUI);
             var dealDtoBL = await dealCrudBL.UpdateDeal(updateDealBL);
-            var dealDtoUI = UpdateDealMapperUI.Map<ResponseGetDealDtoUI>(dealDtoBL);
+            var dealDtoUI = UpdateDealMapperUI.Map<ResponseDealDtoUI>(dealDtoBL);
 
             return new JsonResult(dealDtoUI);
         }

@@ -1,8 +1,9 @@
 ﻿using System;
+using ServiceAccountingDA.Interfaces;
 
 namespace ServiceAccountingDA.Models
 {
-    public class Visit
+    public class Visit : IEntity
     {
         public int Id { get; set; }
         public DateTime Arrival { get; set; }

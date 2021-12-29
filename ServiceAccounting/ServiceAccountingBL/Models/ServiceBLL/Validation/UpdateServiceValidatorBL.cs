@@ -26,15 +26,6 @@ namespace ServiceAccountingBL.Models.ServiceBLL.Validation
             if (await Task.Factory.StartNew(() => !context.Set<Service>().AsNoTracking().ToList().Exists(x => x.Id == dto.Id)))
                 throw new ElementByIdNotFoundException($"{nameof(Service)} by Id not Found");
 
-            if (string.IsNullOrWhiteSpace(dto.Name))
-                throw new ElementNotAssignException($"{nameof(AcceptCreateServiceDtoBL.Name)} is not assigned");
-
-            if (dto.Price < 0)
-                throw new ElementOutOfRangeException($"{nameof(AcceptCreateServiceDtoBL.Price)} can not less 0");
-
-            if (dto.DurationInMinutes < 0)
-                throw new ElementOutOfRangeException($"{nameof(AcceptCreateServiceDtoBL.DurationInMinutes)} can not less 0");
-
             if (await Task.Factory.StartNew(() => !context.Set<Place>().AsNoTracking().ToList().Exists(x => x.Id == dto.PlaceId)))
                 throw new ElementByIdNotFoundException($"{nameof(Place)} by Id not Found");
         }

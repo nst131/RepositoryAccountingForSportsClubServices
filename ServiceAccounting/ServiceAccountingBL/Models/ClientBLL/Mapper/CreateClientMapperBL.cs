@@ -6,9 +6,9 @@ namespace ServiceAccountingBL.Models.ClientBLL.Mapper
 {
     public class CreateClientMapperBL : IMapper<AcceptCreateClientDtoBL, Client>
     {
-        public Client Map(AcceptCreateClientDtoBL createClientDtoBL) 
+        public Client Map(AcceptCreateClientDtoBL createClientDtoBL)
         {
-            return new ()
+            return new()
             {
                 Name = createClientDtoBL.Name,
                 SerName = createClientDtoBL.SerName,

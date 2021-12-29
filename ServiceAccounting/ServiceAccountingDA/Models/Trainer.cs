@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ServiceAccountingDA.Models
 {
-    public class Trainer : ITelephone
+    public class Trainer : ITelephone, IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

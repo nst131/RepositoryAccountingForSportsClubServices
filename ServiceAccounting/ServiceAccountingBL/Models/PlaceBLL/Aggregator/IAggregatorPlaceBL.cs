@@ -13,5 +13,6 @@ namespace ServiceAccountingBL.Models.PlaceBLL.Aggregator
         ICreater<AcceptCreatePlaceDtoBL, ResponsePlaceDtoBL> CreatePlace { get; }
         IUpdater<AcceptUpdatePlaceDtoBL, ResponsePlaceDtoBL> UpdatePlace { get; }
         IRemover<Place> RemovePlace { get; }
+        IGetter<ResponseGetPlaceDtoBL> GetPlace { get; }
     }
 }

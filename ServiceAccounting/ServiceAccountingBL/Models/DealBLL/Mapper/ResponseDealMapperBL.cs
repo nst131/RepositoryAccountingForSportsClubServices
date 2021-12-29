@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.DealBLL.Dto;
@@ -7,7 +8,7 @@ using ServiceAccountingDA.Models;
 
 namespace ServiceAccountingBL.Models.DealBLL.Mapper
 {
-    public class ResponseDealMapperBL : IMapper<Deal, ResponseDealDtoBL>
+    public class ResponseDealMapperBL : IMapperAsync<Deal, ResponseDealDtoBL>
     {
         private readonly IServiceAccountingContext context;
 
@@ -16,19 +17,18 @@ namespace ServiceAccountingBL.Models.DealBLL.Mapper
             this.context = context;
         }
 
-        public ResponseDealDtoBL Map(Deal dto)
+        public async Task<ResponseDealDtoBL> Map(Deal dto)
         {
-            var dealWithClient = context.Set<Deal>().Include(x => x.Client).AsNoTracking()
+            var dealWithClient = await context.Set<Deal>()
+                .Include(x => x.Client)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == dto.Id);
-            
-            if(dealWithClient is null)
-                throw new ElementByIdNotFoundException($"{nameof(Deal)} by Id not Found");
 
-            return new()
+            return new ResponseDealDtoBL()
             {
                 Id = dto.Id,
                 PurchaseDate = dto.PurchaseDate,
-                ClientName = dealWithClient.Result.Client.Name //Load Client
+                ClientName = dealWithClient.Client.Name //Load Client
             };
         }
     }

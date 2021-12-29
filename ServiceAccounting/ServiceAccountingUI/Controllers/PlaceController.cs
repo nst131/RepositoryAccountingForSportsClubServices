@@ -77,7 +77,7 @@ namespace ServiceAccountingUI.Controllers
 
             var updatePlaceBL = UpdatePlaceMapperUI.Map<AcceptUpdatePlaceDtoBL>(updatePlaceDtoUI);
             var placeDtoBL = await placeCrudBL.UpdatePlace(updatePlaceBL);
-            var placeDtoUI = UpdatePlaceMapperUI.Map<ResponseGetPlaceDtoUI>(placeDtoBL);
+            var placeDtoUI = UpdatePlaceMapperUI.Map<ResponsePlaceDtoUI>(placeDtoBL);
 
             return new JsonResult(placeDtoUI);
         }

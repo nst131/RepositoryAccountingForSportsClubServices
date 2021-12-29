@@ -17,7 +17,7 @@ namespace ServiceAccountingUI.Models.PlaceUI.Mapper
         }
 
         public static ResponsePlaceDtoUI Map<Result>(ResponsePlaceDtoBL dto)
-            where Result : ResponseGetPlaceDtoUI
+            where Result : ResponsePlaceDtoUI
         {
             return new()
             {

@@ -19,7 +19,7 @@ namespace ServiceAccountingUI.Models.ClientUI.Mapper
         }
 
         public static ResponseClientDtoUI Map<Result>(ResponseClientDtoBL client)
-            where Result: ResponseGetClientDtoUI
+            where Result: ResponseClientDtoUI
         {
             return new()
             {

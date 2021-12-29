@@ -77,7 +77,7 @@ namespace ServiceAccountingUI.Controllers
 
             var updateVisitBL = UpdateVisitMapperUI.Map<AcceptUpdateVisitDtoBL>(updateVisitDtoUI);
             var visitDtoBL = await visitCrudBL.UpdateVisit(updateVisitBL);
-            var visitDtoUI = UpdateVisitMapperUI.Map<ResponseGetVisitDtoUI>(visitDtoBL);
+            var visitDtoUI = UpdateVisitMapperUI.Map<ResponseVisitDtoUI>(visitDtoBL);
 
             return new JsonResult(visitDtoUI);
         }

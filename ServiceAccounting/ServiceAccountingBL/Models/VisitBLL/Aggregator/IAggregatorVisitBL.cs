@@ -13,5 +13,6 @@ namespace ServiceAccountingBL.Models.VisitBLL.Aggregator
         ICreater<AcceptCreateVisitDtoBL, ResponseVisitDtoBL> CreateVisit { get; }
         IUpdater<AcceptUpdateVisitDtoBL, ResponseVisitDtoBL> UpdateVisit { get; }
         IRemover<Visit> RemoveVisit { get; }
+        IGetter<ResponseGetVisitDtoBL> GetVisit { get; }
     }
 }

@@ -19,36 +19,6 @@ namespace ServiceAccountingDA.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ClientSubscription", b =>
-                {
-                    b.Property<int>("ClientsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubscriptionsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ClientsId", "SubscriptionsId");
-
-                    b.HasIndex("SubscriptionsId");
-
-                    b.ToTable("ClientToSubscriptions");
-                });
-
-            modelBuilder.Entity("ClientTraining", b =>
-                {
-                    b.Property<int>("ClientsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TrainingsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ClientsId", "TrainingsId");
-
-                    b.HasIndex("TrainingsId");
-
-                    b.ToTable("ClientsToTrainings");
-                });
-
             modelBuilder.Entity("ServiceAccountingDA.Models.Client", b =>
                 {
                     b.Property<int>("Id")
@@ -569,6 +539,21 @@ namespace ServiceAccountingDA.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ServiceAccountingDA.Models.SubscriptionToClient", b =>
+                {
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubscriptionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClientId", "SubscriptionId");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("SubscriptionToClient");
+                });
+
             modelBuilder.Entity("ServiceAccountingDA.Models.Trainer", b =>
                 {
                     b.Property<int>("Id")
@@ -694,6 +679,21 @@ namespace ServiceAccountingDA.Migrations
                     b.ToTable("Training");
                 });
 
+            modelBuilder.Entity("ServiceAccountingDA.Models.TrainingToClient", b =>
+                {
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrainingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClientId", "TrainingId");
+
+                    b.HasIndex("TrainingId");
+
+                    b.ToTable("TrainingToClient");
+                });
+
             modelBuilder.Entity("ServiceAccountingDA.Models.TypeOfSex", b =>
                 {
                     b.Property<int>("Id")
@@ -744,36 +744,6 @@ namespace ServiceAccountingDA.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("Visit");
-                });
-
-            modelBuilder.Entity("ClientSubscription", b =>
-                {
-                    b.HasOne("ServiceAccountingDA.Models.Client", null)
-                        .WithMany()
-                        .HasForeignKey("ClientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ServiceAccountingDA.Models.Subscription", null)
-                        .WithMany()
-                        .HasForeignKey("SubscriptionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ClientTraining", b =>
-                {
-                    b.HasOne("ServiceAccountingDA.Models.Client", null)
-                        .WithMany()
-                        .HasForeignKey("ClientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ServiceAccountingDA.Models.Training", null)
-                        .WithMany()
-                        .HasForeignKey("TrainingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ServiceAccountingDA.Models.Client", b =>
@@ -880,6 +850,25 @@ namespace ServiceAccountingDA.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("ServiceAccountingDA.Models.SubscriptionToClient", b =>
+                {
+                    b.HasOne("ServiceAccountingDA.Models.Client", "Client")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceAccountingDA.Models.Subscription", "Subscription")
+                        .WithMany("Clients")
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Subscription");
+                });
+
             modelBuilder.Entity("ServiceAccountingDA.Models.Trainer", b =>
                 {
                     b.HasOne("ServiceAccountingDA.Models.Service", "Service")
@@ -918,6 +907,25 @@ namespace ServiceAccountingDA.Migrations
                     b.Navigation("Trainer");
                 });
 
+            modelBuilder.Entity("ServiceAccountingDA.Models.TrainingToClient", b =>
+                {
+                    b.HasOne("ServiceAccountingDA.Models.Client", "Client")
+                        .WithMany("Trainings")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceAccountingDA.Models.Training", "Training")
+                        .WithMany("Clients")
+                        .HasForeignKey("TrainingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Training");
+                });
+
             modelBuilder.Entity("ServiceAccountingDA.Models.Visit", b =>
                 {
                     b.HasOne("ServiceAccountingDA.Models.Client", "Client")
@@ -942,6 +950,10 @@ namespace ServiceAccountingDA.Migrations
                     b.Navigation("ClientCard");
 
                     b.Navigation("Deals");
+
+                    b.Navigation("Subscriptions");
+
+                    b.Navigation("Trainings");
 
                     b.Navigation("Visits");
                 });
@@ -980,12 +992,19 @@ namespace ServiceAccountingDA.Migrations
 
             modelBuilder.Entity("ServiceAccountingDA.Models.Subscription", b =>
                 {
+                    b.Navigation("Clients");
+
                     b.Navigation("Deals");
                 });
 
             modelBuilder.Entity("ServiceAccountingDA.Models.Trainer", b =>
                 {
                     b.Navigation("Trainings");
+                });
+
+            modelBuilder.Entity("ServiceAccountingDA.Models.Training", b =>
+                {
+                    b.Navigation("Clients");
                 });
 
             modelBuilder.Entity("ServiceAccountingDA.Models.TypeOfSex", b =>

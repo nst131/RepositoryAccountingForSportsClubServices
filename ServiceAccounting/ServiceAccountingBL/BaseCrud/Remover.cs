@@ -1,12 +1,14 @@
 ﻿using ServiceAccountingBL.Exceptions;
 using ServiceAccountingDA.Context;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using ServiceAccountingBL.Interfaces;
+using ServiceAccountingDA.Interfaces;
 
 namespace ServiceAccountingBL.BaseCrud
 {
     public class Remover<Entity> : IRemover<Entity>
-        where Entity: class
+        where Entity: class, IEntity
     {
         private readonly IServiceAccountingContext context;
 
@@ -20,7 +22,7 @@ namespace ServiceAccountingBL.BaseCrud
             if (id < 0)
                 throw new ElementOutOfRangeException($"Id {nameof(Entity)} is less 0");
 
-            var entity = await context.Set<Entity>().FindAsync(id);
+            var entity = await context.Set<Entity>().FirstOrDefaultAsync(x => x.Id == id);
 
             if (entity is null)
                 throw new ElementByIdNotFoundException($"{nameof(Entity)} by Id not Found");

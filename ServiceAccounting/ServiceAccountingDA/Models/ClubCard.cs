@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using ServiceAccountingDA.Interfaces;
 
 namespace ServiceAccountingDA.Models
 {
-    public class ClubCard
+    public class ClubCard : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.VisitBLL.Dto;
 using ServiceAccountingDA.Context;
@@ -6,7 +7,7 @@ using ServiceAccountingDA.Models;
 
 namespace ServiceAccountingBL.Models.VisitBLL.Mapper
 {
-    public class ResponseVisitMapperBL : IMapper<Visit, ResponseVisitDtoBL>
+    public class ResponseVisitMapperBL : IMapperAsync<Visit, ResponseVisitDtoBL>
     {
         private readonly IServiceAccountingContext context;
 
@@ -15,18 +16,18 @@ namespace ServiceAccountingBL.Models.VisitBLL.Mapper
             this.context = context;
         }
 
-        public ResponseVisitDtoBL Map(Visit dto)
+        public async Task<ResponseVisitDtoBL> Map(Visit dto)
         {
-            var visitWithClient = context.Set<Visit>()
+            var visitWithClient = await context.Set<Visit>()
                 .Include(x => x.Client)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == dto.Id);
 
-            return new ()
+            return new ResponseVisitDtoBL()
             {
                 Id = dto.Id,
                 Arrival = dto.Arrival,
-                ClientName = visitWithClient.Result.Client.Name
+                ClientName = visitWithClient.Client.Name
             };
         }
     }

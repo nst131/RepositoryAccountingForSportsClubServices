@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using ServiceAccountingUI.CustomAttributes;
 
 namespace ServiceAccountingUI.Models.ClientCardUI.Dto
 {
     public class AcceptCreateClientCardDtoUI
     {
-        // В Postman отправляет норм defaultValue, Swagger показывает не верно. 
         [JsonProperty(PropertyName = "dateActivation", Order = 0, Required = Required.AllowNull)]
         public DateTime? DateActivation { get; set; }
 
@@ -16,6 +16,7 @@ namespace ServiceAccountingUI.Models.ClientCardUI.Dto
 
         [JsonProperty(PropertyName = "clientId", Order = 2, Required = Required.Always)]
         [Range(1, int.MaxValue, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]
+        [CheckClientCardOnExist]
         public int ClientId { get; set; }
     }
 }

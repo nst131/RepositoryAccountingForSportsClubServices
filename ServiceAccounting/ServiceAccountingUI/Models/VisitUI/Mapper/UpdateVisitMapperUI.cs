@@ -19,7 +19,7 @@ namespace ServiceAccountingUI.Models.VisitUI.Mapper
         }
 
         public static ResponseVisitDtoUI Map<Result>(ResponseVisitDtoBL dto)
-            where Result : ResponseGetVisitDtoUI
+            where Result : ResponseVisitDtoUI
         {
             return new()
             {

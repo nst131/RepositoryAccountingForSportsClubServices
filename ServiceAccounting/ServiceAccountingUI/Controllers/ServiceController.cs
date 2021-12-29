@@ -77,7 +77,7 @@ namespace ServiceAccountingUI.Controllers
 
             var updateServiceBL = UpdateServiceMapperUI.Map<AcceptUpdateServiceDtoBL>(updateServiceDtoUI);
             var serviceDtoBL = await serviceCrudBL.UpdateService(updateServiceBL);
-            var serviceDtoUI = UpdateServiceMapperUI.Map<ResponseGetServiceDtoUI>(serviceDtoBL);
+            var serviceDtoUI = UpdateServiceMapperUI.Map<ResponseServiceDtoUI>(serviceDtoBL);
 
             return new JsonResult(serviceDtoUI);
         }

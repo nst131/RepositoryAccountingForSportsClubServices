@@ -1,18 +1,19 @@
-﻿using ServiceAccountingBL.Interfaces;
+﻿using System.Threading.Tasks;
+using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.ClubCardBLL.Dto;
 using ServiceAccountingDA.Models;
 
 namespace ServiceAccountingBL.Models.ClubCardBLL.Mapper
 {
-    public class ResponseClubCardMapperBL : IMapper<ClubCard, ResponseClubCardDtoBL>
+    public class ResponseClubCardMapperBL : IMapperAsync<ClubCard, ResponseClubCardDtoBL>
     {
-        public ResponseClubCardDtoBL Map(ClubCard clubCard)
+        public async Task<ResponseClubCardDtoBL> Map(ClubCard clubCard)
         {
-            return new ()
+            return await Task.FromResult(new ResponseClubCardDtoBL()
             {
                 Id = clubCard.Id,
                 Name = clubCard.Name
-            };
+            });
         }
     }
 }

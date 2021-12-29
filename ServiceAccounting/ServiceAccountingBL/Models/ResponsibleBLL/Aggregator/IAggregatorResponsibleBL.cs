@@ -13,5 +13,6 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Aggregator
         ICreater<AcceptCreateResponsibleDtoBL, ResponseResponsibleDtoBL> CreateResponsible { get; }
         IUpdater<AcceptUpdateResponsibleDtoBL, ResponseResponsibleDtoBL> UpdateResponsible { get; }
         IRemover<Responsible> RemoveResponsible { get; }
+        IGetter<ResponseGetResponsibleDtoBL> GetResponsible { get; }
     }
 }

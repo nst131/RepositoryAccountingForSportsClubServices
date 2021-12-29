@@ -76,7 +76,7 @@ namespace ServiceAccountingUI.Controllers
 
             var updateClientCardBL = UpdateClientCardMapperUI.Map<AcceptUpdateClientCardDtoBL>(updateClientCardDtoUI);
             var clientCardDtoBL = await clientCardCrudBL.UpdateClientCard(updateClientCardBL);
-            var clientCardDtoUI = UpdateClientCardMapperUI.Map<ResponseGetClientCardDtoUI>(clientCardDtoBL);
+            var clientCardDtoUI = UpdateClientCardMapperUI.Map<ResponseClientCardDtoUI>(clientCardDtoBL);
 
             return new JsonResult(clientCardDtoUI);
         }

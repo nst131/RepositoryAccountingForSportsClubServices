@@ -13,5 +13,6 @@ namespace ServiceAccountingBL.Models.ClientCardBL.Aggregator
         IRemover<ClientCard> RemoveClientCard { get; }
         IValidator<AcceptCreateClientCardDtoBL> CreateValidator { get; }
         IValidator<AcceptUpdateClientCardDtoBL> UpdateValidator { get; }
+        IGetter<ResponseGetClientCardDtoBL> GetClientCard { get; }
     }
 }

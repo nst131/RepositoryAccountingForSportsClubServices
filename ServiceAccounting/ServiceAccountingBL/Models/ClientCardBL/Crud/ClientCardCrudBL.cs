@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.ClientCardBL.Aggregator;
 using ServiceAccountingBL.Models.ClientCardBL.Dto;
@@ -16,6 +15,7 @@ namespace ServiceAccountingBL.Models.ClientCardBL.Crud
         private readonly IValidator<AcceptCreateClientCardDtoBL> createValidator;
         private readonly IValidator<AcceptUpdateClientCardDtoBL> updateValidator;
         private readonly IRemover<ClientCard> removeClientCard;
+        private readonly IGetter<ResponseGetClientCardDtoBL> getClientCard;
 
         public ClientCardCrudBL(IServiceAccountingContext context, IAggregatorClientCardBL aggregator)
         {
@@ -23,6 +23,7 @@ namespace ServiceAccountingBL.Models.ClientCardBL.Crud
             this.removeClientCard = aggregator.RemoveClientCard;
             this.createValidator = aggregator.CreateValidator;
             this.updateValidator = aggregator.UpdateValidator;
+            this.getClientCard = aggregator.GetClientCard;
         }
 
         public async Task<ResponseClientCardDtoBL> CreateClientCard(AcceptCreateClientCardDtoBL createClientCardDtoBL)
@@ -58,24 +59,9 @@ namespace ServiceAccountingBL.Models.ClientCardBL.Crud
         }
 
         public async Task DeleteClientCard(int id)
-        {
-            await removeClientCard.Remove(id);
-        }
+            => await removeClientCard.Remove(id);
 
         public async Task<ResponseGetClientCardDtoBL> GetClientCard(int id)
-        {
-            if (id < 0)
-                throw new ElementOutOfRangeException($"Id {nameof(ClientCard)} is less 0");
-
-            var clientCard = await context.Set<ClientCard>()
-                .Include(x => x.Service)
-                .Include(x => x.ClubCard)
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            if (clientCard is null)
-                throw new ElementByIdNotFoundException($"{nameof(ClientCard)} by Id not Found");
-
-            return ReadClientCardMapperBL.Map<ResponseGetClientCardDtoBL>(clientCard);
-        }
+            => await getClientCard.Get(id);
     }
 }

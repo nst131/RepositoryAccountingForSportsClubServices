@@ -27,19 +27,8 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Validation
             if (await Task.Factory.StartNew(() => !context.Set<Trainer>().AsNoTracking().ToList().Exists(x => x.Id == updateTrainerDtoBL.Id)))
                 throw new ElementByIdNotFoundException($"{nameof(Trainer)} by Id not Found");
 
-            if (string.IsNullOrWhiteSpace(updateTrainerDtoBL.Name))
-                throw new ElementNotAssignException($"{nameof(AcceptUpdateTrainerDtoBL.Name)} is not assigned");
-
-            if (string.IsNullOrWhiteSpace(updateTrainerDtoBL.SerName))
-                throw new ElementNotAssignException($"{nameof(AcceptUpdateTrainerDtoBL.SerName)} is not assigned");
-
             if (await Task.Factory.StartNew(() => !context.Set<TypeOfSex>().AsNoTracking().ToList().Exists(x => x.Id == updateTrainerDtoBL.TypeSexId)))
                 throw new ElementByIdNotFoundException($"{nameof(TypeOfSex)} by Id not Found");
-
-            var regex = new Regex("[0-9]{2} [0-9]{3}-[0-9]{2}-[0-9]{2}");
-
-            if (!regex.IsMatch(updateTrainerDtoBL.Telephone))
-                throw new ElementNotValidByRegexException($"{nameof(AcceptUpdateTrainerDtoBL.Telephone)} is not valid by regex");
 
             if (await Task.Factory.StartNew(() => !context.Set<Service>().AsNoTracking().ToList().Exists(x => x.Id == updateTrainerDtoBL.ServiceId)))
                 throw new ElementByIdNotFoundException($"{nameof(Service)} by Id not Found");

@@ -13,5 +13,6 @@ namespace ServiceAccountingBL.Models.ServiceBLL.Aggregator
         ICreater<AcceptCreateServiceDtoBL, ResponseServiceDtoBL> CreateService { get; }
         IUpdater<AcceptUpdateServiceDtoBL, ResponseServiceDtoBL> UpdateService { get; }
         IRemover<Service> RemoveService { get; }
+        IGetter<ResponseGetServiceDtoBL> GetService { get; }
     }
 }

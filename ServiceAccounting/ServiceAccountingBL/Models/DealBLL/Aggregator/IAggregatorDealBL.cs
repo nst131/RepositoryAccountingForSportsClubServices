@@ -13,5 +13,6 @@ namespace ServiceAccountingBL.Models.DealBLL.Aggregator
         ICreater<AcceptCreateDealDtoBL, ResponseDealDtoBL> CreateDeal { get; }
         IUpdater<AcceptUpdateDealDtoBL, ResponseDealDtoBL> UpdateDeal { get; }
         IRemover<Deal> RemoveDeal { get; }
+        IGetter<ResponseGetDealDtoBL> GetDeal { get; }
     }
 }

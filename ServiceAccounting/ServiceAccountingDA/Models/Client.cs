@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ServiceAccountingDA.Models
 {
-    public class Client : BaseEntity, ITelephone
+    public class Client : BaseEntity, ITelephone, IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -15,9 +15,9 @@ namespace ServiceAccountingDA.Models
         public int TypeSexId { get; set; }
         public TypeOfSex TypeSex { get; set; }
 
-        public ICollection<Training> Trainings { get; set; }
+        public ICollection<TrainingToClient> Trainings { get; set; }
         public ICollection<Visit> Visits { get; set; }
-        public ICollection<Subscription> Subscriptions { get; set; }
+        public ICollection<SubscriptionToClient> Subscriptions { get; set; }
         public ICollection<Deal> Deals { get; set; }
     }
 }

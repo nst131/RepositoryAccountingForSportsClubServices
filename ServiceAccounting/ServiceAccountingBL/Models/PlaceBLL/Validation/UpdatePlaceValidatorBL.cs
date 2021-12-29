@@ -24,13 +24,7 @@ namespace ServiceAccountingBL.Models.PlaceBLL.Validation
                 throw new ElementNullReferenceException($"{nameof(AcceptCreatePlaceDtoBL)} is null");
 
             if (await Task.Factory.StartNew(() => !context.Set<Place>().AsNoTracking().ToList().Exists(x => x.Id == dto.Id)))
-                throw new ElementByIdNotFoundException($"{nameof(Place)} by Id not Found");
-
-            if (string.IsNullOrWhiteSpace(dto.Name))
-                throw new ElementNotAssignException($"{nameof(AcceptCreatePlaceDtoBL.Name)} is not assigned");
-
-            if (dto.AmountFreePlace <= 0)
-                throw new ElementOutOfRangeException($"{nameof(AcceptCreatePlaceDtoBL.AmountFreePlace)} Out Of Range");
+                throw new ElementByIdNotFoundException($"{nameof(Place)} by Id not Found"); ;
         }
     }
 }

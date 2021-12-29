@@ -14,18 +14,21 @@ namespace ServiceAccountingBL.Models.ClientBLL.Aggregator
         private readonly Lazy<ICreater<AcceptCreateClientDtoBL, ResponseClientDtoBL>> createClient;
         private readonly Lazy<IUpdater<AcceptUpdateClientDtoBL, ResponseClientDtoBL>> updateClient;
         private readonly Lazy<IRemover<Client>> removeClient;
+        private readonly Lazy<IGetter<ResponseGetClientDtoBL>> getClient;
 
         public AggregatorClientBL(Lazy<IClientCrudBL> clientCrudBL,
             Lazy<IClientFetchersBL> clientFetchersBL,
             Lazy<ICreater<AcceptCreateClientDtoBL, ResponseClientDtoBL>> createClient,
             Lazy<IUpdater<AcceptUpdateClientDtoBL, ResponseClientDtoBL>> updateClient,
-            Lazy<IRemover<Client>> removeClient)
+            Lazy<IRemover<Client>> removeClient,
+            Lazy<IGetter<ResponseGetClientDtoBL>> getClient)
         {
             this.clientCrudBL = clientCrudBL;
             this.clientFetchersBL = clientFetchersBL;
             this.createClient = createClient;
             this.updateClient = updateClient;
             this.removeClient = removeClient;
+            this.getClient = getClient;
         }
 
         public IClientCrudBL ClientCrudBL => clientCrudBL.Value;
@@ -33,5 +36,6 @@ namespace ServiceAccountingBL.Models.ClientBLL.Aggregator
         public ICreater<AcceptCreateClientDtoBL, ResponseClientDtoBL> CreateClient => createClient.Value;
         public IUpdater<AcceptUpdateClientDtoBL, ResponseClientDtoBL> UpdateClient => updateClient.Value;
         public IRemover<Client> RemoveClient => removeClient.Value;
+        public IGetter<ResponseGetClientDtoBL> GetClient => getClient.Value;
     }
 }

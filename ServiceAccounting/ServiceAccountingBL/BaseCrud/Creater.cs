@@ -1,23 +1,24 @@
 ﻿using ServiceAccountingBL.Interfaces;
 using ServiceAccountingDA.Context;
 using System.Threading.Tasks;
+using ServiceAccountingDA.Interfaces;
 
 namespace ServiceAccountingBL.BaseCrud
 {
     public class Creater<Entity, CreateDto, DtoResponse> : ICreater<CreateDto, DtoResponse>
-        where Entity : class
+        where Entity : class, IEntity
         where CreateDto : class
         where DtoResponse : class
     {
         private readonly IServiceAccountingContext context;
         private readonly IValidator<CreateDto> validator;
         private readonly IMapper<CreateDto, Entity> mapperCreate;
-        private readonly IMapper<Entity, DtoResponse> mapperResponse;
+        private readonly IMapperAsync<Entity, DtoResponse> mapperResponse;
 
         public Creater(IServiceAccountingContext context,
             IValidator<CreateDto> validator,
-            IMapper<Entity, DtoResponse> mapperResponse,
-             IMapper<CreateDto, Entity> mapperCreate)
+            IMapper<CreateDto, Entity> mapperCreate,
+            IMapperAsync<Entity, DtoResponse> mapperResponse)
         {
             this.context = context;
             this.validator = validator;
@@ -35,7 +36,7 @@ namespace ServiceAccountingBL.BaseCrud
 
             await context.SaveChangesAsync();
 
-            return mapperResponse.Map(entry.Entity);
+            return await mapperResponse.Map(entry.Entity);
         }
     }
 }

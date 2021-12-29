@@ -6,6 +6,5 @@ namespace ServiceAccountingUI.Models.ClientCardUI.Dto
     {
         [Range(1, int.MaxValue, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]
         public int Id { get; set; }
-
     }
 }

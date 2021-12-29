@@ -36,6 +36,8 @@ namespace ServiceAccountingDA.Context
             modelBuilder.ApplyConfiguration(new TrainingConfiguration());
             modelBuilder.ApplyConfiguration(new TypeOfSexConfiguration());
             modelBuilder.ApplyConfiguration(new VisitConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionToClientConfiguration());
+            modelBuilder.ApplyConfiguration(new TrainingToClientConfiguration());
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -47,7 +49,7 @@ namespace ServiceAccountingDA.Context
         private void AddTimestamps()
         {
             var entities = ChangeTracker.Entries()
-            .Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
+            .Where(x => x.Entity is BaseEntity && (x.State is EntityState.Added or EntityState.Modified));
 
             foreach (var entity in entities)
             {

@@ -21,7 +21,7 @@ namespace ServiceAccountingUI.Models.DealUI.Mapper
         }
 
         public static ResponseDealDtoUI Map<Result>(ResponseDealDtoBL dto)
-            where Result : ResponseGetDealDtoUI
+            where Result : ResponseDealDtoUI
         {
             return new()
             {

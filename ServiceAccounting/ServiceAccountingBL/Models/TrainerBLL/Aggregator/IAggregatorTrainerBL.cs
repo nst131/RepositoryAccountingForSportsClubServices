@@ -13,5 +13,6 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Aggregator
         ICreater<AcceptCreateTrainerDtoBL, ResponseTrainerDtoBL> CreateTrainer { get; }
         IUpdater<AcceptUpdateTrainerDtoBL, ResponseTrainerDtoBL> UpdateTrainer { get; }
         IRemover<Trainer> RemoveTrainer { get; }
+        IGetter<ResponseGetTrainerDtoBL> GetTrainer { get; }
     }
 }

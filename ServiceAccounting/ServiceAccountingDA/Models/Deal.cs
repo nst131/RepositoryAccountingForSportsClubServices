@@ -1,8 +1,9 @@
 ﻿using System;
+using ServiceAccountingDA.Interfaces;
 
 namespace ServiceAccountingDA.Models
 {
-    public class Deal
+    public class Deal : IEntity
     {
         public int Id { get; set; }
         public DateTime PurchaseDate { get; set; }

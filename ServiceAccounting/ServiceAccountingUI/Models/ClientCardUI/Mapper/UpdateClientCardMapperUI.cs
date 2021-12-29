@@ -19,7 +19,7 @@ namespace ServiceAccountingUI.Models.ClientCardUI.Mapper
         }
 
         public static ResponseClientCardDtoUI Map<Result>(ResponseClientCardDtoBL dto)
-            where Result : ResponseGetClientCardDtoUI
+            where Result : ResponseClientCardDtoUI
         {
             return new()
             {

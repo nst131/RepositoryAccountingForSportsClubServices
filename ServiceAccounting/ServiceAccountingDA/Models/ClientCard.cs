@@ -1,8 +1,9 @@
 ﻿using System;
+using ServiceAccountingDA.Interfaces;
 
 namespace ServiceAccountingDA.Models
 {
-    public class ClientCard
+    public class ClientCard : IEntity
     {
         public int Id { get; set; }
         public DateTime DateActivation { get; set; }
