@@ -5,7 +5,7 @@ namespace ServiceAccountingDA
 {
     public static class ServiceRegistrationDA
     {
-        public static void RegistrationDA(this IServiceCollection services)
+        public static void AddRegistrationDA(this IServiceCollection services)
         {
             services.AddDbContext<ServiceAccountingContext>();
             services.AddScoped<IServiceAccountingContext, ServiceAccountingContext>();

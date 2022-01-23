@@ -24,8 +24,7 @@ namespace ServiceAccountingUI.Models.ClientUI.Mapper
             return new()
             {
                 Id = client.Id,
-                Name = client.Name,
-                SerName = client.SerName
+                Name = client.Name
             };
         }
     }

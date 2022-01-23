@@ -5,7 +5,7 @@ using ServiceAccountingBL.Exceptions;
 
 namespace ServiceAccountingUI.CustomAttributes
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public class CheckClientCardOnExist : ValidationAttribute
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)

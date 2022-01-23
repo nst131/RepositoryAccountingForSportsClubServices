@@ -24,11 +24,7 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Validation
             if (createTrainerDtoBL is null)
                 throw new ElementNullReferenceException($"{nameof(AcceptCreateTrainerDtoBL)} is null");
 
-            if (await Task.Factory.StartNew(() => !context.Set<TypeOfSex>().AsNoTracking().ToList().Exists(x => x.Id == createTrainerDtoBL.TypeSexId)))
-                throw new ElementByIdNotFoundException($"{nameof(TypeOfSex)} by Id not Found");
-
-            if (await Task.Factory.StartNew(() => !context.Set<Service>().AsNoTracking().ToList().Exists(x => x.Id == createTrainerDtoBL.ServiceId)))
-                throw new ElementByIdNotFoundException($"{nameof(Service)} by Id not Found");
+            await Task.CompletedTask;
         }
     }
 }

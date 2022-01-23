@@ -11,10 +11,7 @@ namespace ServiceAccountingUI.Models.TrainerUI.Mapper
             return new ()
             {
                 Name = trainer.Name,
-                SerName = trainer.SerName,
-                Telephone = trainer.Telephone,
-                TypeSexId = trainer.TypeSexId,
-                ServiceId = trainer.ServiceId
+                Email = trainer.Email
             };
         }
 
@@ -24,8 +21,7 @@ namespace ServiceAccountingUI.Models.TrainerUI.Mapper
             return new ()
             {
                 Id = trainer.Id,
-                Name = trainer.Name,
-                SerName = trainer.SerName
+                Name = trainer.Name
             };
         }
     }

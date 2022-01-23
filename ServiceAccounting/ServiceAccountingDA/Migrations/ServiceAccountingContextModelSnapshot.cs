@@ -29,6 +29,9 @@ namespace ServiceAccountingDA.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -59,6 +62,7 @@ namespace ServiceAccountingDA.Migrations
                         new
                         {
                             Id = 1,
+                            Email = "alexander@mail.ru",
                             Name = "Alexander",
                             SerName = "Nikylskiy",
                             Telephone = "29 613-89-57",
@@ -67,6 +71,7 @@ namespace ServiceAccountingDA.Migrations
                         new
                         {
                             Id = 2,
+                            Email = "vitaliy@mail.ru",
                             Name = "Vitaliy",
                             SerName = "Romanovskiy",
                             Telephone = "29 713-80-90",
@@ -75,6 +80,7 @@ namespace ServiceAccountingDA.Migrations
                         new
                         {
                             Id = 3,
+                            Email = "maria@mail.ru",
                             Name = "Maria",
                             SerName = "Gavrilova",
                             Telephone = "29 786-13-44",
@@ -252,6 +258,9 @@ namespace ServiceAccountingDA.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -274,6 +283,7 @@ namespace ServiceAccountingDA.Migrations
                         new
                         {
                             Id = 1,
+                            Email = "Saf@mail.ru",
                             Name = "Safia",
                             SerName = "Mirinina",
                             Telephone = "44 786-12-12"
@@ -281,6 +291,7 @@ namespace ServiceAccountingDA.Migrations
                         new
                         {
                             Id = 2,
+                            Email = "Lerka@mail.ru",
                             Name = "Lera",
                             SerName = "Shablovskai",
                             Telephone = "33 514-17-21"
@@ -561,6 +572,10 @@ namespace ServiceAccountingDA.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -571,7 +586,7 @@ namespace ServiceAccountingDA.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("ServiceId")
+                    b.Property<int?>("ServiceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Telephone")
@@ -593,6 +608,7 @@ namespace ServiceAccountingDA.Migrations
                         new
                         {
                             Id = 1,
+                            Email = "Valer@mail.ru",
                             Name = "Valeriy",
                             SerName = "Petrenko",
                             ServiceId = 1,
@@ -602,6 +618,7 @@ namespace ServiceAccountingDA.Migrations
                         new
                         {
                             Id = 2,
+                            Email = "Vital@mail.ru",
                             Name = "Vitaliy",
                             SerName = "Zazyla",
                             ServiceId = 2,
@@ -611,6 +628,7 @@ namespace ServiceAccountingDA.Migrations
                         new
                         {
                             Id = 3,
+                            Email = "Nast@mail.ru",
                             Name = "Nastya",
                             SerName = "Nesterenko",
                             ServiceId = 3,
@@ -620,6 +638,7 @@ namespace ServiceAccountingDA.Migrations
                         new
                         {
                             Id = 4,
+                            Email = "Olya@mail.ru",
                             Name = "Olga",
                             SerName = "Bogdan",
                             ServiceId = 4,
@@ -629,6 +648,7 @@ namespace ServiceAccountingDA.Migrations
                         new
                         {
                             Id = 5,
+                            Email = "Alex@mail.ru",
                             Name = "Alexey",
                             SerName = "Kikta",
                             ServiceId = 5,
@@ -638,6 +658,7 @@ namespace ServiceAccountingDA.Migrations
                         new
                         {
                             Id = 6,
+                            Email = "Ivan@mail.ru",
                             Name = "Ivan",
                             SerName = "Mazyrin",
                             ServiceId = 6,
@@ -701,8 +722,8 @@ namespace ServiceAccountingDA.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.HasKey("Id");
 
@@ -718,6 +739,11 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 2,
                             Name = "Woman"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "NoGender"
                         });
                 });
 
@@ -874,8 +900,7 @@ namespace ServiceAccountingDA.Migrations
                     b.HasOne("ServiceAccountingDA.Models.Service", "Service")
                         .WithMany("Trainers")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ServiceAccountingDA.Models.TypeOfSex", "TypeSex")
                         .WithMany("Trainers")

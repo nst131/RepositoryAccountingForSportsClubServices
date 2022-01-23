@@ -1,4 +1,5 @@
-﻿using ServiceAccountingBL.Interfaces;
+﻿using System;
+using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.TrainerBLL.Dto;
 using ServiceAccountingDA.Models;
 
@@ -11,10 +12,11 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Mapper
             return new ()
             {
                 Name = createTrainerDtoBL.Name,
-                SerName = createTrainerDtoBL.SerName,
-                Telephone = createTrainerDtoBL.Telephone,
-                TypeSexId = createTrainerDtoBL.TypeSexId,
-                ServiceId = createTrainerDtoBL.ServiceId
+                Email = createTrainerDtoBL.Email,
+                SerName = String.Empty,
+                Telephone = String.Empty,
+                TypeSexId = TypeOfSex.NoGender.Id,
+                ServiceId = null
             };
         }
     }

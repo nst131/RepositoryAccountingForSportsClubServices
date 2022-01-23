@@ -2,10 +2,12 @@
 using ServiceAccountingBL.Exceptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using ServiceAccountingBL.Models.TrainerBLL.Aggregator;
 using ServiceAccountingBL.Models.TrainerBLL.Crud;
 using ServiceAccountingBL.Models.TrainerBLL.Dto;
 using ServiceAccountingBL.Models.TrainerBLL.Fetchers;
+using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.Models.TrainerUI.Dto;
 using ServiceAccountingUI.Models.TrainerUI.Mapper;
 
@@ -26,6 +28,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ICollection<ResponseGetTrainerDtoUI>>> GetAll()
         {
             var allTrainersDtoBL = await trainerFetchersBL.GetTrainerAll();
@@ -39,6 +42,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetTrainerDtoUI>> Get([FromRoute] AcceptGetTrainerDtoUI getTrainerDtoUI)
         {
             if (getTrainerDtoUI is null)
@@ -55,6 +59,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<ResponseTrainerDtoUI>> Create([FromBody] AcceptCreateTrainerDtoUI createTrainerDtoUI)
         {
             if (createTrainerDtoUI is null)
@@ -69,6 +74,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Trainer)]
         public async Task<ActionResult<ResponseTrainerDtoUI>> Update([FromBody] AcceptUpdateTrainerDtoUI updateTrainerDtoUI)
         {
             if (updateTrainerDtoUI is null)
@@ -83,6 +89,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpDelete]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteTrainerDtoUI deleteTrainerDtoUI)
         {
             if(deleteTrainerDtoUI is null)

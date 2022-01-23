@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Models.DealBLL.Aggregator;
 using ServiceAccountingBL.Models.DealBLL.Crud;
 using ServiceAccountingBL.Models.DealBLL.Dto;
 using ServiceAccountingBL.Models.DealBLL.Fetchers;
+using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.Models.DealUI.Dto;
 using ServiceAccountingUI.Models.DealUI.Mapper;
 
@@ -27,6 +29,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ICollection<ResponseGetDealDtoUI>>> GetAll()
         {
             var allDealsDtoBL = await dealFetchers.GetDealAll();
@@ -40,6 +43,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetDealDtoUI>> Get([FromRoute] AcceptGetDealDtoUI acceptGetDealDtoUI)
         {
             if (acceptGetDealDtoUI is null)
@@ -56,6 +60,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Responsible)]
         public async Task<ActionResult<ResponseDealDtoUI>> Create([FromBody] AcceptCreateDealDtoUI createDealDtoUI)
         {
             if (createDealDtoUI is null)
@@ -70,6 +75,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Responsible)]
         public async Task<ActionResult<ResponseDealDtoUI>> Update([FromBody] AcceptUpdateDealDtoUI updateDealDtoUI)
         {
             if (updateDealDtoUI is null)
@@ -84,6 +90,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpDelete]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.Responsible)]
         public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteDealDtoUI deleteDealDtoUI)
         {
             if (deleteDealDtoUI is null)

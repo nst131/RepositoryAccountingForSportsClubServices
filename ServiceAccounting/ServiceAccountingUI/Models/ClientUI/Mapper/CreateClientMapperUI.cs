@@ -11,9 +11,7 @@ namespace ServiceAccountingUI.Models.ClientUI.Mapper
             return new()
             {
                 Name = client.Name,
-                SerName = client.SerName,
-                Telephone = client.Telephone,
-                TypeSexId = client.TypeSexId
+                Email = client.Email
             };
         }
 
@@ -23,8 +21,7 @@ namespace ServiceAccountingUI.Models.ClientUI.Mapper
             return new()
             {
                 Id = client.Id,
-                Name = client.Name,
-                SerName = client.SerName
+                Name = client.Name
             };
         }
     }

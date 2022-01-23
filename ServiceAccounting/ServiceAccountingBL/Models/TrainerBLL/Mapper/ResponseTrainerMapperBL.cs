@@ -12,8 +12,7 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Mapper
             return await Task.FromResult(new ResponseTrainerDtoBL()
             {
                 Id = trainer.Id,
-                Name = trainer.Name,
-                SerName = trainer.SerName,
+                Name = trainer.Name
             });
         }
     }

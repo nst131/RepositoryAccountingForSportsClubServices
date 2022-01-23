@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Models.ClientCardBL.Aggregator;
 using ServiceAccountingBL.Models.ClientCardBL.Crud;
 using ServiceAccountingBL.Models.ClientCardBL.Dto;
 using ServiceAccountingBL.Models.ClientCardBL.Fetchers;
+using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.Models.ClientCardUI.Dto;
 using ServiceAccountingUI.Models.ClientCardUI.Mapper;
 
@@ -26,6 +28,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ICollection<ResponseGetClientCardDtoUI>>> GetAll()
         {
             var allClientCardsDtoBL = await clientCardFetchers.GetClientCardAll();
@@ -39,6 +42,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetClientCardDtoUI>> Get([FromRoute] AcceptGetClientCardDtoUI acceptGetClientCardDtoUI)
         {
             if (acceptGetClientCardDtoUI is null)
@@ -55,6 +59,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Responsible)]
         public async Task<ActionResult<ResponseClientCardDtoUI>> Create([FromBody] AcceptCreateClientCardDtoUI createClientCardDtoUI)
         {
             if (createClientCardDtoUI is null)
@@ -69,6 +74,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Responsible)]
         public async Task<ActionResult<ResponseClientCardDtoUI>> Update([FromBody] AcceptUpdateClientCardDtoUI updateClientCardDtoUI)
         {
             if (updateClientCardDtoUI is null)
@@ -83,6 +89,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpDelete]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.Responsible)]
         public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteClientCardDtoUI deleteClientCardDtoUI)
         {
             if (deleteClientCardDtoUI is null)

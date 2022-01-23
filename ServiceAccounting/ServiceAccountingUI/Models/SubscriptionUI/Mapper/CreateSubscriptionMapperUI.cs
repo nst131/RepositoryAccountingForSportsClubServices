@@ -1,4 +1,4 @@
-﻿using ServiceAccountingBL.Models.Subscription.Dto;
+﻿using ServiceAccountingBL.Models.SubscriptionBLL.Dto;
 using ServiceAccountingUI.Models.SubscriptionUI.Dto;
 
 namespace ServiceAccountingUI.Models.SubscriptionUI.Mapper

@@ -23,8 +23,7 @@ namespace ServiceAccountingUI.Models.ResponsibleUI.Mapper
             return new ()
             {
                 Id = responsible.Id,
-                Name = responsible.Name,
-                SerName = responsible.SerName
+                Name = responsible.Name
             };
         }
     }

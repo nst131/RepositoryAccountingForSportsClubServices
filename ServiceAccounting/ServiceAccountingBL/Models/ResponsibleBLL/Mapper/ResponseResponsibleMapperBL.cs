@@ -12,8 +12,7 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Mapper
             return await Task.FromResult(new ResponseResponsibleDtoBL()
             {
                 Id = responsible.Id,
-                Name = responsible.Name,
-                SerName = responsible.SerName,
+                Name = responsible.Name
             });
         }
     }

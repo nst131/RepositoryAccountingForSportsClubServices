@@ -1,12 +1,11 @@
-﻿using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.ClientBLL.Dto;
 using ServiceAccountingDA.Context;
 using ServiceAccountingDA.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ServiceAccountingBL.Models.ClientBLL.Validation
 {
@@ -24,7 +23,7 @@ namespace ServiceAccountingBL.Models.ClientBLL.Validation
             if (createClientDtoBL is null)
                 throw new ElementNullReferenceException($"{nameof(AcceptUpdateClientDtoBL)} is null");
 
-            if(await Task.Factory.StartNew(() => !context.Set<Client>().AsNoTracking().ToList().Exists(x => x.Id == createClientDtoBL.Id)))
+            if (await Task.Factory.StartNew(() => !context.Set<Client>().AsNoTracking().ToList().Exists(x => x.Id == createClientDtoBL.Id)))
                 throw new ElementByIdNotFoundException($"{nameof(Client)} by Id not Found");
 
             if (await Task.Factory.StartNew(() => !context.Set<TypeOfSex>().AsNoTracking().ToList().Exists(x => x.Id == createClientDtoBL.TypeSexId)))

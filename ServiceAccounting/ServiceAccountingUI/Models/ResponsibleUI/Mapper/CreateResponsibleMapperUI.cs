@@ -11,8 +11,7 @@ namespace ServiceAccountingUI.Models.ResponsibleUI.Mapper
             return new ()
             {
                 Name = responsible.Name,
-                SerName = responsible.SerName,
-                Telephone = responsible.Telephone,
+                Email = responsible.Email
             };
         }
 
@@ -22,8 +21,7 @@ namespace ServiceAccountingUI.Models.ResponsibleUI.Mapper
             return new ()
             {
                 Id = responsible.Id,
-                Name = responsible.Name,
-                SerName = responsible.SerName
+                Name = responsible.Name
             };
         }
     }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Models.VisitBLL.Aggregator;
 using ServiceAccountingBL.Models.VisitBLL.Crud;
 using ServiceAccountingBL.Models.VisitBLL.Dto;
 using ServiceAccountingBL.Models.VisitBLL.Fetchers;
+using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.Models.VisitUI.Dto;
 using ServiceAccountingUI.Models.VisitUI.Mapper;
 
@@ -27,6 +29,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ICollection<ResponseGetVisitDtoUI>>> GetAll()
         {
             var allVisitsDtoBL = await visitFetchers.GetVisitAll();
@@ -40,6 +43,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetVisitDtoUI>> Get([FromRoute] AcceptGetVisitDtoUI acceptGetVisitDtoUI)
         {
             if (acceptGetVisitDtoUI is null)
@@ -56,6 +60,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Responsible)]
         public async Task<ActionResult<ResponseVisitDtoUI>> Create([FromBody] AcceptCreateVisitDtoUI createVisitDtoUI)
         {
             if (createVisitDtoUI is null)
@@ -70,6 +75,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Responsible)]
         public async Task<ActionResult<ResponseVisitDtoUI>> Update([FromBody] AcceptUpdateVisitDtoUI updateVisitDtoUI)
         {
             if (updateVisitDtoUI is null)
@@ -84,6 +90,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpDelete]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteVisitDtoUI deleteVisitDtoUI)
         {
             if (deleteVisitDtoUI is null)

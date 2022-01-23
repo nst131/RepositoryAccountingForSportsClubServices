@@ -46,12 +46,12 @@ using ServiceAccountingBL.Models.ServiceBLL.Dto;
 using ServiceAccountingBL.Models.ServiceBLL.Fetchers;
 using ServiceAccountingBL.Models.ServiceBLL.Mapper;
 using ServiceAccountingBL.Models.ServiceBLL.Validation;
-using ServiceAccountingBL.Models.Subscription.Aggregator;
-using ServiceAccountingBL.Models.Subscription.Crud;
-using ServiceAccountingBL.Models.Subscription.Dto;
-using ServiceAccountingBL.Models.Subscription.Fetchers;
-using ServiceAccountingBL.Models.Subscription.Mapper;
-using ServiceAccountingBL.Models.Subscription.Validation;
+using ServiceAccountingBL.Models.SubscriptionBLL.Aggregator;
+using ServiceAccountingBL.Models.SubscriptionBLL.Crud;
+using ServiceAccountingBL.Models.SubscriptionBLL.Dto;
+using ServiceAccountingBL.Models.SubscriptionBLL.Fetchers;
+using ServiceAccountingBL.Models.SubscriptionBLL.Mapper;
+using ServiceAccountingBL.Models.SubscriptionBLL.Validation;
 using ServiceAccountingBL.Models.TrainerBLL.Aggregator;
 using ServiceAccountingBL.Models.TrainerBLL.Crud;
 using ServiceAccountingBL.Models.TrainerBLL.Dto;
@@ -75,10 +75,11 @@ namespace ServiceAccountingBL
 {
     public static class ServiceRegistrationBL
     {
-        public static void RegistrationBL(this IServiceCollection services)
+        public static void AddRegistrationBL(this IServiceCollection services)
         {
             //Attributes
             services.AddScoped<IUniqueTelephoneBL, UniqueTelephoneBL>();
+            services.AddScoped<IUniqueEmailBL, UniqueEmailBL>();
             services.AddScoped<ICheckServiceByTrainerBL, CheckServiceByTrainerBL>();
             services.AddScoped<ICheckClientCardBL, CheckClientCardBL>();
 

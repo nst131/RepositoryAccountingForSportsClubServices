@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Models.PlaceBLL.Aggregator;
 using ServiceAccountingBL.Models.PlaceBLL.Crud;
 using ServiceAccountingBL.Models.PlaceBLL.Dto;
 using ServiceAccountingBL.Models.PlaceBLL.Fetchers;
+using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.Models.PlaceUI.Dto;
 using ServiceAccountingUI.Models.PlaceUI.Mapper;
 
@@ -27,6 +29,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ICollection<ResponseGetPlaceDtoUI>>> GetAll()
         {
             var allPlacesDtoBL = await placeFetchers.GetPlaceAll();
@@ -40,6 +43,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetPlaceDtoUI>> Get([FromRoute] AcceptGetPlaceDtoUI acceptGetPlaceDtoUI)
         {
             if (acceptGetPlaceDtoUI is null)
@@ -56,6 +60,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<ResponsePlaceDtoUI>> Create([FromBody] AcceptCreatePlaceDtoUI createPlaceDtoUI)
         {
             if (createPlaceDtoUI is null)
@@ -70,6 +75,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<ResponseGetPlaceDtoUI>> Update([FromBody] AcceptUpdatePlaceDtoUI updatePlaceDtoUI)
         {
             if (updatePlaceDtoUI is null)
@@ -84,6 +90,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpDelete]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeletePlaceDtoUI deletePlaceDtoUI)
         {
             if (deletePlaceDtoUI is null)

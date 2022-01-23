@@ -2,10 +2,12 @@
 using ServiceAccountingBL.Exceptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using ServiceAccountingBL.Models.ClubCardBLL.Aggregator;
 using ServiceAccountingBL.Models.ClubCardBLL.Crud;
 using ServiceAccountingBL.Models.ClubCardBLL.Dto;
 using ServiceAccountingBL.Models.ClubCardBLL.Fetchers;
+using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.Models.ClubCardUI.Dto;
 using ServiceAccountingUI.Models.ClubCardUI.Mapper;
 
@@ -26,6 +28,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ICollection<ResponseGetClubCardDtoUI>>> GetAll()
         {
             var allClubCardsDtoBL = await clubCardFetchersBL.GetClubCardAll();
@@ -39,6 +42,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetClubCardDtoUI>> Get([FromRoute] AcceptGetClubCardDtoUI getClubCardDtoUI)
         {
             if(getClubCardDtoUI is null)
@@ -55,6 +59,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<ResponseClubCardDtoUI>> Create([FromBody] AcceptCreateClubCardDtoUI createClubCardDtoUI)
         {
             if (createClubCardDtoUI is null)
@@ -69,6 +74,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<ResponseClubCardDtoUI>> Update([FromBody] AcceptUpdateClubCardDtoUI updateClubCardDtoUI)
         {
             if (updateClubCardDtoUI is null)
@@ -83,6 +89,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpDelete]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteClubCardDtoUI deleteClubCardDtoUI)
         {
             if(deleteClubCardDtoUI is null)

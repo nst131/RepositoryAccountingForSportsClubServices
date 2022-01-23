@@ -25,8 +25,7 @@ namespace ServiceAccountingUI.Models.TrainerUI.Mapper
             return new ()
             {
                 Id = trainer.Id,
-                Name = trainer.Name,
-                SerName = trainer.SerName
+                Name = trainer.Name
             };
         }
     }

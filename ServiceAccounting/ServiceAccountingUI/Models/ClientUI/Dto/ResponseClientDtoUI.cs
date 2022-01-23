@@ -9,8 +9,5 @@ namespace ServiceAccountingUI.Models.ClientUI.Dto
 
         [JsonProperty(PropertyName = "name", Order = 1, Required = Required.Always)]
         public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "serName", Order = 2, Required = Required.Always)]
-        public string SerName { get; set; }
     }
 }

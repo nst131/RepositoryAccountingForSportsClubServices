@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAccountingBL.Exceptions;
-using ServiceAccountingBL.Models.Subscription.Aggregator;
-using ServiceAccountingBL.Models.Subscription.Crud;
-using ServiceAccountingBL.Models.Subscription.Dto;
-using ServiceAccountingBL.Models.Subscription.Fetchers;
+using ServiceAccountingBL.Models.SubscriptionBLL.Aggregator;
+using ServiceAccountingBL.Models.SubscriptionBLL.Crud;
+using ServiceAccountingBL.Models.SubscriptionBLL.Dto;
+using ServiceAccountingBL.Models.SubscriptionBLL.Fetchers;
+using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.Models.SubscriptionUI.Dto;
 using ServiceAccountingUI.Models.SubscriptionUI.Mapper;
 
@@ -27,6 +29,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ICollection<ResponseGetSubscriptionDtoUI>>> GetAll()
         {
             var allSubscriptionsDtoBL = await subscriptionFetchers.GetSubscriptionAll();
@@ -40,6 +43,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetSubscriptionDtoUI>> Get([FromRoute] AcceptGetSubscriptionDtoUI acceptGetSubscriptionDtoUI)
         {
             if (acceptGetSubscriptionDtoUI is null)
@@ -56,6 +60,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<ResponseSubscriptionDtoUI>> Create([FromBody] AcceptCreateSubscriptionDtoUI createSubscriptionDtoUI)
         {
             if (createSubscriptionDtoUI is null)
@@ -70,6 +75,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<ResponseSubscriptionDtoUI>> Update([FromBody] AcceptUpdateSubscriptionDtoUI updateSubscriptionDtoUI)
         {
             if (updateSubscriptionDtoUI is null)
@@ -84,6 +90,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpDelete]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteSubscriptionDtoUI deleteSubscriptionDtoUI)
         {
             if (deleteSubscriptionDtoUI is null)

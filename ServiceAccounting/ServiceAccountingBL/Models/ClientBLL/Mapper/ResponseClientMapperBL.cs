@@ -13,7 +13,6 @@ namespace ServiceAccountingBL.Models.ClientBLL.Mapper
             {
                 Id = client.Id,
                 Name = client.Name,
-                SerName = client.SerName,
             });
         }
     }

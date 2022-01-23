@@ -1,16 +1,15 @@
-﻿using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ServiceAccountingBL.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using ServiceAccountingDA.Context;
 using ServiceAccountingDA.Interfaces;
+using System.Threading.Tasks;
 
 namespace ServiceAccountingBL.AttributeValidation
 {
-    public class UniqueTelephoneBL : IUniqueTelephoneBL 
+    public class UniqueTelephoneBL : IUniqueTelephoneBL
     {
         private readonly IServiceAccountingContext context;
 
-        public UniqueTelephoneBL(IServiceAccountingContext context) 
+        public UniqueTelephoneBL(IServiceAccountingContext context)
         {
             this.context = context;
         }

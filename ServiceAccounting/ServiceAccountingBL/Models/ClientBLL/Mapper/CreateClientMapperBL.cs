@@ -11,9 +11,10 @@ namespace ServiceAccountingBL.Models.ClientBLL.Mapper
             return new()
             {
                 Name = createClientDtoBL.Name,
-                SerName = createClientDtoBL.SerName,
-                Telephone = createClientDtoBL.Telephone,
-                TypeSexId = createClientDtoBL.TypeSexId
+                Email = createClientDtoBL.Email,
+                SerName = string.Empty,
+                Telephone = string.Empty,
+                TypeSexId = TypeOfSex.NoGender.Id
             };
         }
     }

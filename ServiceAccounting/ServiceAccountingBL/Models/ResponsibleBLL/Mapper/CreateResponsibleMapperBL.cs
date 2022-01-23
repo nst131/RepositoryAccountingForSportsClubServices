@@ -1,4 +1,5 @@
-﻿using ServiceAccountingBL.Interfaces;
+﻿using System;
+using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.ResponsibleBLL.Dto;
 using ServiceAccountingDA.Models;
 
@@ -11,8 +12,9 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Mapper
             return new ()
             {
                 Name = createResponsibleDtoBL.Name,
-                SerName = createResponsibleDtoBL.SerName,
-                Telephone = createResponsibleDtoBL.Telephone,
+                Email = createResponsibleDtoBL.Email,
+                SerName = String.Empty,
+                Telephone = String.Empty
             };
         }
     }

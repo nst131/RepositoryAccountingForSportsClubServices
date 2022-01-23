@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Models.TrainingBLL.Aggregator;
 using ServiceAccountingBL.Models.TrainingBLL.Crud;
 using ServiceAccountingBL.Models.TrainingBLL.Dto;
 using ServiceAccountingBL.Models.TrainingBLL.Fetchers;
+using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.Models.TrainingUI.Dto;
 using ServiceAccountingUI.Models.TrainingUI.Mapper;
 
@@ -27,6 +29,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ICollection<ResponseGetTrainingDtoUI>>> GetAll()
         {
             var allTrainingsDtoBL = await trainingFetchers.GetTrainingAll();
@@ -40,6 +43,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetTrainingDtoUI>> Get([FromRoute] AcceptGetTrainingDtoUI acceptGetTrainingDtoUI)
         {
             if (acceptGetTrainingDtoUI is null)
@@ -56,6 +60,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Trainer)]
         public async Task<ActionResult<ResponseTrainingDtoUI>> Create([FromBody] AcceptCreateTrainingDtoUI createTrainingDtoUI)
         {
             if (createTrainingDtoUI is null)
@@ -70,6 +75,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Trainer)]
         public async Task<ActionResult<ResponseTrainingDtoUI>> Update([FromBody] AcceptUpdateTrainingDtoUI updateTrainingDtoUI)
         {
             if (updateTrainingDtoUI is null)
@@ -84,6 +90,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpDelete]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.Trainer)]
         public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteTrainingDtoUI deleteTrainingDtoUI)
         {
             if (deleteTrainingDtoUI is null)

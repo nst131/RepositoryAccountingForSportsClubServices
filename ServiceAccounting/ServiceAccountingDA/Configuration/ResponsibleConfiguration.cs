@@ -23,8 +23,8 @@ namespace ServiceAccountingDA.Configuration
 
             builder.HasData(new Responsible[]
             {
-                new Responsible(){Id = 1, Name = "Safia", SerName = "Mirinina", Telephone = "44 786-12-12"},
-                new Responsible(){Id = 2, Name = "Lera", SerName = "Shablovskai", Telephone = "33 514-17-21"}
+                new Responsible(){Id = 1, Name = "Safia", SerName = "Mirinina",Email = "Saf@mail.ru", Telephone = "44 786-12-12"},
+                new Responsible(){Id = 2, Name = "Lera", SerName = "Shablovskai",Email = "Lerka@mail.ru", Telephone = "33 514-17-21"}
             });
         }
     }

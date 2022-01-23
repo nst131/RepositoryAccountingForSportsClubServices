@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 namespace ServiceAccountingDA.Models
 {
-    public class Client : BaseEntity, ITelephone, IEntity
+    public class Client : BaseEntity, ITelephone, IEntity, IEmail
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string SerName { get; set; }
         public string Telephone { get; set; }
+        public string Email { get; set; }
 
         public ClientCard ClientCard { get; set; }
 

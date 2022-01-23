@@ -2,10 +2,12 @@
 using ServiceAccountingBL.Exceptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using ServiceAccountingBL.Models.ResponsibleBLL.Aggregator;
 using ServiceAccountingBL.Models.ResponsibleBLL.Crud;
 using ServiceAccountingBL.Models.ResponsibleBLL.Dto;
 using ServiceAccountingBL.Models.ResponsibleBLL.Fetchers;
+using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.Models.ResponsibleUI.Dto;
 using ServiceAccountingUI.Models.ResponsibleUI.Mapper;
 
@@ -16,19 +18,20 @@ namespace ServiceAccountingUI.Controllers
     public class ResponsibleController : ControllerBase
     {
         private readonly IResponsibleCrudBL responsibleCrudBL;
-        private readonly IResponsibleFetchersBL responsibleFetchersBL;
+        public IResponsibleFetchersBL ResponsibleFetchersBl { get; }
 
         public ResponsibleController(IAggregatorResponsibleBL aggregatorResponsibleBL)
         {
             this.responsibleCrudBL = aggregatorResponsibleBL.ResponsibleCrudBL;
-            this.responsibleFetchersBL = aggregatorResponsibleBL.ResponsibleFetchersBL;
+            this.ResponsibleFetchersBl = aggregatorResponsibleBL.ResponsibleFetchersBL;
         }
 
         [HttpGet]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ICollection<ResponseGetResponsibleDtoUI>>> GetAll()
         {
-            var allResponsiblesDtoBL = await responsibleFetchersBL.GetResponsibleAll();
+            var allResponsiblesDtoBL = await ResponsibleFetchersBl.GetResponsibleAll();
 
             if (allResponsiblesDtoBL is null)
                 throw new ElementByIdNotFoundException();
@@ -39,6 +42,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetResponsibleDtoUI>> Get([FromRoute] AcceptGetResponsibleDtoUI getResponsibleDtoUI)
         {
             if (getResponsibleDtoUI is null)
@@ -55,6 +59,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<ResponseResponsibleDtoUI>> Create([FromBody] AcceptCreateResponsibleDtoUI createResponsibleDtoUI)
         {
             if (createResponsibleDtoUI is null)
@@ -69,6 +74,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPut]
         [Route("[action]")]
+        [Authorize(Policy = PolicyService.Responsible)]
         public async Task<ActionResult<ResponseResponsibleDtoUI>> Update([FromBody] AcceptUpdateResponsibleDtoUI updateResponsibleDtoUI)
         {
             if (updateResponsibleDtoUI is null)
@@ -83,6 +89,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpDelete]
         [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteResponsibleDtoUI deleteResponsibleDtoUI)
         {
             if(deleteResponsibleDtoUI is null)

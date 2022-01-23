@@ -30,8 +30,8 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Mapper
                 SerName = dto.SerName,
                 Telephone = dto.Telephone,
                 TypeSex = dto.TypeSex.Name,
-                ServiceId = dto.ServiceId,
-                Service = dto.Service.Name
+                ServiceId = dto.ServiceId ?? 0,
+                Service = dto.Service?.Name ?? "Not Assigned"
             };
         }
     }
