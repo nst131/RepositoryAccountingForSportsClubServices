@@ -41,6 +41,8 @@ namespace API
 
             services.AddSession();
 
+            services.AddCors();
+
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -143,6 +145,8 @@ namespace API
             app.UseRouting();
 
             app.UseSession();
+
+            app.UseCors(s => s.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseAuthentication();
             app.UseAuthorization();
