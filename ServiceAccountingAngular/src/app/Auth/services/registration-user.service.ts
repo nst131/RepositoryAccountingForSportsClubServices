@@ -9,14 +9,20 @@ export class RegistrationUserService {
 
     constructor(private http: HttpClient) { }
 
-    public TryRegistrationUser(registraoinModel: RegistrationUserModel): Observable<any> {
+    public tryRegistrationUser(registraoinModel: RegistrationUserModel): Observable<any> {
         const myheaders = new HttpHeaders().set('content-type', 'application/json');
         const body = JSON.stringify(registraoinModel);
         return this.http.post(this.pathRegistrationUser, body, { headers: myheaders }).pipe(map((data: any) => {
+            let user = {
+                token: data.token,
+                email: data.email,
+                role: data.role
+            }
+            sessionStorage.setItem('UserSession', JSON.stringify(user));
             return of({
                 error: false,
-                response: data
-            })
+                response: data.response
+            });
         }),
             catchError((err) => {
                 let message;

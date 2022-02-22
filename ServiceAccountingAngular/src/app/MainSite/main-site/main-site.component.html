@@ -1,2 +1,14 @@
-<router-outlet name="main-site"></router-outlet>
-<p>main-site works!</p>
+<div class="container">
+  <h1>AccountingForSportsClubServices</h1>
+  <main>
+    <nav>
+      <h3>Desktop</h3>
+      <button class="btn" (click)="redirectOnPageUser()">Show All Users</button>
+      <button class="btn" (click)="redirectOnPageTrainers()">Show All Trainers</button>
+      <button class="btn" (click)="redirectOnPageResponsibles()">Show All Responsibles</button>
+    </nav>
+    <div>
+      <router-outlet name="main-site"></router-outlet>
+    </div>
+  </main>
+</div>

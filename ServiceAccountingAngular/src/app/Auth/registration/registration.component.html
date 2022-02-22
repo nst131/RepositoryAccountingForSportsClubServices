@@ -24,6 +24,9 @@
                 Длина строки должна быть не менее {{registrationForm.controls['email'].errors?.['minlength'].requiredLength }} символов.
                 Сейчас {{ registrationForm.controls['email'].errors?.['minlength'].actualLength }}
             </p>
+            <p class="alert" *ngIf="registrationForm.controls['email'].errors?.['emailValidator']">
+                Не правильный формат
+            </p>
         </div>
 
         <label for="password">Password</label>
