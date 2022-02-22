@@ -37,9 +37,14 @@ namespace Application.User.Login
             if (user is null)
                 throw new RestException(HttpStatusCode.Unauthorized, $"{nameof(User)} is not exist");
 
-            var resultVerification = await signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);
+            var passwordVerification = await signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);
 
-            if (resultVerification.Succeeded)
+            if (!passwordVerification.Succeeded)
+                throw new RestException(HttpStatusCode.Unauthorized, $"{nameof(User)} is not pass verification of password");
+
+            var roleVerification = await userManager.IsInRoleAsync(user, request.Role);
+
+            if (roleVerification)
             {
                 return new User
                 {
@@ -49,7 +54,7 @@ namespace Application.User.Login
                 };
             }
 
-            throw new RestException(HttpStatusCode.Unauthorized, $"{nameof(User)} is not pass verification of password");
+            throw new RestException(HttpStatusCode.Unauthorized, $"{nameof(User)} is not pass verification of role");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading;
+using Microsoft.EntityFrameworkCore;
 using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.ClientCardBL.Aggregator;
 using ServiceAccountingBL.Models.ClientCardBL.Dto;
@@ -26,42 +27,43 @@ namespace ServiceAccountingBL.Models.ClientCardBL.Crud
             this.getClientCard = aggregator.GetClientCard;
         }
 
-        public async Task<ResponseClientCardDtoBL> CreateClientCard(AcceptCreateClientCardDtoBL createClientCardDtoBL)
+        public async Task<ResponseClientCardDtoBL> CreateClientCard(AcceptCreateClientCardDtoBL createClientCardDtoBL, CancellationToken token = default)
         {
             await createValidator.Validate(createClientCardDtoBL);
 
             var clientCard = CreateClientCardMapperBL.Map<ClientCard>(createClientCardDtoBL);
 
-            var clubCard = await context.Set<ClubCard>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == clientCard.ClubCardId);
+            var clubCard = await context.Set<ClubCard>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == clientCard.ClubCardId, token);
 
             clientCard.DateExpiration = clientCard.DateActivation.AddDays(clubCard.DurationInDays);
             clientCard.ServiceId = clubCard.ServiceId;
-            var addedClientCard = await context.Set<ClientCard>().AddAsync(clientCard);
-            await context.SaveChangesAsync();
+            var addedClientCard = await context.Set<ClientCard>().AddAsync(clientCard, token);
+            await context.SaveChangesAsync(token);
 
             return ResponseClientCardMapperBL.Map<ResponseClientCardDtoBL>(addedClientCard.Entity);
         }
 
-        public async Task<ResponseClientCardDtoBL> UpdateClientCard(AcceptUpdateClientCardDtoBL updateClientCardDtoBL)
+        public async Task<ResponseClientCardDtoBL> UpdateClientCard(AcceptUpdateClientCardDtoBL updateClientCardDtoBL, CancellationToken token = default)
         {
             await updateValidator.Validate(updateClientCardDtoBL);
 
             var clientCard = UpdateClientCardMapperBL.Map<ClientCard>(updateClientCardDtoBL);
 
-            var clubCard = await context.Set<ClubCard>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == clientCard.ClubCardId);
+            var clubCard = await context.Set<ClubCard>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == clientCard.ClubCardId, token);
 
             clientCard.DateExpiration = clientCard.DateActivation.AddDays(clubCard.DurationInDays);
             clientCard.ServiceId = clubCard.ServiceId;
-            var updatedClientCard = await Task.Factory.StartNew(() => context.Set<ClientCard>().Update(clientCard));
-            await context.SaveChangesAsync();
+            var updatedClientCard = await Task.Factory.StartNew(() => 
+                    token.IsCancellationRequested ? throw new TaskCanceledException() : context.Set<ClientCard>().Update(clientCard), token);
+            await context.SaveChangesAsync(token);
 
             return ResponseClientCardMapperBL.Map<ResponseClientCardDtoBL>(updatedClientCard.Entity);
         }
 
-        public async Task DeleteClientCard(int id)
-            => await removeClientCard.Remove(id);
+        public async Task DeleteClientCard(int id, CancellationToken token = default)
+            => await removeClientCard.Remove(id, token);
 
-        public async Task<ResponseGetClientCardDtoBL> GetClientCard(int id)
-            => await getClientCard.Get(id);
+        public async Task<ResponseGetClientCardDtoBL> GetClientCard(int id, CancellationToken token = default)
+            => await getClientCard.Get(id, token);
     }
 }

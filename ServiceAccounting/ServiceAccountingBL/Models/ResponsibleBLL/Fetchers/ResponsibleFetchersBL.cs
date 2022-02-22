@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ServiceAccountingBL.Models.ResponsibleBLL.Dto;
@@ -17,15 +19,14 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Fetchers
             this.context = context;
         }
 
-        public async Task<ICollection<ResponseGetResponsibleDtoBL>> GetResponsibleAll()
+        public async Task<ICollection<ResponseGetResponsibleDtoBL>> GetResponsibleAll(CancellationToken token = default)
         {
-            if (!await context.Set<Responsible>().AnyAsync())
+            if (!await context.Set<Responsible>().AnyAsync(token))
                 return new List<ResponseGetResponsibleDtoBL>();
 
-            var allResponsibles = await context.Set<Responsible>().ToListAsync();
+            var allResponsibles = await context.Set<Responsible>().ToListAsync(token);
 
             return ReadResponsibleMapperBL.Map<ICollection<ResponseGetResponsibleDtoBL>>(allResponsibles);
-
         }
     }
 }

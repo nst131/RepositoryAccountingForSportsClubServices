@@ -22,6 +22,7 @@ using ServiceAccountingBL.Models.ClubCardBLL.Dto;
 using ServiceAccountingBL.Models.ClubCardBLL.Fetchers;
 using ServiceAccountingBL.Models.ClubCardBLL.Mapper;
 using ServiceAccountingBL.Models.ClubCardBLL.Validation;
+using ServiceAccountingBL.Models.CommonBL;
 using ServiceAccountingBL.Models.DealBLL.Aggregator;
 using ServiceAccountingBL.Models.DealBLL.Crud;
 using ServiceAccountingBL.Models.DealBLL.Dto;
@@ -77,6 +78,8 @@ namespace ServiceAccountingBL
     {
         public static void AddRegistrationBL(this IServiceCollection services)
         {
+            //Additional
+            services.AddScoped<ICommonFetchers, CommonFetchers>();
             //Attributes
             services.AddScoped<IUniqueTelephoneBL, UniqueTelephoneBL>();
             services.AddScoped<IUniqueEmailBL, UniqueEmailBL>();

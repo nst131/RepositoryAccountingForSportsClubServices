@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ServiceAccountingBL.Models.VisitBLL.Dto;
@@ -17,15 +18,15 @@ namespace ServiceAccountingBL.Models.VisitBLL.Fetchers
             this.context = context;
         }
 
-        public async Task<ICollection<ResponseGetVisitDtoBL>> GetVisitAll()
+        public async Task<ICollection<ResponseGetVisitDtoBL>> GetVisitAll(CancellationToken token = default)
         {
-            if (!await context.Set<Visit>().AnyAsync())
+            if (!await context.Set<Visit>().AnyAsync(token))
                 return new List<ResponseGetVisitDtoBL>();
 
             var allVisits = await context.Set<Visit>()
                 .Include(x => x.Client)
                 .Include(x => x.Service)
-                .ToListAsync();
+                .ToListAsync(token);
 
             return ReadVisitMapperBL.Map<ICollection<ResponseGetVisitDtoBL>>(allVisits);
         }

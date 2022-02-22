@@ -3,9 +3,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ServiceAccountingBL.Exceptions;
 using System;
-using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
+using HttpStatusCode = System.Net.HttpStatusCode;
 
 namespace ServiceAccountingUI.HandlerMiddleware
 {
@@ -30,7 +30,14 @@ namespace ServiceAccountingUI.HandlerMiddleware
             }
             catch (Exception error)
             {
-                logger.LogError($"Error Message {error.Message}, StackTrace {error.StackTrace}");
+                if (error is TaskCanceledException)
+                {
+                    logger.LogInformation(error.Message);
+                }
+                else
+                {
+                    logger.LogError($"Error Message {error.Message}, StackTrace {error.StackTrace}");
+                }
 
                 await ErrorHandler(context, error, environment);
             }
@@ -47,6 +54,7 @@ namespace ServiceAccountingUI.HandlerMiddleware
                 ElementOutOfRangeException
                     or ElementNullReferenceException
                     or ElementNotAssignException => (int)HttpStatusCode.BadRequest,
+                TaskCanceledException => BaseModels.HttpStatusCode.ClientClosedRequest,
                 _ => (int)HttpStatusCode.InternalServerError
             };
 

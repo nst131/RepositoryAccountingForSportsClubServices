@@ -18,7 +18,8 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Mapper
                 Telephone = trainer.Telephone,
                 TypeSex = trainer.TypeSex.Name,
                 ServiceId = trainer.ServiceId ?? 0,
-                Service = trainer.Service?.Name ?? "Not assigned"
+                Service = trainer.Service?.Name ?? "Not assigned",
+                Email = trainer.Email
             };
         }
 

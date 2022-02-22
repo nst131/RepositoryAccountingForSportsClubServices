@@ -17,16 +17,5 @@ namespace ServiceAccountingUI.Models.SubscriptionUI.Mapper
                 ClientsId = dto.ClientsId
             };
         }
-
-        public static ResponseSubscriptionDtoUI Map<Result>(ResponseSubscriptionDtoBL dto)
-            where Result : ResponseSubscriptionDtoUI
-        {
-            return new()
-            {
-                Id = dto.Id,
-                Name = dto.Name,
-                AmountWorkouts = dto.AmountWorkouts + " lessons"
-            };
-        }
     }
 }

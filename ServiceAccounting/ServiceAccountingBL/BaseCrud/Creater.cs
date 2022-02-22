@@ -1,4 +1,5 @@
-﻿using ServiceAccountingBL.Interfaces;
+﻿using System.Threading;
+using ServiceAccountingBL.Interfaces;
 using ServiceAccountingDA.Context;
 using System.Threading.Tasks;
 using ServiceAccountingDA.Interfaces;
@@ -26,15 +27,15 @@ namespace ServiceAccountingBL.BaseCrud
             this.mapperCreate = mapperCreate;
         }
 
-        public async Task<DtoResponse> Create(CreateDto createDto)
+        public async Task<DtoResponse> Create(CreateDto createDto, CancellationToken token = default)
         {
             await validator.Validate(createDto);
 
             var entity = mapperCreate.Map(createDto);
 
-            var entry = await context.Set<Entity>().AddAsync(entity);
+            var entry = await context.Set<Entity>().AddAsync(entity, token);
 
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(token);
 
             return await mapperResponse.Map(entry.Entity);
         }

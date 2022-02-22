@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceAccountingBL.Exceptions;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using ServiceAccountingBL.Models.ClubCardBLL.Aggregator;
@@ -29,9 +30,9 @@ namespace ServiceAccountingUI.Controllers
         [HttpGet]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.AllAccess)]
-        public async Task<ActionResult<ICollection<ResponseGetClubCardDtoUI>>> GetAll()
+        public async Task<ActionResult<ICollection<ResponseGetClubCardDtoUI>>> GetAll(CancellationToken token)
         {
-            var allClubCardsDtoBL = await clubCardFetchersBL.GetClubCardAll();
+            var allClubCardsDtoBL = await clubCardFetchersBL.GetClubCardAll(token);
 
             if (allClubCardsDtoBL is null)
                 throw new ElementByIdNotFoundException();
@@ -43,12 +44,12 @@ namespace ServiceAccountingUI.Controllers
         [HttpPost]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.AllAccess)]
-        public async Task<ActionResult<ResponseGetClubCardDtoUI>> Get([FromRoute] AcceptGetClubCardDtoUI getClubCardDtoUI)
+        public async Task<ActionResult<ResponseGetClubCardDtoUI>> Get([FromRoute] AcceptGetClubCardDtoUI getClubCardDtoUI, CancellationToken token)
         {
             if(getClubCardDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var clubCardDtoBL = await clubCardCrudBL.GetClubCard(getClubCardDtoUI.Id);
+            var clubCardDtoBL = await clubCardCrudBL.GetClubCard(getClubCardDtoUI.Id, token);
 
             if (clubCardDtoBL is null)
                 throw new ElementByIdNotFoundException();
@@ -60,13 +61,13 @@ namespace ServiceAccountingUI.Controllers
         [HttpPost]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.Admin)]
-        public async Task<ActionResult<ResponseClubCardDtoUI>> Create([FromBody] AcceptCreateClubCardDtoUI createClubCardDtoUI)
+        public async Task<ActionResult<ResponseClubCardDtoUI>> Create([FromBody] AcceptCreateClubCardDtoUI createClubCardDtoUI, CancellationToken token)
         {
             if (createClubCardDtoUI is null)
                 throw new ElementNullReferenceException();
 
             var createClubCardBL = CreateClubCardMapperUI.Map<AcceptCreateClubCardDtoBL>(createClubCardDtoUI);
-            var clubCardDtoBL = await clubCardCrudBL.CreateClubCard(createClubCardBL);
+            var clubCardDtoBL = await clubCardCrudBL.CreateClubCard(createClubCardBL, token);
             var clubCardDtoUI = CreateClubCardMapperUI.Map<ResponseClubCardDtoUI>(clubCardDtoBL);
 
             return new JsonResult(clubCardDtoUI);
@@ -75,13 +76,13 @@ namespace ServiceAccountingUI.Controllers
         [HttpPut]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.Admin)]
-        public async Task<ActionResult<ResponseClubCardDtoUI>> Update([FromBody] AcceptUpdateClubCardDtoUI updateClubCardDtoUI)
+        public async Task<ActionResult<ResponseClubCardDtoUI>> Update([FromBody] AcceptUpdateClubCardDtoUI updateClubCardDtoUI, CancellationToken token)
         {
             if (updateClubCardDtoUI is null)
                 throw new ElementNullReferenceException();
 
             var updateClubCardBL = UpdateClubCardMapperUI.Map<AcceptUpdateClubCardDtoBL>(updateClubCardDtoUI);
-            var clubCardDtoBL = await clubCardCrudBL.UpdateClubCard(updateClubCardBL);
+            var clubCardDtoBL = await clubCardCrudBL.UpdateClubCard(updateClubCardBL, token);
             var clubCardDtoUI = UpdateClubCardMapperUI.Map<ResponseClubCardDtoUI>(clubCardDtoBL);
 
             return new JsonResult(clubCardDtoUI);
@@ -90,12 +91,12 @@ namespace ServiceAccountingUI.Controllers
         [HttpDelete]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.Admin)]
-        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteClubCardDtoUI deleteClubCardDtoUI)
+        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteClubCardDtoUI deleteClubCardDtoUI, CancellationToken token)
         {
             if(deleteClubCardDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            await clubCardCrudBL.DeleteClubCard(deleteClubCardDtoUI.Id);
+            await clubCardCrudBL.DeleteClubCard(deleteClubCardDtoUI.Id, token);
 
             return new JsonResult("Delete was success");
         }

@@ -24,5 +24,8 @@ namespace ServiceAccountingUI.Models.TrainerUI.Dto
 
         [JsonProperty(PropertyName = "service", Order = 6, Required = Required.Always)]
         public string Service { get; set; }
+
+        [JsonProperty(PropertyName = "email", Order = 7, Required = Required.Always)]
+        public string Email { get; set; }
     }
 }

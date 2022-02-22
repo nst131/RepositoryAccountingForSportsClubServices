@@ -8,10 +8,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Models;
+using RabbitMQLibrary;
 using ServiceAccountingBL;
 using ServiceAccountingDA;
 using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.HandlerMiddleware;
+using StackExchange.Redis;
 
 namespace ServiceAccountingUI
 {
@@ -26,6 +29,25 @@ namespace ServiceAccountingUI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddServiceBus(x =>
+                x.UseRabbitMq(new RabbitMqOptions
+                {
+                    User = Configuration["RabbitMQ:User"],
+                    Password = Configuration["RabbitMQ:Password"],
+                    Host = Configuration["RabbitMQ:Host"],
+                }));
+
+            services.AddStackExchangeRedisCache(option =>
+            {
+                option.ConfigurationOptions = new ConfigurationOptions()
+                {
+                    EndPoints = { "localhost", "6379" },
+                    AbortOnConnectFail = bool.Parse(Configuration["Redis:AbortOnConnectFail"]),
+                    ConnectRetry = int.Parse(Configuration["Redis:ConnectRetry"]),
+                    ConnectTimeout = int.Parse(Configuration["Redis:ConnectTimeout"])
+                };
+            });
+
             services.AddSwaggerGen(swagger =>
             {
                 swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "ServiceAccountingUI", Version = "v1" });
@@ -53,6 +75,7 @@ namespace ServiceAccountingUI
                 });
             });
 
+            services.AddRegistrationUI();
             services.AddRegistrationBL();
             services.AddRegistrationDA();
 
@@ -124,6 +147,8 @@ namespace ServiceAccountingUI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(s => s.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseAuthentication();
             app.UseAuthorization();

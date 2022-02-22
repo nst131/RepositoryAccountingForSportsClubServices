@@ -1,4 +1,5 @@
-﻿using ServiceAccountingBL.Interfaces;
+﻿using System.Threading;
+using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.PlaceBLL.Aggregator;
 using ServiceAccountingBL.Models.PlaceBLL.Dto;
 using ServiceAccountingDA.Models;
@@ -21,16 +22,16 @@ namespace ServiceAccountingBL.Models.PlaceBLL.Crud
             this.getPlace = aggregator.GetPlace;
         }
 
-        public async Task<ResponsePlaceDtoBL> CreatePlace(AcceptCreatePlaceDtoBL createPlaceDtoBL)
-            => await createPlace.Create(createPlaceDtoBL);
+        public async Task<ResponsePlaceDtoBL> CreatePlace(AcceptCreatePlaceDtoBL createPlaceDtoBL, CancellationToken token = default)
+            => await createPlace.Create(createPlaceDtoBL, token);
 
-        public async Task<ResponsePlaceDtoBL> UpdatePlace(AcceptUpdatePlaceDtoBL updatePlaceDtoBL)
-            => await updatePlace.Update(updatePlaceDtoBL);
+        public async Task<ResponsePlaceDtoBL> UpdatePlace(AcceptUpdatePlaceDtoBL updatePlaceDtoBL, CancellationToken token = default)
+            => await updatePlace.Update(updatePlaceDtoBL, token);
 
-        public async Task DeletePlace(int id)
-            => await removePlace.Remove(id);
+        public async Task DeletePlace(int id, CancellationToken token = default)
+            => await removePlace.Remove(id, token);
 
-        public async Task<ResponseGetPlaceDtoBL> GetPlace(int id)
-            => await getPlace.Get(id);
+        public async Task<ResponseGetPlaceDtoBL> GetPlace(int id, CancellationToken token = default)
+            => await getPlace.Get(id, token);
     }
 }

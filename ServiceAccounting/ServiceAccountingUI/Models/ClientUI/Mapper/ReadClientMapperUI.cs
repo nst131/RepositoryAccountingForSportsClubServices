@@ -16,7 +16,8 @@ namespace ServiceAccountingUI.Models.ClientUI.Mapper
                 Name = client.Name,
                 SerName = client.SerName,
                 Telephone = client.Telephone,
-                TypeSex = client.TypeSex
+                TypeSex = client.TypeSex,
+                Email = client.Email
             };
         }
 

@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
+using ServiceAccountingUI.Interfaces;
 
 namespace ServiceAccountingUI.Models.SubscriptionUI.Dto
 {
-    public class ResponseGetSubscriptionDtoUI
+    public class ResponseGetSubscriptionDtoUI : IRedisResponse
     {
         [JsonProperty(PropertyName = "id", Order = 0, Required = Required.Always)]
         public int Id { get; set; }

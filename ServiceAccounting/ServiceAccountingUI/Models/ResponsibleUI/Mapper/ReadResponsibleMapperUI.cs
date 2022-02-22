@@ -16,6 +16,7 @@ namespace ServiceAccountingUI.Models.ResponsibleUI.Mapper
                 Name = responsible.Name,
                 SerName = responsible.SerName,
                 Telephone = responsible.Telephone,
+                Email = responsible.Email
             };
         }
 

@@ -1,4 +1,5 @@
-﻿using API.AuthServices;
+﻿using System;
+using API.AuthServices;
 using API.BaseModels;
 using Application.Exceptions;
 using Application.User.CrudOperation;
@@ -11,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Threading.Tasks;
+using API.Models;
+using EFData.Models;
 
 namespace API.Controllers
 {
@@ -52,7 +55,7 @@ namespace API.Controllers
 
             var jwtToken = $"{JwtBearerDefaults.AuthenticationScheme}" + " " + $"{user.Token}";
 
-            return new JsonResult(new { Token = jwtToken });
+            return new JsonResult(new { Response = "Success", Token = jwtToken, request.Email, request.Role });
         }
 
         [AllowAnonymous]
@@ -81,7 +84,7 @@ namespace API.Controllers
             if (responseEntity is null)
                 throw new RestException(HttpStatusCode.Conflict, "Request is not valid, can not create Entity");
 
-            return new JsonResult(new { Response = responseEntity });
+            return new JsonResult(new { Response = responseEntity, Token = jwtToken, request.Email, Role = Roles.User.ToString()});
         }
 
         [Authorize(Policy = PolicyAuth.Admin)]
@@ -111,14 +114,28 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpGet("Logout")]
-        public ActionResult<string> Logout()
+        public async Task<ActionResult<string>> Logout()
         {
             var session = HttpContext.Session;
 
             if (session.IsAvailable)
                 session.Remove(Sessions.SessionUser.ToString());
 
+            await Task.CompletedTask;
+
             return new JsonResult(new { Response = HttpStatusCode.OK });
+        }
+
+        [Authorize(Policy = PolicyAuth.Admin)]
+        [HttpPost("DeleteUserByEmail")]
+        public async Task<ActionResult<string>> DeleteUserByEmail([FromBody] AcceptDeleteUserByEmail acceptDeleteUserByEmail)
+        {
+            if (acceptDeleteUserByEmail is null)
+                throw new NullReferenceException();
+
+            await crud.DeleteUser(acceptDeleteUserByEmail.Email);
+
+            return new JsonResult("Delete In Auth");
         }
     }
 }

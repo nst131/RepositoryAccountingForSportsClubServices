@@ -9,5 +9,6 @@
         public string TypeSex { get; set; }
         public int ServiceId { get; set; }
         public string Service { get; set; }
+        public string Email { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ServiceAccountingBL.Interfaces;
+﻿using System.Threading;
+using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.TrainerBLL.Aggregator;
 using ServiceAccountingBL.Models.TrainerBLL.Dto;
 using ServiceAccountingDA.Models;
@@ -21,16 +22,16 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Crud
             this.getTrainer = aggregator.GetTrainer;
         }
 
-        public async Task<ResponseTrainerDtoBL> CreateTrainer(AcceptCreateTrainerDtoBL createTrainerDtoBL)
-            => await createTrainer.Create(createTrainerDtoBL);
+        public async Task<ResponseTrainerDtoBL> CreateTrainer(AcceptCreateTrainerDtoBL createTrainerDtoBL, CancellationToken token = default)
+            => await createTrainer.Create(createTrainerDtoBL, token);
 
-        public async Task<ResponseTrainerDtoBL> UpdateTrainer(AcceptUpdateTrainerDtoBL updateTrainerDtoBL)
-            => await updateTrainer.Update(updateTrainerDtoBL);
+        public async Task<ResponseTrainerDtoBL> UpdateTrainer(AcceptUpdateTrainerDtoBL updateTrainerDtoBL, CancellationToken token = default)
+            => await updateTrainer.Update(updateTrainerDtoBL, token);
 
-        public async Task DeleteTrainer(int id)
-            => await removeTrainer.Remove(id);
+        public async Task DeleteTrainer(int id, CancellationToken token = default)
+            => await removeTrainer.Remove(id, token);
 
-        public async Task<ResponseGetTrainerDtoBL> GetTrainer(int id)
-            => await getTrainer.Get(id);
+        public async Task<ResponseGetTrainerDtoBL> GetTrainer(int id, CancellationToken token = default)
+            => await getTrainer.Get(id, token);
     }
 }

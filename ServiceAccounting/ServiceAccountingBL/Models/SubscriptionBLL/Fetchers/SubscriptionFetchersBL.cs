@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ServiceAccountingBL.Models.SubscriptionBLL.Dto;
@@ -16,14 +18,14 @@ namespace ServiceAccountingBL.Models.SubscriptionBLL.Fetchers
             this.context = context;
         }
 
-        public async Task<ICollection<ResponseGetSubscriptionDtoBL>> GetSubscriptionAll()
+        public async Task<ICollection<ResponseGetSubscriptionDtoBL>> GetSubscriptionAll(CancellationToken token = default)
         {
-            if (!await context.Set<ServiceAccountingDA.Models.Subscription>().AnyAsync())
+            if (!await context.Set<ServiceAccountingDA.Models.Subscription>().AnyAsync(token))
                 return new List<ResponseGetSubscriptionDtoBL>();
 
             var allSubscriptions = await context.Set<ServiceAccountingDA.Models.Subscription>()
                 .Include(x => x.Service)
-                .ToListAsync();
+                .ToListAsync(token);
 
             return ReadSubscriptionMapperBL.Map<ICollection<ResponseGetSubscriptionDtoBL>>(allSubscriptions);
 

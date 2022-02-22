@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ServiceAccountingBL.Models.TrainerBLL.Dto;
@@ -17,18 +19,17 @@ namespace ServiceAccountingBL.Models.TrainerBLL.Fetchers
             this.context = context;
         }
 
-        public async Task<ICollection<ResponseGetTrainerDtoBL>> GetTrainerAll()
+        public async Task<ICollection<ResponseGetTrainerDtoBL>> GetTrainerAll(CancellationToken token = default)
         {
-            if (!await context.Set<Trainer>().AnyAsync()) 
+            if (!await context.Set<Trainer>().AnyAsync(token)) 
                 return new List<ResponseGetTrainerDtoBL>();
 
             var allTrainers = await context.Set<Trainer>()
                 .Include(x => x.TypeSex)
                 .Include(x => x.Service)
-                .ToListAsync();
+                .ToListAsync(token);
 
             return ReadTrainerMapperBL.Map<ICollection<ResponseGetTrainerDtoBL>>(allTrainers);
-
         }
     }
 }

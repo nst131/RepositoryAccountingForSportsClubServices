@@ -18,7 +18,10 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using API.BaseModels;
+using API.EventsFromRabbitMQ;
 using Application.User.CrudOperation;
+using Models;
+using RabbitMQLibrary;
 
 namespace API
 {
@@ -33,6 +36,15 @@ namespace API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddServiceBus(x =>
+                x.UseRabbitMq(new RabbitMqOptions
+                {
+                    User = Configuration["RabbitMQ:User"],
+                    Password = Configuration["RabbitMQ:Password"],
+                    Host = Configuration["RabbitMQ:Host"],
+                })
+                    .Subscribe<DeleteUserModel, DeleteUserOnAuthEvent>(SubscriptionType.PublishSubscribe));
+
             services.AddControllers();
 
             services.AddMvc()

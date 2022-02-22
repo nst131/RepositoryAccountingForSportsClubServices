@@ -18,5 +18,8 @@ namespace ServiceAccountingUI.Models.ClientUI.Dto
 
         [JsonProperty(PropertyName = "typeSex", Order = 4, Required = Required.Always)]
         public string TypeSex { get; set; }
+
+        [JsonProperty(PropertyName = "email", Order = 5, Required = Required.Always)]
+        public string Email { get; set; }
     }
 }

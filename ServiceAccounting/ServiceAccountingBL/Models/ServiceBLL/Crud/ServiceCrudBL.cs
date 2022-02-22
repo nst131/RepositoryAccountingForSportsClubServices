@@ -1,4 +1,5 @@
-﻿using ServiceAccountingBL.Interfaces;
+﻿using System.Threading;
+using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.ServiceBLL.Aggregator;
 using ServiceAccountingBL.Models.ServiceBLL.Dto;
 using ServiceAccountingDA.Models;
@@ -21,16 +22,16 @@ namespace ServiceAccountingBL.Models.ServiceBLL.Crud
             this.getService = aggregator.GetService;
         }
 
-        public async Task<ResponseServiceDtoBL> CreateService(AcceptCreateServiceDtoBL createServiceDtoBL)
-            => await createService.Create(createServiceDtoBL);
+        public async Task<ResponseServiceDtoBL> CreateService(AcceptCreateServiceDtoBL createServiceDtoBL, CancellationToken token = default)
+            => await createService.Create(createServiceDtoBL, token);
 
-        public async Task<ResponseServiceDtoBL> UpdateService(AcceptUpdateServiceDtoBL updateServiceDtoBL)
-            => await updateService.Update(updateServiceDtoBL);
+        public async Task<ResponseServiceDtoBL> UpdateService(AcceptUpdateServiceDtoBL updateServiceDtoBL, CancellationToken token = default)
+            => await updateService.Update(updateServiceDtoBL, token);
 
-        public async Task DeleteService(int id)
-            => await removeService.Remove(id);
+        public async Task DeleteService(int id, CancellationToken token = default)
+            => await removeService.Remove(id, token);
 
-        public async Task<ResponseGetServiceDtoBL> GetService(int id)
-            => await getService.Get(id);
+        public async Task<ResponseGetServiceDtoBL> GetService(int id, CancellationToken token = default)
+            => await getService.Get(id, token);
     }
 }

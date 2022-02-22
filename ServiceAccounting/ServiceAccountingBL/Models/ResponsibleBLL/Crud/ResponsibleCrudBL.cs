@@ -1,4 +1,5 @@
-﻿using ServiceAccountingBL.Interfaces;
+﻿using System.Threading;
+using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.ResponsibleBLL.Aggregator;
 using ServiceAccountingBL.Models.ResponsibleBLL.Dto;
 using ServiceAccountingDA.Models;
@@ -21,16 +22,16 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Crud
             this.getResponsible = aggregator.GetResponsible;
         }
 
-        public async Task<ResponseResponsibleDtoBL> CreateResponsible(AcceptCreateResponsibleDtoBL createResponsibleDtoBL)
-            => await createResponsible.Create(createResponsibleDtoBL);
+        public async Task<ResponseResponsibleDtoBL> CreateResponsible(AcceptCreateResponsibleDtoBL createResponsibleDtoBL, CancellationToken token = default)
+            => await createResponsible.Create(createResponsibleDtoBL, token);
 
-        public async Task<ResponseResponsibleDtoBL> UpdateResponsible(AcceptUpdateResponsibleDtoBL updateResponsibleDtoBL)
-            => await updateResponsible.Update(updateResponsibleDtoBL);
+        public async Task<ResponseResponsibleDtoBL> UpdateResponsible(AcceptUpdateResponsibleDtoBL updateResponsibleDtoBL, CancellationToken token = default)
+            => await updateResponsible.Update(updateResponsibleDtoBL, token);
 
-        public async Task DeleteResponsible(int id)
-            => await removeResponsible.Remove(id);
+        public async Task DeleteResponsible(int id, CancellationToken token = default)
+            => await removeResponsible.Remove(id, token);
 
-        public async Task<ResponseGetResponsibleDtoBL> GetResponsible(int id)
-            => await getResponsible.Get(id);
+        public async Task<ResponseGetResponsibleDtoBL> GetResponsible(int id, CancellationToken token = default)
+            => await getResponsible.Get(id, token);
     }
 }

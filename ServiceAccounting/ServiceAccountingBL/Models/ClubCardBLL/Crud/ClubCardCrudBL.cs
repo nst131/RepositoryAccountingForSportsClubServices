@@ -1,4 +1,5 @@
-﻿using ServiceAccountingBL.Interfaces;
+﻿using System.Threading;
+using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.ClubCardBLL.Aggregator;
 using ServiceAccountingBL.Models.ClubCardBLL.Dto;
 using ServiceAccountingDA.Models;
@@ -21,16 +22,16 @@ namespace ServiceAccountingBL.Models.ClubCardBLL.Crud
             this.getClubCard = aggregator.GetClubCard;
         }
 
-        public async Task<ResponseClubCardDtoBL> CreateClubCard(AcceptCreateClubCardDtoBL createClubCardDtoBL)
-            => await createClubCard.Create(createClubCardDtoBL);
+        public async Task<ResponseClubCardDtoBL> CreateClubCard(AcceptCreateClubCardDtoBL createClubCardDtoBL, CancellationToken token = default)
+            => await createClubCard.Create(createClubCardDtoBL, token);
 
-        public async Task<ResponseClubCardDtoBL> UpdateClubCard(AcceptUpdateClubCardDtoBL updateClubCardDtoBL)
-            => await updateClubCard.Update(updateClubCardDtoBL);
+        public async Task<ResponseClubCardDtoBL> UpdateClubCard(AcceptUpdateClubCardDtoBL updateClubCardDtoBL, CancellationToken token = default)
+            => await updateClubCard.Update(updateClubCardDtoBL, token);
 
-        public async Task DeleteClubCard(int id)
-            => await removeClubCard.Remove(id);
+        public async Task DeleteClubCard(int id, CancellationToken token = default)
+            => await removeClubCard.Remove(id, token);
 
-        public async Task<ResponseGetClubCardDtoBL> GetClubCard(int id)
-            => await getClubCard.Get(id);
+        public async Task<ResponseGetClubCardDtoBL> GetClubCard(int id, CancellationToken token = default)
+            => await getClubCard.Get(id, token);
     }
 }
