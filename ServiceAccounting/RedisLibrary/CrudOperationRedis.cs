@@ -20,7 +20,13 @@ namespace RedisLibrary
             var obj = await Task.Factory.StartNew(() =>
             {
                 var serealizedSubscription = JsonConvert.SerializeObject(elements);
+<<<<<<< HEAD
 
+=======
+                //var option = new DistributedCacheEntryOptions()
+                //    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(60))
+                //    .SetSlidingExpiration(TimeSpan.FromMinutes(30));
+>>>>>>> e2e7d5f799bf1e64a48ebab6991bdb5766c0d044
                 return new { serealizedSubscription, option };
             }, token);
 
