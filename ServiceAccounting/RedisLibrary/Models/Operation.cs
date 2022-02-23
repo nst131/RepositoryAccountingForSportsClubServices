@@ -1,4 +1,4 @@
-﻿namespace ServiceAccountingUI.BaseModels
+﻿namespace RedisLibrary.Models
 {
     public enum Operation
     {

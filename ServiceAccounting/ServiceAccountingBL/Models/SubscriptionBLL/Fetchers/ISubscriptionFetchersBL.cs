@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using ServiceAccountingBL.AttributeValidation;
+﻿using RedisLibrary.Attributes;
 using ServiceAccountingBL.BaseModels;
 using ServiceAccountingBL.Models.SubscriptionBLL.Dto;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ServiceAccountingBL.Models.SubscriptionBLL.Fetchers
 {

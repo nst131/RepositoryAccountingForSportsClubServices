@@ -1,16 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using RedisLibrary;
 using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Models.SubscriptionBLL.Aggregator;
 using ServiceAccountingBL.Models.SubscriptionBLL.Crud;
 using ServiceAccountingBL.Models.SubscriptionBLL.Fetchers;
+using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.Models.SubscriptionUI.Dto;
 using ServiceAccountingUI.Models.SubscriptionUI.Request;
-using ServiceAccountingUI.Redis;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using ServiceAccountingUI.BaseModels;
 
 namespace ServiceAccountingUI.Controllers
 {
@@ -20,11 +20,11 @@ namespace ServiceAccountingUI.Controllers
     {
         private readonly ISubscriptionCrudBL subscriptionCrudBL;
         private readonly IRedisGetElements<ResponseGetSubscriptionDtoUI, ISubscriptionFetchersBL> redisGetElement;
-        private readonly IRedisAddOrUpdateElement<ResponseGetSubscriptionDtoUI, ISubscriptionCrudBL> redisAddOrUpdateElement;
+        private readonly IModifierElementsInRedis<ResponseGetSubscriptionDtoUI, ISubscriptionCrudBL> redisAddOrUpdateElement;
 
         public SubscriptionController(IAggregatorSubscriptionBL aggregatorSubscriptionBL,
             IRedisGetElements<ResponseGetSubscriptionDtoUI, ISubscriptionFetchersBL> redisGetElement,
-            IRedisAddOrUpdateElement<ResponseGetSubscriptionDtoUI, ISubscriptionCrudBL> redisAddOrUpdateElement)
+            IModifierElementsInRedis<ResponseGetSubscriptionDtoUI, ISubscriptionCrudBL> redisAddOrUpdateElement)
         {
             this.subscriptionCrudBL = aggregatorSubscriptionBL.SubscriptionCrudBL;
             this.redisGetElement = redisGetElement;
@@ -52,7 +52,7 @@ namespace ServiceAccountingUI.Controllers
             if (acceptGetSubscriptionDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var response = await SubscriptionRequest.Get(acceptGetSubscriptionDtoUI, 
+            var response = await SubscriptionRequest.Get(acceptGetSubscriptionDtoUI,
                 subscriptionCrudBL, token);
 
             return new JsonResult(response);
@@ -67,7 +67,7 @@ namespace ServiceAccountingUI.Controllers
             if (createSubscriptionDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var response = await this.redisAddOrUpdateElement.TryChangeRedisComponentsAsync(createSubscriptionDtoUI, 
+            var response = await this.redisAddOrUpdateElement.TryChangeRedisComponentsAsync(createSubscriptionDtoUI,
                 SubscriptionRequest.Add, token);
 
             return new JsonResult(response);
@@ -82,7 +82,7 @@ namespace ServiceAccountingUI.Controllers
             if (updateSubscriptionDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var response = await this.redisAddOrUpdateElement.TryChangeRedisComponentsAsync(updateSubscriptionDtoUI, 
+            var response = await this.redisAddOrUpdateElement.TryChangeRedisComponentsAsync(updateSubscriptionDtoUI,
                 SubscriptionRequest.Update, token);
 
             return new JsonResult(response);
