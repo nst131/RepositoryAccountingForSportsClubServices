@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using API.BaseModels;
@@ -120,11 +121,11 @@ namespace API
             services.AddSwaggerGen(swagger =>
             {
                 swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "AuthAPI", Version = "v1" });
-                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                swagger.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme()
                 {
-                    Name = "Authorization",
+                    Name = nameof(Authorization),
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
                 });
@@ -136,7 +137,7 @@ namespace API
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
+                                Id = JwtBearerDefaults.AuthenticationScheme
                             }
                         },
                         Array.Empty<string>()

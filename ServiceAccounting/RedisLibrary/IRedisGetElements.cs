@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using ServiceAccountingUI.Interfaces;
 
-namespace ServiceAccountingUI.Redis
+namespace RedisLibrary
 {
     public interface IRedisGetElements<Response, Fetchers>
         where Response : class, IRedisResponse

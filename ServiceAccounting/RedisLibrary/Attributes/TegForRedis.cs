@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ServiceAccountingBL.AttributeValidation
+namespace RedisLibrary.Attributes
 {
     [AttributeUsage(AttributeTargets.Interface, Inherited = false, AllowMultiple = false)]
     public class TegForRedis : Attribute

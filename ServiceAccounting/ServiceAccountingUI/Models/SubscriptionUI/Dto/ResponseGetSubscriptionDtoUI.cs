@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using ServiceAccountingUI.Interfaces;
+using RedisLibrary;
 
 namespace ServiceAccountingUI.Models.SubscriptionUI.Dto
 {

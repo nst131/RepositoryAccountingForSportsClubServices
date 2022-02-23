@@ -1,4 +1,4 @@
-﻿namespace ServiceAccountingUI.Interfaces
+﻿namespace RedisLibrary
 {
     public interface IRedisResponse
     {

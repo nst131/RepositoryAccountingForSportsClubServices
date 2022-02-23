@@ -1,7 +1,7 @@
-﻿using ServiceAccountingUI.BaseModels;
-using System;
+﻿using System;
+using RedisLibrary.Models;
 
-namespace ServiceAccountingUI.CustomAttributes
+namespace RedisLibrary.Attributes
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
     public sealed class ViewOperation : Attribute
