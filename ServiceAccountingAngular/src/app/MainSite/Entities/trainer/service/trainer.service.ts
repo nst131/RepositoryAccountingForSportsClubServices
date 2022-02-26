@@ -9,7 +9,6 @@ import { Trainer } from "../models/trainer.model";
 @Injectable()
 export class TrainerService {
     private url = "https://localhost:5001/v1/Trainer";
-    private urlAuth = "https://localhost:5002/api/Auth/DeleteUserByEmail";
 
     constructor(private http: HttpClient) { }
 
@@ -43,23 +42,7 @@ export class TrainerService {
         return this.http.put<any>(this.url + '/' + 'Update', body, { headers: myHeaders });
     }
 
-    public deleteTrainer(id: number, email: string): Array<Observable<any>> {
-        let arrayObservable: Array<Observable<any>> = [];
-        arrayObservable.push(this.deleteTrainerOnAuth(email));
-        arrayObservable.push(this.deleteTrainerOnMain(id));
-
-        return arrayObservable;
-    }
-
-    private deleteTrainerOnAuth(email: string): Observable<any> {
-        const myHeaders = new HttpHeaders()
-            .set("Content-Type", "application/json")
-            .set(HeadersEnum.Authorization, AuthActivateService.getSession()?.token ?? "");
-        const body = JSON.stringify({ email: email });
-        return this.http.post(this.urlAuth, body, { headers: myHeaders });
-    }
-
-    private deleteTrainerOnMain(id: number): Observable<any> {
+    public deleteTrainer(id: number): Observable<any> {
         const myHeaders = new HttpHeaders()
             .set("Content-Type", "application/json")
             .set(HeadersEnum.Authorization, AuthActivateService.getSession()?.token ?? "");

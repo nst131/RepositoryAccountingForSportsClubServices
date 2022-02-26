@@ -55,7 +55,7 @@ namespace API.Controllers
 
             var jwtToken = $"{JwtBearerDefaults.AuthenticationScheme}" + " " + $"{user.Token}";
 
-            return new JsonResult(new { Response = "Success", Token = jwtToken, request.Email, request.Role });
+            return new JsonResult(new { Response = "Success", Token = jwtToken, user.Email, user.Role });
         }
 
         [AllowAnonymous]
@@ -84,7 +84,7 @@ namespace API.Controllers
             if (responseEntity is null)
                 throw new RestException(HttpStatusCode.Conflict, "Request is not valid, can not create Entity");
 
-            return new JsonResult(new { Response = responseEntity, Token = jwtToken, request.Email, Role = Roles.User.ToString()});
+            return new JsonResult(new { Response = responseEntity, Token = jwtToken, request.Email, Role = Roles.User.ToString() });
         }
 
         [Authorize(Policy = PolicyAuth.Admin)]

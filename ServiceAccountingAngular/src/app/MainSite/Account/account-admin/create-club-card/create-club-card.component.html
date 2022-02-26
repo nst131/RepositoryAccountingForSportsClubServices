@@ -1,0 +1,51 @@
+<div style=" margin-top: 20px;">
+      <h1 style="text-align: center;">Create ClubCard</h1>
+
+      <form style="width: 100%;" novalidate [formGroup]="editClubCardForm" (ngSubmit)="onSubmit()">
+            <div style="display: flex; flex-direction: column;">
+
+                  <label for="Namr">Name</label>
+                  <input class="form-control" type="text" name="Name" formControlName="name" />
+                  <div *ngIf="editClubCardForm.controls['name'].invalid && editClubCardForm.controls['name'].touched">
+                        <p class="alert" *ngIf="editClubCardForm.controls['name'].errors?.['required']">
+                              Обязательное поле.
+                        </p>
+                        <p class="alert" *ngIf="editClubCardForm.controls['name'].errors?.['minlength']">
+                              Длина строки должна быть не менее {{
+                              editClubCardForm.controls['name'].errors?.['minlength'].requiredLength }} символов.
+                              Сейчас {{ editClubCardForm.controls['name'].errors?.['minlength'].actualLength }}
+                        </p>
+                  </div>
+
+                  <label for="price">Price</label>
+                  <input class="form-control" type="text" name="price" formControlName="price" />
+                  <div *ngIf="editClubCardForm.controls['price'].invalid && editClubCardForm.controls['price'].touched">
+                        <p class="alert" *ngIf="editClubCardForm.controls['price'].errors?.['required']">
+                              Обязательное поле.
+                        </p>
+                        <p class="alert" *ngIf="editClubCardForm.controls['price'].errors?.['pattern']">
+                              Поле должно целое
+                        </p>
+                  </div>
+
+                  <label for="durationInMinutes">Duration In Days</label>
+                  <input class="form-control" type="text" name="durationInDays" formControlName="durationInDays" />
+                  <div
+                        *ngIf="editClubCardForm.controls['durationInDays'].invalid && editClubCardForm.controls['durationInDays'].touched">
+                        <p class="alert" *ngIf="editClubCardForm.controls['durationInDays'].errors?.['required']">
+                              Обязательное поле.
+                        </p>
+                        <p class="alert" *ngIf="editClubCardForm.controls['durationInDays'].errors?.['pattern']">
+                              Поле должно быть целое
+                        </p>
+                  </div>
+
+                  <label for="serviceId">Services</label>
+                  <select class="form-select" name="serviceId" style="margin-top: 10px;" formControlName="serviceId">
+                        <option *ngFor="let serve of allServes" [value]="serve.id">{{serve.name}}</option>
+                  </select>
+
+                  <input class="btn btn-primary" style="margin-top: 10px;" type="submit" [disabled]="editClubCardForm.invalid" value="Create">
+            </div>
+      </form>
+</div>

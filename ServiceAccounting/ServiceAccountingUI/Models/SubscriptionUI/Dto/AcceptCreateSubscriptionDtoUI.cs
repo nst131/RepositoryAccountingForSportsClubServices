@@ -22,7 +22,7 @@ namespace ServiceAccountingUI.Models.SubscriptionUI.Dto
         [Range(1, int.MaxValue, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]
         public int ServiceId { get; set; }
 
-        [JsonProperty(PropertyName = "clientsId", Order = 4, Required = Required.Always)]
-        public ICollection<int> ClientsId { get; set; }
+        [JsonProperty(PropertyName = "clientsId", Order = 4, Required = Required.Default)]
+        public ICollection<int>? ClientsId { get; set; }
     }
 }

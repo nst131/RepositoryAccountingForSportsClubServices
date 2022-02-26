@@ -1,0 +1,59 @@
+<div>
+      <h1 style="text-align: center; margin-top: 20px;">Registration</h1>
+
+      <form style="width: 100%;" novalidate [formGroup]="registrationAsAdmin" (ngSubmit)="onSubmit()">
+            <div style="display: flex; flex-direction: column;">
+                  <label for="name">Name</label>
+                  <input class="form-control" type="text" name="name" formControlName="name" />
+                  <div *ngIf="registrationAsAdmin.controls['name'].invalid && registrationAsAdmin.controls['name'].touched">
+                        <p class="alert" *ngIf="registrationAsAdmin.controls['name'].errors?.['required']">
+                              Обязательное поле.
+                        </p>
+                        <p class="alert" *ngIf="registrationAsAdmin.controls['name'].errors?.['minlength']">
+                              Длина строки должна быть не менее
+                              {{registrationAsAdmin.controls['name'].errors?.['minlength'].requiredLength }} символов.
+                              Сейчас {{ registrationAsAdmin.controls['name'].errors?.['minlength'].actualLength }}
+                        </p>
+                  </div>
+      
+                  <label for="email">Email</label>
+                  <input class="form-control" type="text" name="email" formControlName="email" />
+                  <div *ngIf="registrationAsAdmin.controls['email'].invalid && registrationAsAdmin.controls['email'].touched">
+                        <p class="alert" *ngIf="registrationAsAdmin.controls['email'].errors?.['required']">
+                              Обязательное поле.
+                        </p>
+                        <p class="alert" *ngIf="registrationAsAdmin.controls['email'].errors?.['minlength']">
+                              Длина строки должна быть не менее
+                              {{registrationAsAdmin.controls['email'].errors?.['minlength'].requiredLength }} символов.
+                              Сейчас {{ registrationAsAdmin.controls['email'].errors?.['minlength'].actualLength }}
+                        </p>
+                        <p class="alert" *ngIf="registrationAsAdmin.controls['email'].errors?.['emailValidator']">
+                              Не правильный формат
+                        </p>
+                  </div>
+      
+                  <label for="password">Password</label>
+                  <input class="form-control" type="password" name="password" formControlName="password" />
+                  <div
+                        *ngIf="registrationAsAdmin.controls['password'].invalid && registrationAsAdmin.controls['password'].touched">
+                        <p class="alert" *ngIf="registrationAsAdmin.controls['password'].errors?.['required']">
+                              Обязательное поле.
+                        </p>
+                  </div>
+      
+                  <label for="role">Role</label>
+                  <select class="form-select" name="role" style="margin-top: 10px;" formControlName="role">
+                        <option *ngFor="let role of roles" [value]="role">{{role}}</option>
+                  </select>
+      
+                  <input class="btn btn-primary" style="margin-top: 10px;" type="submit" [disabled]="registrationAsAdmin.invalid"
+                        value="Registration">
+            </div>
+      </form>
+      
+      <div *ngIf="showError">
+            <p class="alert">
+                  {{messageError}}
+            </p>
+      </div>
+</div>

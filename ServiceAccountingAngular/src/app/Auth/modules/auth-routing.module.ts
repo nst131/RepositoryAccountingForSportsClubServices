@@ -4,24 +4,28 @@ import { PageNotFoundComponentComponent } from 'src/app/page-not-found-component
 import { AuthComponent } from '../auth/auth.component';
 import { LoginComponent } from '../login/login.component';
 import { RegistrationComponent } from '../registration/registration.component';
+import { AuthSiteGuardService } from '../services/guard.service';
 
 const routes: Routes = [
-  {path: '', component: AuthComponent, 
-  children: [
-    {
-      path: '', redirectTo: 'Login', pathMatch:'full'
-    },
-    {
-      path: 'Login', component: LoginComponent, outlet:'auth'
-    },
-    {
-      path:'Registration', component: RegistrationComponent, outlet: 'auth'
-    },
-    {
-      path:'**', component: PageNotFoundComponentComponent, outlet: 'auth'
-    }
-  ]},
- 
+  {
+    path: '', component: AuthComponent,
+    canActivateChild: [AuthSiteGuardService],
+    children: [
+      {
+        path: '', redirectTo: 'Login', pathMatch: 'full'
+      },
+      {
+        path: 'Login', component: LoginComponent, outlet: 'auth'
+      },
+      {
+        path: 'Registration', component: RegistrationComponent, outlet: 'auth'
+      },
+      {
+        path: '**', component: PageNotFoundComponentComponent, outlet: 'auth'
+      }
+    ]
+  },
+
 ];
 
 @NgModule({

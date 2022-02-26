@@ -4,7 +4,7 @@
     <div style="display: flex; flex-direction: column;">
 
         <label for="serNamr">SerName</label>
-        <input type="text" name="serName" formControlName="serName"/>
+        <input class="form-control" type="text" name="serName" formControlName="serName"/>
         <div *ngIf="editUserForm.controls['serName'].invalid && editUserForm.controls['serName'].touched">
             <p class="alert" *ngIf="editUserForm.controls['serName'].errors?.['required']">
                 Обязательное поле.
@@ -16,7 +16,7 @@
         </div>
 
         <label for="telephone">Telephone</label>
-        <input type="text" name="telephone" formControlName="telephone" />
+        <input class="form-control" type="text" name="telephone" formControlName="telephone" />
         <div *ngIf="editUserForm.controls['telephone'].invalid && editUserForm.controls['telephone'].touched">
             <p class="alert" *ngIf="editUserForm.controls['telephone'].errors?.['required']">
                 Обязательное поле.
@@ -27,10 +27,10 @@
         </div>
 
         
-        <select style="margin-top: 10px;" formControlName="typeSexId">
+        <select class="form-select" style="margin-top: 10px;" formControlName="typeSexId">
             <option *ngFor="let typeSex of viewsTypeOfSex" [value]="typeSex.value" >{{typeSex.name}}</option>
         </select>
 
-        <input style="margin-top: 10px;" type="submit" [disabled]="editUserForm.invalid" value="Edit"> 
+        <input class="btn btn-primary" style="margin-top: 10px;" type="submit" [disabled]="editUserForm.invalid" value="Edit"> 
     </div>
 </form>

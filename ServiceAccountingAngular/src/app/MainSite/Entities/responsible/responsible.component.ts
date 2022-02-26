@@ -51,23 +51,16 @@ export class ResponsibleComponent implements OnInit, OnDestroy {
     this.subscription.push(subLoadResponsible);
   }
 
-  public deleteResponsible(id: number, email: string): void {
-    this.responsibleService.deleteResponsible(id, email.toLowerCase()).forEach((x, i, array) => {
-      if (i == array.length - 1) {
-        let subDeleteOnMain: Subscription = x.subscribe({
-          next: () => { this.loadResponsibles() },
-          error: () => alert("Don't have access"),
-        })
-        this.subscription.push(subDeleteOnMain);
-      }
-      else {
-        let subDeleteOnAuth: Subscription = x.subscribe({
-          next: () => { },
-          error: () => { throw new Error("Can't delete on AuthServer") }
-        });
-        this.subscription.push(subDeleteOnAuth);
-      }
-    });
+  public deleteResponsible(id: number): void {
+    let deleteResponsibleSubscription = this.responsibleService.deleteResponsible(id).subscribe({
+      next: () => { this.loadResponsibles() },
+      error: (err) => {
+        if (err.status = '403')
+        alert("Don't have access")
+      },
+    })
+
+    this.subscription.push(deleteResponsibleSubscription);
   }
 
   public ngOnInit(): void {

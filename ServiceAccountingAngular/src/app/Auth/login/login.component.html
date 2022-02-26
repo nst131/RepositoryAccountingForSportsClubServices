@@ -2,8 +2,9 @@
 
 <form style="width: 100%;" novalidate [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div style="display: flex; flex-direction: column;">
+
         <label for="email">Email</label>
-        <input type="text" name="email" formControlName="email"/>
+        <input class="form-control" type="text" name="email" formControlName="email"/>
         <div *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched">
             <p class="alert" *ngIf="loginForm.controls['email'].errors?.['required']">
                 Обязательное поле.
@@ -16,17 +17,16 @@
                 Не правильный формат
             </p>
         </div>
+
         <label for="password">Password</label>
-        <input type="password" name="password" formControlName="password" />
+        <input class="form-control" type="password" name="password" formControlName="password" />
         <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched">
             <p class="alert" *ngIf="loginForm.controls['password'].errors?.['required']">
                 Обязательное поле.
             </p>
         </div>
-        <select style="margin-top: 10px;" formControlName="role">
-            <option *ngFor="let role of roles" [value]="role" >{{role}}</option>
-        </select>
-        <input style="margin-top: 10px;" type="submit" [disabled]="loginForm.invalid" value="SignIn"> 
+
+        <input class="btn btn-primary" style="margin-top: 10px;" type="submit" [disabled]="loginForm.invalid" value="SignIn"> 
     </div>
 </form>
 

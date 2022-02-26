@@ -12,6 +12,7 @@ import { AuthComponent } from '../auth/auth.component';
     AuthComponent,
     LoginComponent,
     RegistrationComponent ,
+    
   ],
   imports: [
     AuthRoutingModule,

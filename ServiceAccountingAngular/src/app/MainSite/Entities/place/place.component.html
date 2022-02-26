@@ -1,0 +1,24 @@
+<table class="table table-striped">
+      <thead>
+          <tr>
+              <td *ngFor="let name of placesName">{{name}}</td>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let place of places">
+              <ng-template [ngTemplateOutlet]="loadTemplate(place)" [ngTemplateOutletContext]="{ $implicit: place}">
+  
+              </ng-template>
+          </tr>
+      </tbody>
+  </table>
+  
+  <ng-template #readOnlyTemplate let-place>
+      <td *ngFor="let value of placeKeys">{{value}}</td>
+      <td>
+          <input type="button" value="Change" class="btn btn-primary" (click)="redirectOnEditPlace(place.id)" />
+      </td>
+      <td>
+          <input type="button" value="Delete" class="btn btn-danger" (click)="deletePlace(place.id)" />
+      </td>
+  </ng-template>

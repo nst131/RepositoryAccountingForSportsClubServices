@@ -50,7 +50,6 @@ export class EditUserComponent implements OnInit, OnDestroy {
     }
     this.viewsTypeOfSex = this.loadTypeOfSex.GetViewsTypeOfSex();
     let subGetUser: Subscription = this.userService.getUser(this.id).subscribe((data: User) => {
-      //console.log(data);////////////////////////////////////////////////////////////////////////////////////////////////////////////
       this.user = data;
       this.currentTypeOfSex = this.viewsTypeOfSex.filter(x => x.name == this.user.typeSex)[0].value;
 

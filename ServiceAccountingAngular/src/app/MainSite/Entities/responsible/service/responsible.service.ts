@@ -9,7 +9,6 @@ import { Responsible } from "../models/responsible.model";
 @Injectable()
 export class ResponsibleService {
     private url = "https://localhost:5001/v1/Responsible";
-    private urlAuth = "https://localhost:5002/api/Auth/DeleteUserByEmail";
 
     constructor(private http: HttpClient) { }
 
@@ -43,23 +42,7 @@ export class ResponsibleService {
         return this.http.put<any>(this.url + '/' + 'Update', body, { headers: myHeaders });
     }
 
-    public deleteResponsible(id: number, email: string): Array<Observable<any>> {
-        let arrayObservable: Array<Observable<any>> = [];
-        arrayObservable.push(this.deleteResponsibleOnAuth(email));
-        arrayObservable.push(this.deleteResponsibleOnMain(id));
-
-        return arrayObservable;
-    }
-
-    private deleteResponsibleOnAuth(email: string): Observable<any> {
-        const myHeaders = new HttpHeaders()
-            .set("Content-Type", "application/json")
-            .set(HeadersEnum.Authorization, AuthActivateService.getSession()?.token ?? "");
-        const body = JSON.stringify({ email: email });
-        return this.http.post(this.urlAuth, body, { headers: myHeaders });
-    }
-
-    private deleteResponsibleOnMain(id: number): Observable<any> {
+    public deleteResponsible(id: number): Observable<any> {
         const myHeaders = new HttpHeaders()
             .set("Content-Type", "application/json")
             .set(HeadersEnum.Authorization, AuthActivateService.getSession()?.token ?? "");

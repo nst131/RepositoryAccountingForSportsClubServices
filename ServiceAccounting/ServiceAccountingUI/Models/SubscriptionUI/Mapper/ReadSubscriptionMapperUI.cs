@@ -14,8 +14,8 @@ namespace ServiceAccountingUI.Models.SubscriptionUI.Mapper
             {
                 Id = dto.Id,
                 Name = dto.Name,
-                AmountWorkouts = dto.AmountWorkouts + " lessons",
-                Price = dto.Price + " rub",
+                AmountWorkouts = dto.AmountWorkouts.ToString(),
+                Price = dto.Price.ToString(),
                 ServiceName = dto.ServiceName
             };
         }

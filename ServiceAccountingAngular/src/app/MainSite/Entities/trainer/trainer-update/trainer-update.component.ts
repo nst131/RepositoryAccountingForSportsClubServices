@@ -57,11 +57,15 @@ export class TrainerUpdateComponent implements OnInit, OnDestroy {
       next: (data: Trainer) => {
         this.trainer = data;
         let currentTypeOfSex: number = this.viewsTypeOfSex.filter(x => x.name == this.trainer.typeSex)[0].value;
-
         this.editTrainerForm.controls['serName'].setValue(this.trainer.serName);
         this.editTrainerForm.controls['telephone'].setValue(this.trainer.telephone);
         this.editTrainerForm.controls['typeSexId'].setValue(currentTypeOfSex);
-        this.editTrainerForm.controls['serviceId'].setValue(this.trainer.serviceId)
+        if(this.trainer.serviceId == 0){
+          this.editTrainerForm.controls['serviceId'].setValue(1)  
+        }
+        else{
+          this.editTrainerForm.controls['serviceId'].setValue(this.trainer.serviceId)
+        }
       },
       error: () => {this.redirectOnPageException()}
     });

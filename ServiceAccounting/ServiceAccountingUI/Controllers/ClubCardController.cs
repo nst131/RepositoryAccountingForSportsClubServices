@@ -41,7 +41,7 @@ namespace ServiceAccountingUI.Controllers
             return new JsonResult(allClubCardDtoUI);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetClubCardDtoUI>> Get([FromRoute] AcceptGetClubCardDtoUI getClubCardDtoUI, CancellationToken token)

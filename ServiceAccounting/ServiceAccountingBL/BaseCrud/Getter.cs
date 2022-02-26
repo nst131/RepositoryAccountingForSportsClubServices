@@ -27,14 +27,16 @@ namespace ServiceAccountingBL.BaseCrud
             if (id < 0)
                 throw new ElementOutOfRangeException($"Id {nameof(Entity)} is less 0");
 
-            if(await Task.Factory.StartNew(() =>
+            var isExist = await Task.Factory.StartNew(() =>
             {
                 if (token.IsCancellationRequested)
                     throw new TaskCanceledException();
 
                 return context.Set<Entity>().AsNoTracking().ToList().Exists(x => x.Id == id);
 
-            }, token) is false)
+            }, token);
+
+            if (isExist is false)
                 throw new ElementByIdNotFoundException($"{nameof(Entity)} by Id not Found");
 
             return await mapperResponse.Map(id);

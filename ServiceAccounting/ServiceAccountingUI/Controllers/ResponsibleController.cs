@@ -49,7 +49,7 @@ namespace ServiceAccountingUI.Controllers
             return new JsonResult(allResponsibleDtoUI);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetResponsibleDtoUI>> Get([FromRoute] AcceptGetResponsibleDtoUI getResponsibleDtoUI, CancellationToken token)
@@ -116,7 +116,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        [Authorize(Policy = PolicyService.User)]
+        [Authorize(Policy = PolicyService.Responsible)]
         public async Task<int?> GetIdByEmail([FromBody] AcceptGetResponsibleIdByEmail acceptGetIdByEmail, CancellationToken token)
         {
             var id = await this.commonFetchers.GetIdByEmail<Responsible>(acceptGetIdByEmail.Email, token);

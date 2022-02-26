@@ -9,7 +9,6 @@ import { User } from "../models/user.model";
 @Injectable()
 export class UserService {
     private url = "https://localhost:5001/v1/User";
-    private urlAuth = "https://localhost:5002/api/Auth/DeleteUserByEmail";
 
     constructor(private http: HttpClient) { }
 
@@ -18,6 +17,14 @@ export class UserService {
             .set("Content-Type", "application/json")
             .set(HeadersEnum.Authorization, AuthActivateService.getSession()?.token ?? "");
         return this.http.get<Array<User>>(this.url + '/' + 'GetAll', { headers: myHeaders });
+    }
+
+    public getUserIdByStorageEmail(): Observable<any>{
+        let email: string = AuthActivateService.getSession()?.email ?? "";
+        if(email == ""){
+            throw new Error("Do not load email");
+        }
+        return this.getUserIdByEmail(email);
     }
 
     public getUserIdByEmail(email: string): Observable<any> {
@@ -43,23 +50,7 @@ export class UserService {
         return this.http.put<any>(this.url + '/' + 'Update', body, { headers: myHeaders });
     }
 
-    public deleteUser(id: number, email: string): Array<Observable<any>> {
-        let arrayObservable: Array<Observable<any>> = [];
-        arrayObservable.push(this.deleteUserOnAuth(email));
-        arrayObservable.push(this.deleteUserOnMain(id));
-
-        return arrayObservable;
-    }
-
-    private deleteUserOnAuth(email: string): Observable<any> {
-        const myHeaders = new HttpHeaders()
-            .set("Content-Type", "application/json")
-            .set(HeadersEnum.Authorization, AuthActivateService.getSession()?.token ?? "");
-        const body = JSON.stringify({ email: email });
-        return this.http.post(this.urlAuth, body, { headers: myHeaders });
-    }
-
-    private deleteUserOnMain(id: number): Observable<any> {
+    public deleteUser(id: number): Observable<any> {
         const myHeaders = new HttpHeaders()
             .set("Content-Type", "application/json")
             .set(HeadersEnum.Authorization, AuthActivateService.getSession()?.token ?? "");

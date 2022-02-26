@@ -27,7 +27,7 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   private loadUsers(): void {
-    let subLoadTrainer: Subscription = this.userService.getUsers().subscribe({
+    let subLoadUsers: Subscription = this.userService.getUsers().subscribe({
       next: (data: Array<User>) => {
         this.usersName = [];
         this.users = data;
@@ -47,29 +47,19 @@ export class UserComponent implements OnInit, OnDestroy {
       }
     })
 
-    this.subscription.push(subLoadTrainer);
+    this.subscription.push(subLoadUsers);
   }
 
-  public deleteUser(id: number, email: string): void {
-    this.userService.deleteUser(id, email.toLowerCase()).forEach((x, i, array) => {
-      if (i == array.length - 1) {
-        let subDeleteOnMain: Subscription = x.subscribe({
-          next: () => { this.loadUsers() },
-          error: (err) => {
-            if (err.status = '403')
-              alert("Don't have access")
-          },
-        })
-        this.subscription.push(subDeleteOnMain);
-      }
-      else {
-        let subDeleteOnAuth: Subscription = x.subscribe({
-          next: () => { },
-          error: () => { }
-        });
-        this.subscription.push(subDeleteOnAuth);
-      }
-    });
+  public deleteUser(id: number): void {
+    let deleteUserSubscription = this.userService.deleteUser(id).subscribe({
+      next: () => { this.loadUsers() },
+      error: (err) => {
+        if (err.status = '403')
+          alert("Don't have access")
+      },
+    })
+
+    this.subscription.push(deleteUserSubscription);
   }
 
   public ngOnInit(): void {
@@ -100,11 +90,11 @@ export class UserComponent implements OnInit, OnDestroy {
         this.routeOnEditUser(id);
         break;
       case Roles.User:
-        let subGetTrainerByIdEmail: Subscription = this.userService.getUserIdByEmail(email.toLowerCase()).subscribe({
+        let subGetUserByIdEmail: Subscription = this.userService.getUserIdByEmail(email.toLowerCase()).subscribe({
           next: (currentId: number) => this.checkResemblanceIdWithCurrent(currentId, id),
           error: () => alert("Don't have access")
         });
-        this.subscription.push(subGetTrainerByIdEmail);
+        this.subscription.push(subGetUserByIdEmail);
         break;
       default: alert("Don't have access");
     }

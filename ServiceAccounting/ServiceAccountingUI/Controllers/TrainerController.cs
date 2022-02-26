@@ -116,7 +116,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        [Authorize(Policy = PolicyService.User)]
+        [Authorize(Policy = PolicyService.Trainer)]
         public async Task<int?> GetIdByEmail([FromBody] AcceptGetTrainerIdByEmail acceptGetIdByEmail, CancellationToken token)
         {
             var id = await this.commonFetchers.GetIdByEmail<Trainer>(acceptGetIdByEmail.Email, token);

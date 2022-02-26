@@ -43,7 +43,7 @@ namespace ServiceAccountingUI.Controllers
             return new JsonResult(response);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetSubscriptionDtoUI>> Get([FromRoute] AcceptGetSubscriptionDtoUI acceptGetSubscriptionDtoUI,

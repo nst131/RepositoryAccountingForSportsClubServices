@@ -41,7 +41,7 @@ namespace ServiceAccountingUI.Controllers
             return new JsonResult(allPlaceDtoUI);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetPlaceDtoUI>> Get([FromRoute] AcceptGetPlaceDtoUI acceptGetPlaceDtoUI, CancellationToken token)

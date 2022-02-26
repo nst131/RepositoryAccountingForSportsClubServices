@@ -239,7 +239,7 @@ namespace ServiceAccountingBL
             services.AddScoped<IMapper<AcceptUpdateVisitDtoBL, Visit>, UpdateVisitMapperBL>();
             services.AddScoped<IMapperAsync<int, ResponseGetVisitDtoBL>, GetVisitMapperBL>();
 
-            services.AddScoped<IGetter<ResponseGetVisitDtoBL>, Getter<Deal, ResponseGetVisitDtoBL>>()
+            services.AddScoped<IGetter<ResponseGetVisitDtoBL>, Getter<Visit, ResponseGetVisitDtoBL>>()
                 .AddScoped(serviceProvider => new Lazy<IGetter<ResponseGetVisitDtoBL>>(serviceProvider.GetRequiredService<IGetter<ResponseGetVisitDtoBL>>));
             services.AddScoped<ICreater<AcceptCreateVisitDtoBL, ResponseVisitDtoBL>, Creater<Visit, AcceptCreateVisitDtoBL, ResponseVisitDtoBL>>()
                 .AddScoped(serviceProvider => new Lazy<ICreater<AcceptCreateVisitDtoBL, ResponseVisitDtoBL>>(serviceProvider.GetRequiredService<ICreater<AcceptCreateVisitDtoBL, ResponseVisitDtoBL>>));
@@ -261,7 +261,7 @@ namespace ServiceAccountingBL
             services.AddScoped<IMapper<AcceptUpdateServiceDtoBL, Service>, UpdateServiceMapperBL>();
             services.AddScoped<IMapperAsync<int, ResponseGetServiceDtoBL>, GetServiceMapperBL>();
 
-            services.AddScoped<IGetter<ResponseGetServiceDtoBL>, Getter<Deal, ResponseGetServiceDtoBL>>()
+            services.AddScoped<IGetter<ResponseGetServiceDtoBL>, Getter<Service, ResponseGetServiceDtoBL>>()
                 .AddScoped(serviceProvider => new Lazy<IGetter<ResponseGetServiceDtoBL>>(serviceProvider.GetRequiredService<IGetter<ResponseGetServiceDtoBL>>));
             services.AddScoped<ICreater<AcceptCreateServiceDtoBL, ResponseServiceDtoBL>, Creater<Service, AcceptCreateServiceDtoBL, ResponseServiceDtoBL>>()
                 .AddScoped(serviceProvider => new Lazy<ICreater<AcceptCreateServiceDtoBL, ResponseServiceDtoBL>>(serviceProvider.GetRequiredService<ICreater<AcceptCreateServiceDtoBL, ResponseServiceDtoBL>>));

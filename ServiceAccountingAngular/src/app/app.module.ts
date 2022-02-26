@@ -16,7 +16,6 @@ import { PageNotFoundComponentComponent } from './page-not-found-component/page-
     BrowserModule,
     AppRoutingModule,
     
-
     HttpClientModule
   ],
   providers: [],

@@ -50,23 +50,16 @@ export class TrainerComponent implements OnInit, OnDestroy {
     this.subscription.push(subLoadTrainer);
   }
 
-  public deleteTrainer(id: number, email: string): void {
-    this.trainerService.deleteTrainer(id, email.toLowerCase()).forEach((x, i, array) => {
-      if (i == array.length - 1) {
-        let subDeleteOnMain: Subscription = x.subscribe({
-          next: () => { this.loadTrainers() },
-          error: () => alert("Don't have access"),
-        })
-        this.subscription.push(subDeleteOnMain);
-      }
-      else {
-        let subDeleteOnAuth: Subscription = x.subscribe({
-          next: () => {},
-          error: () => {throw new Error("Can't delete on AuthServer")}
-        });
-        this.subscription.push(subDeleteOnAuth);
-      }
-    });
+  public deleteTrainer(id: number): void {
+    let deleteTrainerSubscription = this.trainerService.deleteTrainer(id).subscribe({
+      next: () => { this.loadTrainers() },
+      error: (err) => {
+        if (err.status = '403')
+        alert("Don't have access")
+      },
+    })
+
+    this.subscription.push(deleteTrainerSubscription);
   }
 
   public ngOnInit(): void {

@@ -36,15 +36,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.roles = this.rolesService.getRoles();
     this.loginForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.minLength(3), emailValidator]),
-      password: new FormControl(null, [Validators.required]),
-      role: new FormControl("User", [Validators.required])
+      password: new FormControl(null, [Validators.required])
     });
   };
 
   onSubmit() {
     if (this.loginForm.valid) {
       let obj = this.loginForm.value;
-      this.subscription = this.login.tryLogin(new LoginModel(obj.email, obj.password, obj.role)).subscribe(x => {
+      this.subscription = this.login.tryLogin(new LoginModel(obj.email, obj.password)).subscribe(x => {
         if (x.error) {
           this.messageError = x.messageError;
           this.error = true;

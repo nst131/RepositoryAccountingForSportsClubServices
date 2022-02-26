@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +41,7 @@ namespace ServiceAccountingUI.Controllers
             return new JsonResult(allServiceDtoUI);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetServiceDtoUI>> Get([FromRoute] AcceptGetServiceDtoUI acceptGetServiceDtoUI, CancellationToken token)
