@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account-trainer',
   templateUrl: './account-trainer.component.html',
   styleUrls: ['./account-trainer.component.css']
 })
-export class AccountTrainerComponent implements OnInit {
+export class AccountTrainerComponent {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
-  ngOnInit(): void {
+  public redirectOnCreateTrainingByClientCard() {
+    this.router.navigate(['/main-site', { outlets: { 'main-site': ['account-trainer', { outlets: { 'account': ['create-training-by-client-card'] } }] } }]);
   }
 
+  public redirectOnCreateTrainingBySubscription() {
+    this.router.navigate(['/main-site', { outlets: { 'main-site': ['account-trainer', { outlets: { 'account': ['create-training-by-subscription'] } }] } }]);
+  }
+
+  public redirectOnShowAllTrainings() {
+    this.router.navigate(['/main-site', { outlets: { 'main-site': ['account-trainer', { outlets: { 'account': ['trainings'] } }] } }]);
+  }
 }

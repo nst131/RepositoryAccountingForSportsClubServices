@@ -3,6 +3,7 @@ using ServiceAccountingBL.Exceptions;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Models;
 using RabbitMQLibrary;
@@ -26,11 +27,13 @@ namespace ServiceAccountingUI.Controllers
         private readonly ICommonFetchers commonFetchers;
         private readonly ITrainerFetchersBL trainerFetchersBL;
         private readonly IEventBus eventBus;
+        private readonly IMapper mapper;
 
-        public TrainerController(IAggregatorTrainerBL aggregatorTrainerBL, IEventBus eventBus, ICommonFetchers commonFetchers)
+        public TrainerController(IAggregatorTrainerBL aggregatorTrainerBL, IEventBus eventBus, ICommonFetchers commonFetchers, IMapper mapper)
         {
             this.eventBus = eventBus;
             this.commonFetchers = commonFetchers;
+            this.mapper = mapper;
             this.trainerCrudBL = aggregatorTrainerBL.TrainerCrudBL;
             this.trainerFetchersBL = aggregatorTrainerBL.TrainerFetchersBL;
         }
@@ -122,6 +125,16 @@ namespace ServiceAccountingUI.Controllers
             var id = await this.commonFetchers.GetIdByEmail<Trainer>(acceptGetIdByEmail.Email, token);
 
             return id is (int)ErrorCode.None ? null : id;
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        [Authorize(Policy = PolicyService.Trainer)]
+        public async Task<ResponseGetServiceByTrainerIdDtoUI> GetServiceByTrainerId([FromBody] AcceptGetServiceByTrainerIdDtoUI acceptGetService, CancellationToken token)
+        {
+            var serviceBL = await this.trainerFetchersBL.GetServiceByTrainerId(acceptGetService.Id, token);
+
+            return this.mapper.Map<ResponseGetServiceByTrainerIdDtoUI>(serviceBL);
         }
     }
 }

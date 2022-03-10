@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Models.TrainingBLL.Aggregator;
@@ -12,6 +8,9 @@ using ServiceAccountingBL.Models.TrainingBLL.Fetchers;
 using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.Models.TrainingUI.Dto;
 using ServiceAccountingUI.Models.TrainingUI.Mapper;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ServiceAccountingUI.Controllers
 {
@@ -42,7 +41,7 @@ namespace ServiceAccountingUI.Controllers
             return new JsonResult(allTrainingDtoUI);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetTrainingDtoUI>> Get([FromRoute] AcceptGetTrainingDtoUI acceptGetTrainingDtoUI, CancellationToken token)
@@ -62,13 +61,13 @@ namespace ServiceAccountingUI.Controllers
         [HttpPost]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.Trainer)]
-        public async Task<ActionResult<ResponseTrainingDtoUI>> Create([FromBody] AcceptCreateTrainingDtoUI createTrainingDtoUI, CancellationToken token)
+        public async Task<ActionResult<ResponseTrainingDtoUI>> CreateByClubCard([FromBody] AcceptCreateTrainingDtoUI createTrainingDtoUI, CancellationToken token)
         {
             if (createTrainingDtoUI is null)
                 throw new ElementNullReferenceException();
 
             var createTrainingBL = CreateTrainingMapperUI.Map<AcceptCreateTrainingDtoBL>(createTrainingDtoUI);
-            var trainingDtoBL = await trainingCrudBL.CreateTraining(createTrainingBL, token);
+            var trainingDtoBL = await trainingCrudBL.CreateTrainingByClubCard(createTrainingBL, token);
             var trainingDtoUI = CreateTrainingMapperUI.Map<ResponseTrainingDtoUI>(trainingDtoBL);
 
             return new JsonResult(trainingDtoUI);
@@ -77,13 +76,13 @@ namespace ServiceAccountingUI.Controllers
         [HttpPut]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.Trainer)]
-        public async Task<ActionResult<ResponseTrainingDtoUI>> Update([FromBody] AcceptUpdateTrainingDtoUI updateTrainingDtoUI, CancellationToken token)
+        public async Task<ActionResult<ResponseTrainingDtoUI>> UpdateByClubCard([FromBody] AcceptUpdateTrainingDtoUI updateTrainingDtoUI, CancellationToken token)
         {
             if (updateTrainingDtoUI is null)
                 throw new ElementNullReferenceException();
 
             var updateTrainingBL = UpdateTrainingMapperUI.Map<AcceptUpdateTrainingDtoBL>(updateTrainingDtoUI);
-            var trainingDtoBL = await trainingCrudBL.UpdateTraining(updateTrainingBL, token);
+            var trainingDtoBL = await trainingCrudBL.UpdateTrainingByClubCard(updateTrainingBL, token);
             var trainingDtoUI = UpdateTrainingMapperUI.Map<ResponseTrainingDtoUI>(trainingDtoBL);
 
             return new JsonResult(trainingDtoUI);
@@ -91,7 +90,7 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpDelete]
         [Route("[action]/{Id:int}")]
-        [Authorize(Policy = PolicyService.Trainer)]
+        [Authorize(Policy = PolicyService.Admin)]
         public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteTrainingDtoUI deleteTrainingDtoUI, CancellationToken token)
         {
             if (deleteTrainingDtoUI is null)
@@ -100,6 +99,15 @@ namespace ServiceAccountingUI.Controllers
             await trainingCrudBL.DeleteTraining(deleteTrainingDtoUI.Id, token);
 
             return new JsonResult("Delete was success");
+        }
+
+        [HttpGet]
+        [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.Trainer)]
+        public async Task<ActionResult<int>> GetTrainerIdByTrainingId([FromRoute] AcceptGetTrainerIdByTrainingIdDtoUI acceptGetTrainerIdByTraining, CancellationToken token)
+        {
+            var responsibleId = await trainingFetchers.GetTrainerIdByTrainingId(acceptGetTrainerIdByTraining.Id, token);
+            return responsibleId;
         }
     }
 }

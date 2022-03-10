@@ -118,4 +118,5 @@ export class TrainerComponent implements OnInit, OnDestroy {
       x.unsubscribe()
     });
   }
+  
 }

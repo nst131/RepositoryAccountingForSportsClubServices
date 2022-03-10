@@ -5,8 +5,7 @@ import { Roles } from "src/app/models/roles.enum";
 
 @Injectable({
       providedIn: 'root'
-}
-)
+})
 export class RoutesService {
 
       constructor(private router: Router, private authActivateService: AuthActivateService) { }

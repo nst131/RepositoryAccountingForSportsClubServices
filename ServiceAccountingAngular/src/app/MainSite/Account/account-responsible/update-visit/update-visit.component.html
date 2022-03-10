@@ -1,0 +1,23 @@
+<div style=" margin-top: 20px;">
+      <h1 style="text-align: center;">Update Visit</h1>
+
+      <form style="width: 100%;" novalidate [formGroup]="editVisitForm" (ngSubmit)="onSubmit()">
+            <div style="display: flex; flex-direction: column;">
+
+                  <label for="arrival">Arrival</label>
+                  <input class="form-control" type="datetime-local" name="arrival" formControlName="arrival" />
+
+                  <label for="clientId">Client</label>
+                  <select class="form-select" name="clientId" style="margin-top: 10px;" formControlName="clientId">
+                        <option *ngFor="let client of allClients" [value]="client.id">{{client.name}}</option>
+                  </select>
+
+                  <label for="serviceId">Service</label>
+                  <select class="form-select" name="serviceId" style="margin-top: 10px;" formControlName="serviceId">
+                        <option *ngFor="let serve of allServes" [value]="serve.id">{{serve.name}}</option>
+                  </select>
+
+                  <input class="btn btn-primary" style="margin-top: 10px;" type="submit" [disabled]="editVisitForm.invalid" value="Update">
+            </div>
+      </form>
+</div>

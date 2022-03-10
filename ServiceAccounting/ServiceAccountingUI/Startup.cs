@@ -84,6 +84,8 @@ namespace ServiceAccountingUI
             services.AddRegistrationBL();
             services.AddRegistrationDA(Configuration.GetConnectionString("DefaultConnection"));
 
+            services.AddAutoMapper(typeof(MapperConfigurationUI), typeof(MapperConfiguationBL));
+
             services.AddMvc().AddNewtonsoftJson();
             services.AddControllers().AddNewtonsoftJson();
 

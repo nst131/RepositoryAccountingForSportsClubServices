@@ -13,6 +13,7 @@ import { UserService } from './services/user.service';
   providers: [UserService]
 })
 export class UserComponent implements OnInit, OnDestroy {
+  
   @ViewChild('readOnlyTemplate', { static: false }) readOnlyTemplate!: TemplateRef<any>;
   public users: Array<User>;
   public usersName: Array<string>;

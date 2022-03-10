@@ -15,6 +15,12 @@ const routes: Routes = [
             path: 'account-user', loadChildren: () => import("../Account/account-user/modules/user-account.module").then(mod => mod.AccountUserModule), outlet: 'main-site',
         },
         {
+            path: 'account-responsible', loadChildren: () => import("../Account/account-responsible/modules/account-responsible.module").then(mod => mod.AccountResponsibleModule), outlet: 'main-site',
+        },
+        {
+            path: 'account-trainer', loadChildren: () => import("../Account/account-trainer/modules/account-trainer.module").then(mod => mod.AccountTrainerModule), outlet: 'main-site',
+        },
+        {
             path: 'user', loadChildren: () => import("../Entities/user/modules/user.modules").then(mod => mod.UserModule), outlet: 'main-site',
         },
         {

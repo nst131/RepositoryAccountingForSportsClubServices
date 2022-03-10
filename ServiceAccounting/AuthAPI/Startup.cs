@@ -18,6 +18,7 @@ using System;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using API.AuthServices;
 using API.BaseModels;
 using API.EventsFromRabbitMQ;
 using Application.User.CrudOperation;
@@ -68,7 +69,7 @@ namespace API
             services.AddScoped<IRegistrationHandler, RegistrationHandler>();
             services.AddScoped<ICrudHandler, CrudHandler>();
 
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(MapperConfiguration));
 
             services.AddAuthentication(option =>
             {

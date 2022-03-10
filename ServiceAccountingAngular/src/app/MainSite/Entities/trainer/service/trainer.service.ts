@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { AuthActivateService } from "src/app/Auth/services/auth-activate.service";
+import { ResponseServe } from "src/app/MainSite/Account/account-trainer/models/response-serve.model";
 import { HeadersEnum } from "src/app/models/headers.enum";
 import { TrainerUpdate } from "../models/trainer-update.model";
 import { Trainer } from "../models/trainer.model";
@@ -47,5 +48,13 @@ export class TrainerService {
             .set("Content-Type", "application/json")
             .set(HeadersEnum.Authorization, AuthActivateService.getSession()?.token ?? "");
         return this.http.delete(this.url + '/' + 'Delete' + '/' + id, { headers: myHeaders });
+    }
+
+    public getServiceByTrainerId(trainerId: number): Observable<ResponseServe> {
+        const myHeaders = new HttpHeaders()
+            .set("Content-Type", "application/json")
+            .set(HeadersEnum.Authorization, AuthActivateService.getSession()?.token ?? "");
+        const body = JSON.stringify({ id: trainerId });
+        return this.http.post<ResponseServe>(this.url + '/' + 'GetServiceByTrainerId', body, { headers: myHeaders });
     }
 }

@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Place } from 'src/app/MainSite/Entities/place/models/place.model';
 import { PlaceService } from 'src/app/MainSite/Entities/place/services/place.service';
-import { Serve } from 'src/app/MainSite/Entities/serve/model/serve.model';
 import { ServeService } from 'src/app/MainSite/Entities/serve/services/serve.service';
 import { RoutesService } from 'src/app/MainSite/services/routes.servic';
 import { CreateServe } from './model/create-serve.model';
@@ -18,7 +17,6 @@ import { CreateServe } from './model/create-serve.model';
 export class CreateServeComponent implements OnInit, OnDestroy {
 
   public editServeForm: FormGroup;
-  public serve: Serve;
   public allPlaces: Array<Place>
   public response: any;
   private subscription: Subscription[];
@@ -29,7 +27,6 @@ export class CreateServeComponent implements OnInit, OnDestroy {
     private routesService: RoutesService) {
 
     this.editServeForm = new FormGroup({});
-    this.serve = new Serve(Number.NaN, "", "", "", "");
     this.allPlaces = [];
     this.subscription = [];
 

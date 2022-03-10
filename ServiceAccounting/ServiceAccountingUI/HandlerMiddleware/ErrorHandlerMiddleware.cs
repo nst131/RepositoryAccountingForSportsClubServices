@@ -60,8 +60,8 @@ namespace ServiceAccountingUI.HandlerMiddleware
 
             var result = JsonSerializer.Serialize(new
             {
-                message = error?.Message,
-                details = environment.IsDevelopment() ? error?.StackTrace : null,
+                message = error.Message,
+                details = environment.IsDevelopment() ? error.StackTrace : null,
             });
 
             await response.WriteAsync(result);

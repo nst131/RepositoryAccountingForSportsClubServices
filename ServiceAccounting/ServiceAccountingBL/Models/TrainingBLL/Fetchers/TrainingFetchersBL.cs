@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Models.TrainingBLL.Dto;
 using ServiceAccountingBL.Models.TrainingBLL.Mapper;
 using ServiceAccountingDA.Context;
@@ -29,6 +31,17 @@ namespace ServiceAccountingBL.Models.TrainingBLL.Fetchers
                 .ToListAsync(token);
 
             return ReadTrainingMapperBL.Map<ICollection<ResponseGetTrainingDtoBL>>(allClients);
+        }
+
+        public async Task<int> GetTrainerIdByTrainingId(int trainingId, CancellationToken token)
+        {
+            var responsibleId = await context.Set<Training>()
+                .AsNoTracking()
+                .Where(x => x.Id == trainingId)
+                .Select(x => x.TrainerId)
+                .FirstOrDefaultAsync(token);
+
+            return responsibleId;
         }
     }
 }

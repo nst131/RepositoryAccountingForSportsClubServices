@@ -4,6 +4,8 @@ using ServiceAccountingBL.Interfaces;
 using ServiceAccountingDA.Models;
 using System;
 using ServiceAccountingBL.AttributeValidation;
+using ServiceAccountingBL.Models.AccountUser.Account;
+using ServiceAccountingBL.Models.AccountUser.Dto;
 using ServiceAccountingBL.Models.ClientBLL.Aggregator;
 using ServiceAccountingBL.Models.ClientBLL.Crud;
 using ServiceAccountingBL.Models.ClientBLL.Dto;
@@ -85,6 +87,20 @@ namespace ServiceAccountingBL
             services.AddScoped<IUniqueEmailBL, UniqueEmailBL>();
             services.AddScoped<ICheckServiceByTrainerBL, CheckServiceByTrainerBL>();
             services.AddScoped<ICheckClientCardBL, CheckClientCardBL>();
+            services.AddScoped<ICheckSingleClubCardBL, CheckSingleClubCardBL>();
+            services.AddScoped<IUniqueSubscriptionBL, UniqueSubscriptionBL>();
+            services.AddScoped<ICheckCorrectCreateDealBL, CheckCorrectCreateDealBL>();
+            services.AddScoped<ICheckClientsOnAccordingClubCardBL, CheckClientsOnAccordingClubCardBL>();
+
+            //AccountUser
+            services.AddScoped<IAccountUserBL, AccountUserBL>();
+            services.AddScoped<IOperationGetEntityManyToMany<ResponseTrainingsInfDtoBL, Training, TrainingToClient>,
+                    OperationGetEntityManyToMany<ResponseTrainingsInfDtoBL, Training, TrainingToClient>>();
+            services.AddScoped<IOperationGetEntityManyToMany<ResponseSubscriptionInfDtoBL, Subscription, SubscriptionToClient>,
+                    OperationGetEntityManyToMany<ResponseSubscriptionInfDtoBL, Subscription, SubscriptionToClient>>();
+
+            services.AddScoped<IOperationGetEntityOneToMany<ResponseVisitInfDtoBL, Visit>, OperationGetEntityOneToMany<ResponseVisitInfDtoBL, Visit>>();
+            services.AddScoped<IOperationGetEntityOneToMany<ResponseDealInfDtoBL, Deal>, OperationGetEntityOneToMany<ResponseDealInfDtoBL, Deal>>();
 
             //Client
             services.AddScoped<IAggregatorClientBL, AggregatorClientBL>();
@@ -221,6 +237,9 @@ namespace ServiceAccountingBL
                 .AddScoped(serviceProvider => new Lazy<IValidator<AcceptUpdateTrainingDtoBL>>(serviceProvider.GetRequiredService<IValidator<AcceptUpdateTrainingDtoBL>>));
             services.AddScoped<IMapperAsync<int, ResponseGetTrainingDtoBL>, GetTrainingMapperBL>();
 
+            services.AddScoped<ICheckClientCardNecessaryServiceValidation, CheckClientCardNecessaryServiceValidation>();
+            services.AddScoped<ITrainingAditionalOperation, TrainingAditionalOperation>();
+
             services.AddScoped<IGetter<ResponseGetTrainingDtoBL>, Getter<Training, ResponseGetTrainingDtoBL>>()
                 .AddScoped(serviceProvider => new Lazy<IGetter<ResponseGetTrainingDtoBL>>(serviceProvider.GetRequiredService<IGetter<ResponseGetTrainingDtoBL>>));
             services.AddScoped<IRemover<Training>, Remover<Training>>()
@@ -283,6 +302,9 @@ namespace ServiceAccountingBL
             services.AddScoped<IMapper<AcceptUpdateDealDtoBL, Deal>, UpdateDealMapperBL>();
             services.AddScoped<IMapperAsync<int, ResponseGetDealDtoBL>, GetDealMapperBL>();
 
+            services.AddScoped<IReternableValidator<AcceptUpdateDealDtoBL, Deal>, ReturnableUpdateDealValidation>();
+            services.AddScoped<IDealAdditionalOperations, DealAdditionalOperations>();
+
             services.AddScoped<IGetter<ResponseGetDealDtoBL>, Getter<Deal, ResponseGetDealDtoBL>>()
                 .AddScoped(serviceProvider => new Lazy<IGetter<ResponseGetDealDtoBL>>(serviceProvider.GetRequiredService<IGetter<ResponseGetDealDtoBL>>));
             services.AddScoped<ICreater<AcceptCreateDealDtoBL, ResponseDealDtoBL>, Creater<Deal, AcceptCreateDealDtoBL, ResponseDealDtoBL>>()
@@ -303,6 +325,8 @@ namespace ServiceAccountingBL
             services.AddScoped<IValidator<AcceptUpdateSubscriptionDtoBL>, UpdateSubscriptionValidatorBL>()
                 .AddScoped(serviceProvider => new Lazy<IValidator<AcceptUpdateSubscriptionDtoBL>>(serviceProvider.GetRequiredService<IValidator<AcceptUpdateSubscriptionDtoBL>>));
             services.AddScoped<IMapperAsync<int, ResponseGetSubscriptionDtoBL>, GetSubscriptionMapperBL>();
+
+            services.AddScoped<ISubscriptionAdditionalOperations, SubscriptionAdditionalOperations>();
 
             services.AddScoped<IGetter<ResponseGetSubscriptionDtoBL>, Getter<Subscription, ResponseGetSubscriptionDtoBL>>()
                 .AddScoped(serviceProvider => new Lazy<IGetter<ResponseGetSubscriptionDtoBL>>(serviceProvider.GetRequiredService<IGetter<ResponseGetSubscriptionDtoBL>>));

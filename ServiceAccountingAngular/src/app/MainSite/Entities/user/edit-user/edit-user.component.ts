@@ -27,7 +27,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService,
     private loadTypeOfSex: LoadTypeOfSexService,
     private router: Router,
-    private activateRoute: ActivatedRoute,) {
+    private activateRoute: ActivatedRoute) {
 
     this.id = 0;
     this.editUserForm = new FormGroup({});

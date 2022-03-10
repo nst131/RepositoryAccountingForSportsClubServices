@@ -33,7 +33,7 @@ namespace ServiceAccountingBL.BaseCrud
 
             var entity = mapperUpdate.Map(updateDto);
 
-            var entry = await Task.Factory.StartNew(() => token.IsCancellationRequested ? throw new TaskCanceledException() : context.Set<Entity>().Update(entity), token);
+            var entry = await Task.Factory.StartNew(() => context.Set<Entity>().Update(entity), token);
 
             await context.SaveChangesAsync(token);
 

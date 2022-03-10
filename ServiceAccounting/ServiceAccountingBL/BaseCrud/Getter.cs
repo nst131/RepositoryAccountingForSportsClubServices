@@ -32,7 +32,7 @@ namespace ServiceAccountingBL.BaseCrud
                 if (token.IsCancellationRequested)
                     throw new TaskCanceledException();
 
-                return context.Set<Entity>().AsNoTracking().ToList().Exists(x => x.Id == id);
+                return  context.Set<Entity>().AsNoTracking().ToList().Exists(x => x.Id == id);
 
             }, token);
 

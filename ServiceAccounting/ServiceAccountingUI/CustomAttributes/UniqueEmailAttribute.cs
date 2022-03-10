@@ -1,25 +1,25 @@
 ﻿using ServiceAccountingBL.AttributeValidation;
+using ServiceAccountingBL.Exceptions;
 using ServiceAccountingDA.Models;
 using ServiceAccountingUI.BaseModels;
 using System;
 using System.ComponentModel.DataAnnotations;
-using ServiceAccountingBL.Exceptions;
 
 namespace ServiceAccountingUI.CustomAttributes
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public class UniqueTelephone : ValidationAttribute
+    public class UniqueEmailAttribute : ValidationAttribute
     {
         private readonly string role;
 
-        public UniqueTelephone(string role)
+        public UniqueEmailAttribute(string role)
         {
             this.role = role;
         }
 
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
-            var service = (IUniqueTelephoneBL)validationContext.GetService(typeof(IUniqueTelephoneBL))!;
+            var service = (IUniqueEmailBL)validationContext.GetService(typeof(IUniqueEmailBL))!;
 
             if (service is null)
                 throw new ElementNullReferenceException($"{nameof(service)} is null check your connection");
@@ -28,17 +28,17 @@ namespace ServiceAccountingUI.CustomAttributes
             {
                 case Roles.User:
                     if (service.IsUnique<Client>(value as string).Result)
-                        return new ValidationResult($"{nameof(Client)} Telephone has existed yet");
+                        return new ValidationResult($"{nameof(Client)} Email has existed yet");
                     break;
 
                 case Roles.Trainer:
                     if (service.IsUnique<Trainer>(value as string).Result)
-                        return new ValidationResult($"{nameof(Trainer)} Telephone has existed yet");
+                        return new ValidationResult($"{nameof(Trainer)} Email has existed yet");
                     break;
 
                 case Roles.Responsible:
                     if (service.IsUnique<Responsible>(value as string).Result)
-                        return new ValidationResult($"{nameof(Responsible)} Telephone has existed yet");
+                        return new ValidationResult($"{nameof(Responsible)} Email has existed yet");
                     break;
 
                 default:

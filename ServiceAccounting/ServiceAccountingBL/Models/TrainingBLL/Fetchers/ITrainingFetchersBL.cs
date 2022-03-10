@@ -8,5 +8,6 @@ namespace ServiceAccountingBL.Models.TrainingBLL.Fetchers
     public interface ITrainingFetchersBL
     {
         Task<ICollection<ResponseGetTrainingDtoBL>> GetTrainingAll(CancellationToken token = default);
+        Task<int> GetTrainerIdByTrainingId(int trainingId, CancellationToken token);
     }
 }

@@ -42,7 +42,7 @@ namespace ServiceAccountingUI.Controllers
             return new JsonResult(allVisitDtoUI);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.AllAccess)]
         public async Task<ActionResult<ResponseGetVisitDtoUI>> Get([FromRoute] AcceptGetVisitDtoUI acceptGetVisitDtoUI, CancellationToken token)

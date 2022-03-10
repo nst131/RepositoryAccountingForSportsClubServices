@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
+using ServiceAccountingUI.CustomAttributes;
 
 namespace ServiceAccountingUI.Models.DealUI.Dto
 {
+    [SingleClientCardAndUniqueSubscription]
     public class AcceptCreateDealDtoUI
     {
         [JsonProperty(PropertyName = "purchaseDate", Order = 0, Required = Required.AllowNull)]

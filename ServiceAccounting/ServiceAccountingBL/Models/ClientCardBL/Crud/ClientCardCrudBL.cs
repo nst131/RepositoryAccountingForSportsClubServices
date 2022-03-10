@@ -7,6 +7,7 @@ using ServiceAccountingBL.Models.ClientCardBL.Mapper;
 using ServiceAccountingDA.Context;
 using ServiceAccountingDA.Models;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace ServiceAccountingBL.Models.ClientCardBL.Crud
 {
@@ -29,6 +30,15 @@ namespace ServiceAccountingBL.Models.ClientCardBL.Crud
 
         public async Task<ResponseClientCardDtoBL> CreateClientCard(AcceptCreateClientCardDtoBL createClientCardDtoBL, CancellationToken token = default)
         {
+            var addedClientCard = await CreateClientCardWithoutSaveChanges(createClientCardDtoBL, token);
+            await context.SaveChangesAsync(token);
+
+            return ResponseClientCardMapperBL.Map<ResponseClientCardDtoBL>(addedClientCard.Entity);
+        }
+
+        public async Task<EntityEntry<ClientCard>> CreateClientCardWithoutSaveChanges(AcceptCreateClientCardDtoBL createClientCardDtoBL, 
+            CancellationToken token = default)
+        {
             await createValidator.Validate(createClientCardDtoBL);
 
             var clientCard = CreateClientCardMapperBL.Map<ClientCard>(createClientCardDtoBL);
@@ -37,10 +47,8 @@ namespace ServiceAccountingBL.Models.ClientCardBL.Crud
 
             clientCard.DateExpiration = clientCard.DateActivation.AddDays(clubCard.DurationInDays);
             clientCard.ServiceId = clubCard.ServiceId;
-            var addedClientCard = await context.Set<ClientCard>().AddAsync(clientCard, token);
-            await context.SaveChangesAsync(token);
 
-            return ResponseClientCardMapperBL.Map<ResponseClientCardDtoBL>(addedClientCard.Entity);
+            return await context.Set<ClientCard>().AddAsync(clientCard, token);
         }
 
         public async Task<ResponseClientCardDtoBL> UpdateClientCard(AcceptUpdateClientCardDtoBL updateClientCardDtoBL, CancellationToken token = default)

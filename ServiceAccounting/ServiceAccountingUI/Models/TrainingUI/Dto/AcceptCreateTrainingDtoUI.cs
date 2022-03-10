@@ -6,7 +6,8 @@ using ServiceAccountingUI.CustomAttributes;
 
 namespace ServiceAccountingUI.Models.TrainingUI.Dto
 {
-    [CheckServiceByTrainer(nameof(AcceptCreateTrainingDtoUI.ServicesId), nameof(AcceptCreateTrainingDtoUI.TrainerId))]
+    [CheckClientsOnAccordingClubCard(nameof(ClientsId), nameof(ServicesId))]
+    [CheckServiceByTrainer(nameof(TrainerId),nameof(ServicesId))]
     public class AcceptCreateTrainingDtoUI
     {
         [JsonProperty(PropertyName = "name", Order = 0, Required = Required.Always)]

@@ -30,7 +30,7 @@ namespace ServiceAccountingBL.Models.DealBLL.Validation
                 throw new ElementByIdNotFoundException($"{nameof(Responsible)} by Id not Found");
 
             if(dto.SubscriptionId is not null)
-                if (await Task.Factory.StartNew(() => !context.Set<ServiceAccountingDA.Models.Subscription>().AsNoTracking().ToList().Exists(x => x.Id == dto.SubscriptionId)))
+                if (await Task.Factory.StartNew(() => !context.Set<Subscription>().AsNoTracking().ToList().Exists(x => x.Id == dto.SubscriptionId)))
                     throw new ElementByIdNotFoundException($"{nameof(Subscription)} by Id not Found");
 
             if(dto.ClubCardId is not null)
