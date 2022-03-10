@@ -16,6 +16,7 @@ namespace ServiceAccountingBL.Models.ResponsibleBLL.Mapper
                 Name = responsible.Name,
                 SerName = responsible.SerName,
                 Telephone = responsible.Telephone,
+                Email = responsible.Email
             };
         }
 

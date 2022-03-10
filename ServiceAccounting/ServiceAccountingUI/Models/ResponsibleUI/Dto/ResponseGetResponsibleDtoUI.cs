@@ -15,5 +15,8 @@ namespace ServiceAccountingUI.Models.ResponsibleUI.Dto
 
         [JsonProperty(PropertyName = "telephone", Order = 3, Required = Required.Always)]
         public string Telephone { get; set; }
+
+        [JsonProperty(PropertyName = "email", Order = 4, Required = Required.Always)]
+        public string Email { get; set; }
     }
 }

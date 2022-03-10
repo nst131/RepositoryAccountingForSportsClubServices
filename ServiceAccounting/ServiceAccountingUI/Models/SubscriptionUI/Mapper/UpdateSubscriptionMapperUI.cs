@@ -1,4 +1,5 @@
-﻿using ServiceAccountingBL.Models.SubscriptionBLL.Dto;
+﻿using System.Collections.Generic;
+using ServiceAccountingBL.Models.SubscriptionBLL.Dto;
 using ServiceAccountingUI.Models.SubscriptionUI.Dto;
 
 namespace ServiceAccountingUI.Models.SubscriptionUI.Mapper
@@ -15,18 +16,7 @@ namespace ServiceAccountingUI.Models.SubscriptionUI.Mapper
                 AmountWorkouts = dto.AmountWorkouts,
                 Price = dto.Price,
                 ServiceId = dto.ServiceId,
-                ClientsId = dto.ClientsId
-            };
-        }
-
-        public static ResponseSubscriptionDtoUI Map<Result>(ResponseSubscriptionDtoBL dto)
-            where Result : ResponseSubscriptionDtoUI
-        {
-            return new()
-            {
-                Id = dto.Id,
-                Name = dto.Name,
-                AmountWorkouts = dto.AmountWorkouts + " lessons"
+                ClientsId = dto.ClientsId ?? new List<int>()
             };
         }
     }

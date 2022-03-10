@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace ServiceAccountingBL.Interfaces
 {
@@ -6,6 +7,6 @@ namespace ServiceAccountingBL.Interfaces
         where UpdateDto : class
         where DtoResponse : class
     {
-        Task<DtoResponse> Update(UpdateDto updateDto);
+        Task<DtoResponse> Update(UpdateDto updateDto, CancellationToken token = default);
     }
 }

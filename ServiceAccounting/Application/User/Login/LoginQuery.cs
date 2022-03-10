@@ -13,8 +13,5 @@ namespace Application.User.Login
         [JsonProperty(PropertyName = "Password", Order = 1, Required = Required.Always)]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Длина Password строки должна быть от 3 до 10 символов")]
         public string Password { get; set; }
-
-        [JsonProperty(PropertyName = "Role", Order = 2, Required = Required.Always)]
-        public string Role { get; set; }
     }
 }

@@ -16,7 +16,8 @@ namespace ServiceAccountingBL.Models.ClientBLL.Mapper
                 Name = client.Name,
                 SerName = client.SerName,
                 Telephone = client.Telephone,
-                TypeSex = client.TypeSex.Name
+                TypeSex = client.TypeSex.Name,
+                Email = client.Email
             };
         }
 

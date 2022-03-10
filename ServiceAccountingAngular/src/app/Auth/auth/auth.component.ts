@@ -10,9 +10,9 @@ export class AuthComponent implements AfterViewInit {
 
   constructor(private router: Router, private cdRef: ChangeDetectorRef) { }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     if (this.router.url == '/auth') {
-      this.router.navigate(['/auth', { outlets: { auth: ['Login'] } }]);
+      this.router.navigate(['/auth', { outlets: { 'auth': ['Login'] } }]);
     }
   }
 }

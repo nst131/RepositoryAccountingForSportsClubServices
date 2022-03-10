@@ -1,0 +1,44 @@
+<div style=" margin-top: 20px;">
+      <h1 style="text-align: center;">Update Training By ClientCard</h1>
+
+      <form style="width: 100%;" novalidate [formGroup]="editTrainingForm" (ngSubmit)="onSubmit()">
+            <div style="display: flex; flex-direction: column;">
+
+
+                  <label for="Name">Name</label>
+                  <input class="form-control" type="text" name="Name" formControlName="name" />
+                  <div *ngIf="editTrainingForm.controls['name'].invalid && editTrainingForm.controls['name'].touched">
+                        <p class="alert" *ngIf="editTrainingForm.controls['name'].errors?.['required']">
+                              Обязательное поле.
+                        </p>
+                        <p class="alert" *ngIf="editTrainingForm.controls['name'].errors?.['minlength']">
+                              Длина строки должна быть не менее {{
+                              editTrainingForm.controls['name'].errors?.['minlength'].requiredLength }} символов.
+                              Сейчас {{ editTrainingForm.controls['name'].errors?.['minlength'].actualLength }}
+                        </p>
+                  </div>
+
+                  <label for="startTraining">StartTraining</label>
+                  <input class="form-control" type="datetime-local" name="startTraining" formControlName="startTraining" />
+
+                  <label for="serviceId">Service</label>
+                  <select class="form-select" name="serviceId" style="margin-top: 10px;" formControlName="serviceId">
+                        <option [value]="serve.id">{{serve.name}}</option>
+                  </select>
+                  
+                  <label>Clients</label>
+                  <div *ngFor="let client of allClients" class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{client.id}}" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">{{client.name}}</label>
+                  </div>
+
+                  <input class="btn btn-primary" style="margin-top: 10px;" type="submit"
+                        [disabled]="editTrainingForm.invalid" value="Update">
+            </div>
+      </form>
+      <div *ngIf="error">
+            <p class="alert" style="color: red; text-align: center; font-size: large;">
+                  {{messageError}}
+            </p>
+      </div>
+</div>

@@ -16,7 +16,7 @@ namespace ServiceAccountingUI.Models.ClientCardUI.Dto
 
         [JsonProperty(PropertyName = "clientId", Order = 2, Required = Required.Always)]
         [Range(1, int.MaxValue, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]
-        [CheckClientCardOnExist]
+        [CheckClientCardOnExistance]
         public int ClientId { get; set; }
     }
 }

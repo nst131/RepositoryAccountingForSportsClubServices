@@ -16,9 +16,9 @@ namespace ServiceAccountingUI.Models.DealUI.Mapper
                 PurchaseDate = dto.PurchaseDate,
                 ClientName = dto.ClientName, //? required
                 ResponsibleName = dto.ResponsibleName, //? required
-                ClubCardName = dto.ClubCardName, //? can be null
-                SubscriptionName = dto.SubscriptionName, //? can be null
-                SubscriptionAmountWorkouts = dto.SubscriptionAmountWorkouts //? can be null
+                ClubCardName = dto.ClubCardName ?? "Nothing", //? can be null
+                SubscriptionName = dto.SubscriptionName ?? "Nothing", //? can be null
+                SubscriptionAmountWorkouts = dto.SubscriptionAmountWorkouts ?? 0 //? can be null
             };
         }
 

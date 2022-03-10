@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using API.BaseModels;
 using API.Models;
-using Application.Exceptions;
 using Application.User;
 using Application.User.CrudOperation;
 using Application.User.Registration;

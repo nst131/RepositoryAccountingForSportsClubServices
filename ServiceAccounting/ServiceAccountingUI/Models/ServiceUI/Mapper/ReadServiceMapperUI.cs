@@ -14,8 +14,8 @@ namespace ServiceAccountingUI.Models.ServiceUI.Mapper
             {
                 Id = dto.Id,
                 Name = dto.Name,
-                Price = dto.Price + " руб",
-                DurationInMinutes = dto.DurationInMinutes + " мин",
+                Price = dto.Price.ToString(),
+                DurationInMinutes = dto.DurationInMinutes.ToString(),
                 PlaceName = dto.PlaceName
             };
         }

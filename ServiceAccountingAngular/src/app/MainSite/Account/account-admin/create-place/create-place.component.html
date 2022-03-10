@@ -1,0 +1,34 @@
+<div style="margin-top: 20px;">
+      <h1 style="text-align: center;">Create Place</h1>
+
+      <form style="width: 100%;" novalidate [formGroup]="editPlaceForm" (ngSubmit)="onSubmit()">
+          <div style="display: flex; flex-direction: column;">
+      
+              <label for="Name">Name</label>
+              <input class="form-control" type="text" name="Name" formControlName="name"/>
+              <div *ngIf="editPlaceForm.controls['name'].invalid && editPlaceForm.controls['name'].touched">
+                  <p class="alert" *ngIf="editPlaceForm.controls['name'].errors?.['required']">
+                      Обязательное поле.
+                  </p>
+                  <p class="alert" *ngIf="editPlaceForm.controls['name'].errors?.['minlength']">
+                      Длина строки должна быть не менее {{ editPlaceForm.controls['name'].errors?.['minlength'].requiredLength }} символов. 
+                      Сейчас {{ editPlaceForm.controls['name'].errors?.['minlength'].actualLength }}
+                  </p>
+              </div>
+      
+              <label for="amountFreePlace">Amount Free Place</label>
+              <input class="form-control" type="text" name="amountFreePlace" formControlName="amountFreePlace" />
+              <div *ngIf="editPlaceForm.controls['amountFreePlace'].invalid && editPlaceForm.controls['amountFreePlace'].touched">
+                  <p class="alert" *ngIf="editPlaceForm.controls['amountFreePlace'].errors?.['required']">
+                      Обязательное поле.
+                  </p>
+                  <p class="alert" *ngIf="editPlaceForm.controls['amountFreePlace'].errors?.['pattern']">
+                      Поле должно быть целое
+                  </p>
+              </div>
+      
+              <input class="btn btn-primary" style="margin-top: 10px;" type="submit" [disabled]="editPlaceForm.invalid" value="Create"> 
+          </div>
+      </form>
+</div>
+

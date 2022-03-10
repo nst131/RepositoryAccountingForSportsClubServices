@@ -1,0 +1,36 @@
+<div style=" margin-top: 20px;">
+      <h1 style="text-align: center;">Create Deal</h1>
+
+      <form style="width: 100%;" novalidate [formGroup]="editDealForm" (ngSubmit)="onSubmit()">
+            <div style="display: flex; flex-direction: column;">
+
+                  <label for="purchaseDate">PurchaseDate</label>
+                  <input class="form-control" type="datetime-local" name="purchaseDate" formControlName="purchaseDate" />
+
+                  <label for="subscriptionId">Subscription</label>
+                  <select class="form-select" name="subscriptionId" style="margin-top: 10px;"
+                        formControlName="subscriptionId">
+                        <option *ngFor="let subscription of allSubscriptions" [value]="subscription.id">
+                              {{subscription.name}}</option>
+                  </select>
+
+                  <label for="clientId">Client</label>
+                  <select class="form-select" name="clientId" style="margin-top: 10px;" formControlName="clientId">
+                        <option *ngFor="let client of allClients" [value]="client.id">{{client.name}}</option>
+                  </select>
+
+                  <label for="clubCardId">ClubCard</label>
+                  <select class="form-select" name="clubCardId" style="margin-top: 10px;" formControlName="clubCardId">
+                        <option *ngFor="let clubCard of allClubCards" [value]="clubCard.id">{{clubCard.name}}</option>
+                  </select>
+
+                  <input class="btn btn-primary" style="margin-top: 10px;" type="submit"
+                        [disabled]="editDealForm.invalid" value="Create">
+            </div>
+      </form>
+      <div *ngIf="error">
+            <p class="alert" style="color: red; text-align: center; font-size: large;">
+                  {{messageError}}
+            </p>
+      </div>
+</div>

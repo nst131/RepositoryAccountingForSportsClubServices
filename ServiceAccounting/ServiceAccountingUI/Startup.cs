@@ -1,17 +1,20 @@
-using System;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using RabbitMQLibrary;
 using ServiceAccountingBL;
 using ServiceAccountingDA;
 using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.HandlerMiddleware;
+using StackExchange.Redis;
+using System;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ServiceAccountingUI
 {
@@ -26,14 +29,39 @@ namespace ServiceAccountingUI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddServiceBus(x =>
+                x.UseRabbitMq(new RabbitMqOptions
+                {
+                    User = Configuration["RabbitMQ:User"],
+                    Password = Configuration["RabbitMQ:Password"],
+                    Host = Configuration["RabbitMQ:Host"],
+                }));
+
+            services.AddStackExchangeRedisCache(option =>
+            {
+                option.ConfigurationOptions = new ConfigurationOptions()
+                {
+                    EndPoints = { Configuration["Redis:Path"], Configuration["Redis:Port"] },
+                    AbortOnConnectFail = bool.Parse(Configuration["Redis:AbortOnConnectFail"]),
+                    ConnectRetry = int.Parse(Configuration["Redis:ConnectRetry"]),
+                    ConnectTimeout = int.Parse(Configuration["Redis:ConnectTimeout"])
+                };
+            });
+
+            services.AddRegistrationRedis(new DistributedCacheEntryOptions()
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(int.Parse(Configuration["Redis:AbsoluteExpiration"])),
+                SlidingExpiration = TimeSpan.FromMinutes(int.Parse(Configuration["Redis:SlidingExpiration"]))
+            });
+
             services.AddSwaggerGen(swagger =>
             {
                 swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "ServiceAccountingUI", Version = "v1" });
-                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                swagger.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme()
                 {
-                    Name = "Authorization",
+                    Name = nameof(Authorization),
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
                 });
@@ -45,7 +73,7 @@ namespace ServiceAccountingUI
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
+                                Id = JwtBearerDefaults.AuthenticationScheme
                             }
                         },
                         Array.Empty<string>()
@@ -54,7 +82,9 @@ namespace ServiceAccountingUI
             });
 
             services.AddRegistrationBL();
-            services.AddRegistrationDA();
+            services.AddRegistrationDA(Configuration.GetConnectionString("DefaultConnection"));
+
+            services.AddAutoMapper(typeof(MapperConfigurationUI), typeof(MapperConfiguationBL));
 
             services.AddMvc().AddNewtonsoftJson();
             services.AddControllers().AddNewtonsoftJson();
@@ -124,6 +154,8 @@ namespace ServiceAccountingUI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(s => s.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseAuthentication();
             app.UseAuthorization();

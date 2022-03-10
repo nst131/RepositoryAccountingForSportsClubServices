@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +30,9 @@ namespace ServiceAccountingUI.Controllers
         [HttpGet]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.AllAccess)]
-        public async Task<ActionResult<ICollection<ResponseGetPlaceDtoUI>>> GetAll()
+        public async Task<ActionResult<ICollection<ResponseGetPlaceDtoUI>>> GetAll(CancellationToken token)
         {
-            var allPlacesDtoBL = await placeFetchers.GetPlaceAll();
+            var allPlacesDtoBL = await placeFetchers.GetPlaceAll(token);
 
             if (allPlacesDtoBL is null)
                 throw new ElementByIdNotFoundException();
@@ -41,15 +41,15 @@ namespace ServiceAccountingUI.Controllers
             return new JsonResult(allPlaceDtoUI);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.AllAccess)]
-        public async Task<ActionResult<ResponseGetPlaceDtoUI>> Get([FromRoute] AcceptGetPlaceDtoUI acceptGetPlaceDtoUI)
+        public async Task<ActionResult<ResponseGetPlaceDtoUI>> Get([FromRoute] AcceptGetPlaceDtoUI acceptGetPlaceDtoUI, CancellationToken token)
         {
             if (acceptGetPlaceDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var placeDtoBL = await placeCrudBL.GetPlace(acceptGetPlaceDtoUI.Id);
+            var placeDtoBL = await placeCrudBL.GetPlace(acceptGetPlaceDtoUI.Id, token);
 
             if (placeDtoBL is null)
                 throw new ElementByIdNotFoundException();
@@ -61,13 +61,13 @@ namespace ServiceAccountingUI.Controllers
         [HttpPost]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.Admin)]
-        public async Task<ActionResult<ResponsePlaceDtoUI>> Create([FromBody] AcceptCreatePlaceDtoUI createPlaceDtoUI)
+        public async Task<ActionResult<ResponsePlaceDtoUI>> Create([FromBody] AcceptCreatePlaceDtoUI createPlaceDtoUI, CancellationToken token)
         {
             if (createPlaceDtoUI is null)
                 throw new ElementNullReferenceException();
 
             var createPlaceBL = CreatePlaceMapperUI.Map<AcceptCreatePlaceDtoBL>(createPlaceDtoUI);
-            var placeDtoBL = await placeCrudBL.CreatePlace(createPlaceBL);
+            var placeDtoBL = await placeCrudBL.CreatePlace(createPlaceBL, token);
             var placeDtoUI = CreatePlaceMapperUI.Map<ResponsePlaceDtoUI>(placeDtoBL);
 
             return new JsonResult(placeDtoUI);
@@ -76,13 +76,13 @@ namespace ServiceAccountingUI.Controllers
         [HttpPut]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.Admin)]
-        public async Task<ActionResult<ResponseGetPlaceDtoUI>> Update([FromBody] AcceptUpdatePlaceDtoUI updatePlaceDtoUI)
+        public async Task<ActionResult<ResponseGetPlaceDtoUI>> Update([FromBody] AcceptUpdatePlaceDtoUI updatePlaceDtoUI, CancellationToken token)
         {
             if (updatePlaceDtoUI is null)
                 throw new ElementNullReferenceException();
 
             var updatePlaceBL = UpdatePlaceMapperUI.Map<AcceptUpdatePlaceDtoBL>(updatePlaceDtoUI);
-            var placeDtoBL = await placeCrudBL.UpdatePlace(updatePlaceBL);
+            var placeDtoBL = await placeCrudBL.UpdatePlace(updatePlaceBL, token);
             var placeDtoUI = UpdatePlaceMapperUI.Map<ResponsePlaceDtoUI>(placeDtoBL);
 
             return new JsonResult(placeDtoUI);
@@ -91,12 +91,12 @@ namespace ServiceAccountingUI.Controllers
         [HttpDelete]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.Admin)]
-        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeletePlaceDtoUI deletePlaceDtoUI)
+        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeletePlaceDtoUI deletePlaceDtoUI, CancellationToken token)
         {
             if (deletePlaceDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            await placeCrudBL.DeletePlace(deletePlaceDtoUI.Id);
+            await placeCrudBL.DeletePlace(deletePlaceDtoUI.Id, token);
 
             return new JsonResult("Delete was success");
         }

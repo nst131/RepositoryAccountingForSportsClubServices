@@ -18,7 +18,9 @@ namespace ServiceAccountingUI.Models.TrainerUI.Mapper
                 Telephone = trainer.Telephone,
                 TypeSex = trainer.TypeSex,
                 Service = trainer.Service,
-                ServiceId = trainer.ServiceId
+                ServiceId = trainer.ServiceId,
+                Email = trainer.Email
+                
             };
         }
 

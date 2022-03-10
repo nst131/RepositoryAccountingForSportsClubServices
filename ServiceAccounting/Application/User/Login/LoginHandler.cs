@@ -11,21 +11,19 @@ namespace Application.User.Login
     public class LoginHandler : ILoginHandler
     {
         private readonly UserManager<AppUser> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly IJwtGenerator jwtGenerator;
 
-        public LoginHandler(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<AppUser> signInManager, IJwtGenerator jwtGenerator)
+        public LoginHandler(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IJwtGenerator jwtGenerator)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.jwtGenerator = jwtGenerator;
-            this.roleManager = roleManager;
         }
 
         public async Task<User> Login(LoginQuery request)
         {
-            var loginQueryValidation = new LoginQueryValidation(roleManager);
+            var loginQueryValidation = new LoginQueryValidation();
             var resultLoginQueryValidation = await loginQueryValidation.ValidateAsync(request);
 
             if (!resultLoginQueryValidation.IsValid)
@@ -37,19 +35,24 @@ namespace Application.User.Login
             if (user is null)
                 throw new RestException(HttpStatusCode.Unauthorized, $"{nameof(User)} is not exist");
 
-            var resultVerification = await signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);
+            var passwordVerification = await signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);
 
-            if (resultVerification.Succeeded)
+            if (!passwordVerification.Succeeded)
+                throw new RestException(HttpStatusCode.Unauthorized, $"{nameof(User)} is not pass verification of password");
+
+            var userRoles = await userManager.GetRolesAsync(user);
+
+            if (userRoles.Any())
             {
                 return new User
                 {
                     Token = await jwtGenerator.CreateToken(user),
                     Email = request.Email,
-                    Role = request.Role
+                    Role = userRoles.FirstOrDefault()
                 };
             }
 
-            throw new RestException(HttpStatusCode.Unauthorized, $"{nameof(User)} is not pass verification of password");
+            throw new RestException(HttpStatusCode.Unauthorized, $"{nameof(User)} is not pass verification of role");
         }
     }
 }

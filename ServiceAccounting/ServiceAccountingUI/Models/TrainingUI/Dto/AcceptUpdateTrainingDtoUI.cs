@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using ServiceAccountingUI.CustomAttributes;
 
 namespace ServiceAccountingUI.Models.TrainingUI.Dto
 {
+    [CheckClientsOnAccordingClubCard(nameof(ClientsId), nameof(ServicesId))]
+    [CheckServiceByTrainer(nameof(TrainerId), nameof(ServicesId))]
     public class AcceptUpdateTrainingDtoUI
     {
         [JsonProperty(PropertyName = "id", Order = 0, Required = Required.Always)]

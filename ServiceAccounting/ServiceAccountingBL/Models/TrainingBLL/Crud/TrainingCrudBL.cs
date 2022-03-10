@@ -3,10 +3,11 @@ using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.TrainingBLL.Aggregator;
 using ServiceAccountingBL.Models.TrainingBLL.Dto;
 using ServiceAccountingBL.Models.TrainingBLL.Mapper;
+using ServiceAccountingBL.Models.TrainingBLL.Validation;
 using ServiceAccountingDA.Context;
 using ServiceAccountingDA.Models;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ServiceAccountingBL.Models.TrainingBLL.Crud
@@ -18,99 +19,81 @@ namespace ServiceAccountingBL.Models.TrainingBLL.Crud
         private readonly IValidator<AcceptUpdateTrainingDtoBL> updateValidator;
         private readonly IRemover<Training> removeTraining;
         private readonly IGetter<ResponseGetTrainingDtoBL> getTraining;
+        private readonly ITrainingAditionalOperation trainingAditionalOperation;
+        private readonly ICheckClientCardNecessaryServiceValidation checkClientCardNecessaryService;
 
-        public TrainingCrudBL(IServiceAccountingContext context, IAggregatorTrainingBL aggregator)
+        public TrainingCrudBL(
+            IServiceAccountingContext context,
+            IAggregatorTrainingBL aggregator,
+            ITrainingAditionalOperation trainingAditional,
+            ICheckClientCardNecessaryServiceValidation checkClientCardNecessaryService)
         {
             this.context = context;
+            this.trainingAditionalOperation = trainingAditional;
+            this.checkClientCardNecessaryService = checkClientCardNecessaryService;
             this.removeTraining = aggregator.RemoveTraining;
             this.createValidator = aggregator.CreateValidator;
             this.updateValidator = aggregator.UpdateValidator;
             this.getTraining = aggregator.GetTraining;
         }
 
-        public async Task<ResponseTrainingDtoBL> CreateTraining(AcceptCreateTrainingDtoBL createTrainingDtoBL)
+        public async Task<ResponseTrainingDtoBL> CreateTrainingByClubCard(
+            AcceptCreateTrainingDtoBL createTrainingDtoBL, CancellationToken token = default)
         {
             await createValidator.Validate(createTrainingDtoBL);
+            var clientsHasExpired = await this.checkClientCardNecessaryService.GetClientsHasExpired(createTrainingDtoBL.ClientsId, createTrainingDtoBL.ServicesId, token);
 
-            var service = await context.Set<Service>().FirstOrDefaultAsync(x => x.Id == createTrainingDtoBL.ServicesId);
+            var service = await context.Set<Service>()
+                .FirstOrDefaultAsync(x => x.Id == createTrainingDtoBL.ServicesId, token);
             var training = CreateTrainingMapperBL.Map<Training>(createTrainingDtoBL);
             training.FinishTraining = createTrainingDtoBL.StartTraining.AddMinutes(service.DurationInMinutes);
-            var addedTraining = await context.Set<Training>().AddAsync(training);
-            await context.SaveChangesAsync();
+            var addedTraining = await context.Set<Training>().AddAsync(training, token);
+            await context.SaveChangesAsync(token);
 
             if (createTrainingDtoBL.ClientsId is not null && createTrainingDtoBL.ClientsId.Any())
             {
-                await AddClientsInTraining(createTrainingDtoBL.ClientsId, addedTraining.Entity.Id);
+                await this.trainingAditionalOperation.AddClientsInTraining(createTrainingDtoBL.ClientsId, addedTraining.Entity.Id);
             }
 
-            return ResponseTrainingMapperBL.Map<ResponseTrainingDtoBL>(addedTraining.Entity);
+            var responseTraining = ResponseTrainingMapperBL.Map<ResponseTrainingDtoBL>(addedTraining.Entity);
+            responseTraining.ClientsHasExpired = clientsHasExpired;
+
+            return responseTraining;
         }
 
-        private async Task AddClientsInTraining(IEnumerable<int> clientsId, int trainingId)
-        {
-            var trainingToClients = clientsId
-                .Select(clientId => new TrainingToClient() { TrainingId = trainingId, ClientId = clientId }).ToList();
-
-            await context.Set<TrainingToClient>().AddRangeAsync(trainingToClients);
-            await context.SaveChangesAsync();
-        }
-
-        public async Task<ResponseTrainingDtoBL> UpdateTraining(AcceptUpdateTrainingDtoBL updateTrainingDtoBL)
+        public async Task<ResponseTrainingDtoBL> UpdateTrainingByClubCard(AcceptUpdateTrainingDtoBL updateTrainingDtoBL, CancellationToken token = default)
         {
             await updateValidator.Validate(updateTrainingDtoBL);
-            var service = await context.Set<Service>().FirstOrDefaultAsync(x => x.Id == updateTrainingDtoBL.ServicesId);
+            var clientsHasExpired = await this.checkClientCardNecessaryService.GetClientsHasExpired(updateTrainingDtoBL.ClientsId, updateTrainingDtoBL.ServicesId, token);
+
+            var service = await context.Set<Service>().FirstOrDefaultAsync(x => x.Id == updateTrainingDtoBL.ServicesId, token);
             var training = UpdateTrainingMapperBL.Map<Training>(updateTrainingDtoBL);
             training.FinishTraining = updateTrainingDtoBL.StartTraining.AddMinutes(service.DurationInMinutes);
-            await Task.Factory.StartNew(() => context.Set<Training>().Update(training));
-            await UpdateClientsInTraining(updateTrainingDtoBL.ClientsId, updateTrainingDtoBL.Id);
-
-            await context.SaveChangesAsync();
-
-            return ResponseTrainingMapperBL.Map<ResponseTrainingDtoBL>(training);
-        }
-
-        private async Task UpdateClientsInTraining(IEnumerable<int> clientsId, int trainingId)
-        {
-            var currentClientsIdByTrainingId = await context.Set<TrainingToClient>()
-                .AsNoTracking()
-                .Where(x => x.TrainingId == trainingId)
-                .Select(x => x.ClientId)
-                .ToListAsync();
-
-            var t1 = Task.Run(() => AddClientsInTraining(clientsId, trainingId, currentClientsIdByTrainingId));
-            var t2 = Task.Run(() => RemoveClientsInTraining(clientsId, trainingId, currentClientsIdByTrainingId));
-
-            await Task.WhenAll(t1, t2);
-        }
-
-        private async void AddClientsInTraining(IEnumerable<int> clientsId, int trainingId, IEnumerable<int> currentClientsId)
-        {
-            var clientsIdToAdd = clientsId.Except(currentClientsId).ToList();
-            if (clientsIdToAdd.Any())
+            await Task.Factory.StartNew(() =>
             {
-                var trainingToClients = clientsIdToAdd
-                    .Select(clientId => new TrainingToClient() { TrainingId = trainingId, ClientId = clientId }).ToList();
+                if (token.IsCancellationRequested)
+                {
+                    throw new TaskCanceledException();
+                }
 
-                await context.Set<TrainingToClient>().AddRangeAsync(trainingToClients);
-            }
+                return context.Set<Training>().Update(training);
+
+            }, token);
+
+            await this.trainingAditionalOperation.UpdateClientsInTraining(updateTrainingDtoBL.ClientsId, updateTrainingDtoBL.Id, token);
+
+            await context.SaveChangesAsync(token);
+
+            var responseTraining = ResponseTrainingMapperBL.Map<ResponseTrainingDtoBL>(training);
+            responseTraining.ClientsHasExpired = clientsHasExpired;
+
+            return responseTraining;
         }
 
-        private async void RemoveClientsInTraining(IEnumerable<int> clientsId, int trainingId, IEnumerable<int> currentClientsId)
-        {
-            var clientsIdToRemove = currentClientsId.Except(clientsId).ToList();
-            if (clientsIdToRemove.Any())
-            {
-                var trainingToClients = clientsIdToRemove
-                    .Select(clientId => new TrainingToClient() { TrainingId = trainingId, ClientId = clientId }).ToList();
+        public async Task DeleteTraining(int id, CancellationToken token = default)
+            => await removeTraining.Remove(id, token);
 
-                await Task.Factory.StartNew(() => context.Set<TrainingToClient>().RemoveRange(trainingToClients));
-            }
-        }
-
-        public async Task DeleteTraining(int id)
-            => await removeTraining.Remove(id);
-
-        public async Task<ResponseGetTrainingDtoBL> GetTraining(int id)
-            => await getTraining.Get(id);
+        public async Task<ResponseGetTrainingDtoBL> GetTraining(int id, CancellationToken token = default)
+            => await getTraining.Get(id, token);
     }
 }

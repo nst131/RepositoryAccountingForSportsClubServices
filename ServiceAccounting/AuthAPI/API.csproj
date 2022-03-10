@@ -18,6 +18,8 @@
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\EFData\EFData.csproj" />
     <ProjectReference Include="..\Infastructure\Infastructure.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\RabbitMQLibrary\RabbitMQLibrary.csproj" />
   </ItemGroup>
 
 </Project>

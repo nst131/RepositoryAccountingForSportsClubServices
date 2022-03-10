@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ServiceAccountingBL.Interfaces;
@@ -16,98 +17,65 @@ namespace ServiceAccountingBL.Models.SubscriptionBLL.Crud
         private readonly IServiceAccountingContext context;
         private readonly IValidator<AcceptCreateSubscriptionDtoBL> createValidator;
         private readonly IValidator<AcceptUpdateSubscriptionDtoBL> updateValidator;
-        private readonly IRemover<ServiceAccountingDA.Models.Subscription> removeSubscription;
+        private readonly IRemover<Subscription> removeSubscription;
         private readonly IGetter<ResponseGetSubscriptionDtoBL> getSubscription;
+        private readonly IMapperAsync<int, ResponseGetSubscriptionDtoBL> getSubscriptionMapperBL;
+        private readonly ISubscriptionAdditionalOperations subscriptionAdditionalOperations;
 
-        public SubscriptionCrudBL(IServiceAccountingContext context, IAggregatorSubscriptionBL aggregator)
+        public SubscriptionCrudBL(IServiceAccountingContext context, 
+            IAggregatorSubscriptionBL aggregator, 
+            IMapperAsync<int, ResponseGetSubscriptionDtoBL> getSubscriptionMapperBl,
+            ISubscriptionAdditionalOperations subscriptionAdditionalOperations)
         {
             this.context = context;
             this.removeSubscription = aggregator.RemoveSubscription;
             this.createValidator = aggregator.CreateValidator;
             this.updateValidator = aggregator.UpdateValidator;
             this.getSubscription = aggregator.GetSubscription;
+            this.getSubscriptionMapperBL = getSubscriptionMapperBl;
+            this.subscriptionAdditionalOperations = subscriptionAdditionalOperations;
         }
 
-        public async Task<ResponseSubscriptionDtoBL> CreateSubscription(AcceptCreateSubscriptionDtoBL createSubscriptionDtoBL)
+        public async Task<ResponseGetSubscriptionDtoBL> CreateSubscription(AcceptCreateSubscriptionDtoBL createSubscriptionDtoBL, CancellationToken token = default)
         {
             await createValidator.Validate(createSubscriptionDtoBL);
 
-            var subscription = CreateSubscriptionMapperBL.Map<ServiceAccountingDA.Models.Subscription>(createSubscriptionDtoBL);
-            var addedSubscription = await context.Set<ServiceAccountingDA.Models.Subscription>().AddAsync(subscription);
-            await context.SaveChangesAsync();
+            var subscription = CreateSubscriptionMapperBL.Map<Subscription>(createSubscriptionDtoBL);
+            var addedSubscription = await context.Set<Subscription>().AddAsync(subscription, token);
+            await context.SaveChangesAsync(token);
 
             if (createSubscriptionDtoBL.ClientsId is not null && createSubscriptionDtoBL.ClientsId.Any())
             {
-                await AddClientsInSubscription(createSubscriptionDtoBL.ClientsId, addedSubscription.Entity.Id);
+                await this.subscriptionAdditionalOperations.AddClientsInSubscription(createSubscriptionDtoBL.ClientsId, addedSubscription.Entity.Id);
             }
 
-            return ResponseSubscriptionMapperBL.Map<ResponseSubscriptionDtoBL>(addedSubscription.Entity);
+            return await getSubscriptionMapperBL.Map(addedSubscription.Entity.Id);
         }
 
-        private async Task AddClientsInSubscription(IEnumerable<int> clientsId, int subscriptionId)
-        {
-            var subscriptionToClients = clientsId
-                .Select(clientId => new SubscriptionToClient() { SubscriptionId = subscriptionId, ClientId = clientId }).ToList();
-
-            await context.Set<SubscriptionToClient>().AddRangeAsync(subscriptionToClients);
-            await context.SaveChangesAsync();
-        }
-
-        public async Task<ResponseSubscriptionDtoBL> UpdateSubscription(AcceptUpdateSubscriptionDtoBL updateSubscriptionDtoBL)
+        public async Task<ResponseGetSubscriptionDtoBL> UpdateSubscription(AcceptUpdateSubscriptionDtoBL updateSubscriptionDtoBL, CancellationToken token = default)
         {
             await updateValidator.Validate(updateSubscriptionDtoBL);
 
-            var subscription = UpdateSubscriptionMapperBL.Map<ServiceAccountingDA.Models.Subscription>(updateSubscriptionDtoBL);
-            await Task.Factory.StartNew(() => context.Set<ServiceAccountingDA.Models.Subscription>().Update(subscription));
-            await UpdateClientsInSubscription(updateSubscriptionDtoBL.ClientsId, updateSubscriptionDtoBL.Id);
-
-            await context.SaveChangesAsync();
-
-            return ResponseSubscriptionMapperBL.Map<ResponseSubscriptionDtoBL>(subscription);
-        }
-
-        private async Task UpdateClientsInSubscription(IEnumerable<int> clientsId, int subscriptionId)
-        {
-            var currentClientsIdBySubscriptionId = await context.Set<SubscriptionToClient>()
-                .AsNoTracking()
-                .Where(x => x.SubscriptionId == subscriptionId)
-                .Select(x => x.ClientId)
-                .ToListAsync();
-
-            var t1 = Task.Run(() => AddClientsInSubscription(clientsId, subscriptionId, currentClientsIdBySubscriptionId));
-            var t2 = Task.Run(() => RemoveClientsInSubscription(clientsId, subscriptionId, currentClientsIdBySubscriptionId));
-
-            await Task.WhenAll(t1, t2);
-        }
-
-        private async void AddClientsInSubscription(IEnumerable<int> clientsId, int subscriptionId, IEnumerable<int> currentClientsId)
-        {
-            var clientsIdToAdd = clientsId.Except(currentClientsId).ToList();
-            if (clientsIdToAdd.Any())
+            var subscription = UpdateSubscriptionMapperBL.Map<Subscription>(updateSubscriptionDtoBL);
+            await Task.Factory.StartNew(() =>
             {
-                var subscriptionToClients = clientsIdToAdd
-                    .Select(clientId => new SubscriptionToClient() { SubscriptionId = subscriptionId, ClientId = clientId }).ToList();
+                if (token.IsCancellationRequested)
+                    throw new TaskCanceledException();
+                
+                return context.Set<Subscription>().Update(subscription);
+            }, token);
 
-                await context.Set<SubscriptionToClient>().AddRangeAsync(subscriptionToClients);
-            }
+            await this.subscriptionAdditionalOperations.UpdateClientsInSubscription(updateSubscriptionDtoBL.ClientsId, updateSubscriptionDtoBL.Id, token);
+
+            await context.SaveChangesAsync(token);
+
+            return await getSubscriptionMapperBL.Map(subscription.Id);
         }
 
-        private async void RemoveClientsInSubscription(IEnumerable<int> clientsId, int subscriptionId, IEnumerable<int> currentClientsId)
-        {
-            var clientsIdToRemove = currentClientsId.Except(clientsId).ToList();
-            if (clientsIdToRemove.Any())
-            {
-                var subscriptionToClients = clientsIdToRemove
-                    .Select(clientId => new SubscriptionToClient() { SubscriptionId = subscriptionId, ClientId = clientId }).ToList();
+        public async Task<int> DeleteSubscription(int id, CancellationToken token = default)
+            => await removeSubscription.Remove(id, token);
 
-                await Task.Factory.StartNew(() => context.Set<SubscriptionToClient>().RemoveRange(subscriptionToClients));
-            }
-        }
-
-        public async Task DeleteSubscription(int id)
-            => await removeSubscription.Remove(id);
-
-        public async Task<ResponseGetSubscriptionDtoBL> GetSubscription(int id)
-            => await getSubscription.Get(id);
+        public async Task<ResponseGetSubscriptionDtoBL> GetSubscription(int id, CancellationToken token = default)
+            => await getSubscription.Get(id, token);
     }
 }

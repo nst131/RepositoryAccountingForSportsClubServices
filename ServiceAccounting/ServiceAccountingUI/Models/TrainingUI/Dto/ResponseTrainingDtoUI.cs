@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using ServiceAccountingBL.BaseModels;
 
 namespace ServiceAccountingUI.Models.TrainingUI.Dto
 {
@@ -13,5 +15,8 @@ namespace ServiceAccountingUI.Models.TrainingUI.Dto
 
         [JsonProperty(PropertyName = "startTraining", Order = 2, Required = Required.Always)]
         public DateTime StartTraining { get; set; }
+
+        [JsonProperty(PropertyName = "clientsHasExpired", Order = 2, Required = Required.Always)]
+        public ICollection<ClientsHasExpiredDto> ClientsHasExpired { get; set; }
     }
 }

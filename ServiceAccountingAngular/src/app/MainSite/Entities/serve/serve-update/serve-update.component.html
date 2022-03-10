@@ -1,0 +1,47 @@
+<h1 style="text-align: center;">Edit Serve</h1>
+
+<form style="width: 100%;" novalidate [formGroup]="editServeForm" (ngSubmit)="onSubmit()">
+    <div style="display: flex; flex-direction: column;">
+
+        <label for="Name">Name</label>
+        <input class="form-control" type="text" name="Name" formControlName="name"/>
+        <div *ngIf="editServeForm.controls['name'].invalid && editServeForm.controls['name'].touched">
+            <p class="alert" *ngIf="editServeForm.controls['name'].errors?.['required']">
+                Обязательное поле.
+            </p>
+            <p class="alert" *ngIf="editServeForm.controls['name'].errors?.['minlength']">
+                Длина строки должна быть не менее {{ editServeForm.controls['name'].errors?.['minlength'].requiredLength }} символов. 
+                Сейчас {{ editServeForm.controls['name'].errors?.['minlength'].actualLength }}
+            </p>
+        </div>
+
+        <label for="price">Price</label>
+        <input class="form-control" type="text" name="price" formControlName="price" />
+        <div *ngIf="editServeForm.controls['price'].invalid && editServeForm.controls['price'].touched">
+            <p class="alert" *ngIf="editServeForm.controls['price'].errors?.['required']">
+                Обязательное поле.
+            </p>
+            <p class="alert" *ngIf="editServeForm.controls['price'].errors?.['pattern']">
+                Поле должно быть целое
+            </p>
+        </div>
+
+        <label for="durationInMinutes">Duration In Minutes</label>
+        <input class="form-control" type="text" name="durationInMinutes" formControlName="durationInMinutes" />
+        <div *ngIf="editServeForm.controls['durationInMinutes'].invalid && editServeForm.controls['durationInMinutes'].touched">
+            <p class="alert" *ngIf="editServeForm.controls['durationInMinutes'].errors?.['required']">
+                Обязательное поле.
+            </p>
+            <p class="alert" *ngIf="editServeForm.controls['durationInMinutes'].errors?.['pattern']">
+                Поле должно быть целое
+            </p>
+        </div>
+
+        <label for="placeId">Place</label>
+        <select class="form-select" name="placeId" style="margin-top: 10px;" formControlName="placeId">
+            <option *ngFor="let place of allPlaces" [value]="place.id" >{{place.name}}</option>
+        </select>
+
+        <input class="btn btn-primary" style="margin-top: 10px;" type="submit" [disabled]="editServeForm.invalid" value="Edit"> 
+    </div>
+</form>

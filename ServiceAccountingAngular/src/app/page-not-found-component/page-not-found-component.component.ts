@@ -7,9 +7,4 @@ import { Component } from '@angular/core';
 })
 export class PageNotFoundComponentComponent {
 
-  // constructor(private router: Router) { }
-
-  // public RedirectToAuth(){
-  //   this.router.navigate(['/Login'])
-  // }
 }

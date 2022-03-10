@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ServiceAccountingBL.Models.DealBLL.Dto;
@@ -17,9 +19,9 @@ namespace ServiceAccountingBL.Models.DealBLL.Fetchers
             this.context = context;
         }
 
-        public async Task<ICollection<ResponseGetDealDtoBL>> GetDealAll()
+        public async Task<ICollection<ResponseGetDealDtoBL>> GetDealAll(CancellationToken token = default)
         {
-            if (!await context.Set<Deal>().AnyAsync())
+            if (!await context.Set<Deal>().AnyAsync(token))
                 return new List<ResponseGetDealDtoBL>();
 
             var allDeals = await context.Set<Deal>()
@@ -27,10 +29,15 @@ namespace ServiceAccountingBL.Models.DealBLL.Fetchers
                 .Include(x => x.Client)
                 .Include(x => x.Responsible)
                 .Include(x => x.ClubCard)
-                .ToListAsync();
+                .ToListAsync(token);
 
             return ReadDealMapperBL.Map<ICollection<ResponseGetDealDtoBL>>(allDeals);
+        }
 
+        public async Task<int> GetResponsibleIdByDealId(int dealId, CancellationToken token)
+        {
+            var responsibleId = await context.Set<Deal>().AsNoTracking().Where(x => x.Id == dealId).Select(x => x.ResponsibleId).FirstOrDefaultAsync(token);
+            return responsibleId;
         }
     }
 }

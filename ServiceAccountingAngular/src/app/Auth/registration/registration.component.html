@@ -2,8 +2,9 @@
 
 <form style="width: 100%;" novalidate [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
     <div style="display: flex; flex-direction: column;">
+
         <label for="name">Name</label>
-        <input type="text" name="name" formControlName="name"/>
+        <input class="form-control" type="text" name="name" formControlName="name"/>
         <div *ngIf="registrationForm.controls['name'].invalid && registrationForm.controls['name'].touched">
             <p class="alert" *ngIf="registrationForm.controls['name'].errors?.['required']">
                 Обязательное поле.
@@ -15,7 +16,7 @@
         </div>
 
         <label for="email">Email</label>
-        <input type="text" name="email" formControlName="email" />
+        <input class="form-control" type="text" name="email" formControlName="email" />
         <div *ngIf="registrationForm.controls['email'].invalid && registrationForm.controls['email'].touched">
             <p class="alert" *ngIf="registrationForm.controls['email'].errors?.['required']">
                 Обязательное поле.
@@ -24,17 +25,20 @@
                 Длина строки должна быть не менее {{registrationForm.controls['email'].errors?.['minlength'].requiredLength }} символов.
                 Сейчас {{ registrationForm.controls['email'].errors?.['minlength'].actualLength }}
             </p>
+            <p class="alert" *ngIf="registrationForm.controls['email'].errors?.['emailValidator']">
+                Не правильный формат
+            </p>
         </div>
 
         <label for="password">Password</label>
-        <input type="password" name="password" formControlName="password" />
+        <input class="form-control" type="password" name="password" formControlName="password" />
         <div *ngIf="registrationForm.controls['password'].invalid && registrationForm.controls['password'].touched">
             <p class="alert" *ngIf="registrationForm.controls['password'].errors?.['required']">
                 Обязательное поле.
             </p>
         </div>
 
-        <input style="margin-top: 10px;" type="submit" [disabled]="registrationForm.invalid" value="Registration">
+        <input class="btn btn-primary" style="margin-top: 10px;" type="submit" [disabled]="registrationForm.invalid" value="Registration">
     </div>
 </form>
 

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +30,9 @@ namespace ServiceAccountingUI.Controllers
         [HttpGet]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.AllAccess)]
-        public async Task<ActionResult<ICollection<ResponseGetDealDtoUI>>> GetAll()
+        public async Task<ActionResult<ICollection<ResponseGetDealDtoUI>>> GetAll(CancellationToken token)
         {
-            var allDealsDtoBL = await dealFetchers.GetDealAll();
+            var allDealsDtoBL = await dealFetchers.GetDealAll(token);
 
             if (allDealsDtoBL is null)
                 throw new ElementByIdNotFoundException();
@@ -41,15 +41,15 @@ namespace ServiceAccountingUI.Controllers
             return new JsonResult(allDealDtoUI);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.AllAccess)]
-        public async Task<ActionResult<ResponseGetDealDtoUI>> Get([FromRoute] AcceptGetDealDtoUI acceptGetDealDtoUI)
+        public async Task<ActionResult<ResponseGetDealDtoUI>> Get([FromRoute] AcceptGetDealDtoUI acceptGetDealDtoUI, CancellationToken token)
         {
             if (acceptGetDealDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var dealDtoBL = await dealCrudBL.GetDeal(Convert.ToInt32(acceptGetDealDtoUI.Id));
+            var dealDtoBL = await dealCrudBL.GetDeal(acceptGetDealDtoUI.Id, token);
 
             if (dealDtoBL is null)
                 throw new ElementByIdNotFoundException();
@@ -61,13 +61,13 @@ namespace ServiceAccountingUI.Controllers
         [HttpPost]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.Responsible)]
-        public async Task<ActionResult<ResponseDealDtoUI>> Create([FromBody] AcceptCreateDealDtoUI createDealDtoUI)
+        public async Task<ActionResult<ResponseDealDtoUI>> Create([FromBody] AcceptCreateDealDtoUI createDealDtoUI, CancellationToken token)
         {
             if (createDealDtoUI is null)
                 throw new ElementNullReferenceException();
 
             var createDealBL = CreateDealMapperUI.Map<AcceptCreateDealDtoBL>(createDealDtoUI);
-            var dealDtoBL = await dealCrudBL.CreateDeal(createDealBL);
+            var dealDtoBL = await dealCrudBL.CreateDeal(createDealBL, token);
             var dealDtoUI = CreateDealMapperUI.Map<ResponseDealDtoUI>(dealDtoBL);
 
             return new JsonResult(dealDtoUI);
@@ -76,13 +76,13 @@ namespace ServiceAccountingUI.Controllers
         [HttpPut]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.Responsible)]
-        public async Task<ActionResult<ResponseDealDtoUI>> Update([FromBody] AcceptUpdateDealDtoUI updateDealDtoUI)
+        public async Task<ActionResult<ResponseDealDtoUI>> Update([FromBody] AcceptUpdateDealDtoUI updateDealDtoUI, CancellationToken token)
         {
             if (updateDealDtoUI is null)
                 throw new ElementNullReferenceException();
 
             var updateDealBL = UpdateDealMapperUI.Map<AcceptUpdateDealDtoBL>(updateDealDtoUI);
-            var dealDtoBL = await dealCrudBL.UpdateDeal(updateDealBL);
+            var dealDtoBL = await dealCrudBL.UpdateDeal(updateDealBL, token);
             var dealDtoUI = UpdateDealMapperUI.Map<ResponseDealDtoUI>(dealDtoBL);
 
             return new JsonResult(dealDtoUI);
@@ -90,15 +90,24 @@ namespace ServiceAccountingUI.Controllers
 
         [HttpDelete]
         [Route("[action]/{Id:int}")]
-        [Authorize(Policy = PolicyService.Responsible)]
-        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteDealDtoUI deleteDealDtoUI)
+        [Authorize(Policy = PolicyService.Admin)]
+        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteDealDtoUI deleteDealDtoUI, CancellationToken token)
         {
             if (deleteDealDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            await dealCrudBL.DeleteDeal(deleteDealDtoUI.Id);
+            await dealCrudBL.DeleteDeal(deleteDealDtoUI.Id, token);
 
             return new JsonResult("Delete was success");
+        }
+
+        [HttpGet]
+        [Route("[action]/{Id:int}")]
+        [Authorize(Policy = PolicyService.Responsible)]
+        public async Task<ActionResult<int>> GetResponsibleIdByDealId([FromRoute] AcceptGetResponsibleIdBtDealIdDtoUI acceptResponsibleIdBtDealIdDtoUI, CancellationToken token)
+        {
+            var responsibleId = await dealFetchers.GetResponsibleIdByDealId(acceptResponsibleIdBtDealIdDtoUI.Id, token);
+            return responsibleId;
         }
     }
 }

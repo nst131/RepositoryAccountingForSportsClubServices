@@ -1,0 +1,36 @@
+<h1 style="text-align: center;">Edit User</h1>
+
+<form style="width: 100%;" novalidate [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+    <div style="display: flex; flex-direction: column;">
+
+        <label for="serNamr">SerName</label>
+        <input class="form-control" type="text" name="serName" formControlName="serName"/>
+        <div *ngIf="editUserForm.controls['serName'].invalid && editUserForm.controls['serName'].touched">
+            <p class="alert" *ngIf="editUserForm.controls['serName'].errors?.['required']">
+                Обязательное поле.
+            </p>
+            <p class="alert" *ngIf="editUserForm.controls['serName'].errors?.['minlength']">
+                Длина строки должна быть не менее {{ editUserForm.controls['serName'].errors?.['minlength'].requiredLength }} символов. 
+                Сейчас {{ editUserForm.controls['serName'].errors?.['minlength'].actualLength }}
+            </p>
+        </div>
+
+        <label for="telephone">Telephone</label>
+        <input class="form-control" type="text" name="telephone" formControlName="telephone" />
+        <div *ngIf="editUserForm.controls['telephone'].invalid && editUserForm.controls['telephone'].touched">
+            <p class="alert" *ngIf="editUserForm.controls['telephone'].errors?.['required']">
+                Обязательное поле.
+            </p>
+            <p class="alert" *ngIf="editUserForm.controls['telephone'].errors?.['pattern']">
+                Телефон должен быть типа ** ***-**-**
+            </p>
+        </div>
+
+        
+        <select class="form-select" style="margin-top: 10px;" formControlName="typeSexId">
+            <option *ngFor="let typeSex of viewsTypeOfSex" [value]="typeSex.value" >{{typeSex.name}}</option>
+        </select>
+
+        <input class="btn btn-primary" style="margin-top: 10px;" type="submit" [disabled]="editUserForm.invalid" value="Edit"> 
+    </div>
+</form>

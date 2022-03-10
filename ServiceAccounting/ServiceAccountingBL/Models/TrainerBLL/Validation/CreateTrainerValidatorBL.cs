@@ -1,12 +1,8 @@
-﻿using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ServiceAccountingBL.Exceptions;
+﻿using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Interfaces;
 using ServiceAccountingBL.Models.TrainerBLL.Dto;
 using ServiceAccountingDA.Context;
-using ServiceAccountingDA.Models;
+using System.Threading.Tasks;
 
 namespace ServiceAccountingBL.Models.TrainerBLL.Validation
 {

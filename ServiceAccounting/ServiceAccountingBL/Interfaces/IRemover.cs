@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace ServiceAccountingBL.Interfaces
 {
     public interface IRemover<Entity> 
         where Entity : class
     {
-        Task Remove(int id);
+        Task<int> Remove(int id, CancellationToken token = default);
     }
 }

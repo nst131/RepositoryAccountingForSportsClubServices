@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +30,9 @@ namespace ServiceAccountingUI.Controllers
         [HttpGet]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.AllAccess)]
-        public async Task<ActionResult<ICollection<ResponseGetServiceDtoUI>>> GetAll()
+        public async Task<ActionResult<ICollection<ResponseGetServiceDtoUI>>> GetAll(CancellationToken token)
         {
-            var allServicesDtoBL = await serviceFetchers.GetServiceAll();
+            var allServicesDtoBL = await serviceFetchers.GetServiceAll(token);
 
             if (allServicesDtoBL is null)
                 throw new ElementByIdNotFoundException();
@@ -41,15 +41,15 @@ namespace ServiceAccountingUI.Controllers
             return new JsonResult(allServiceDtoUI);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.AllAccess)]
-        public async Task<ActionResult<ResponseGetServiceDtoUI>> Get([FromRoute] AcceptGetServiceDtoUI acceptGetServiceDtoUI)
+        public async Task<ActionResult<ResponseGetServiceDtoUI>> Get([FromRoute] AcceptGetServiceDtoUI acceptGetServiceDtoUI, CancellationToken token)
         {
             if (acceptGetServiceDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var serviceDtoBL = await serviceCrudBL.GetService(Convert.ToInt32(acceptGetServiceDtoUI.Id));
+            var serviceDtoBL = await serviceCrudBL.GetService(acceptGetServiceDtoUI.Id, token);
 
             if (serviceDtoBL is null)
                 throw new ElementByIdNotFoundException();
@@ -61,13 +61,13 @@ namespace ServiceAccountingUI.Controllers
         [HttpPost]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.Admin)]
-        public async Task<ActionResult<ResponseServiceDtoUI>> Create([FromBody] AcceptCreateServiceDtoUI createServiceDtoUI)
+        public async Task<ActionResult<ResponseServiceDtoUI>> Create([FromBody] AcceptCreateServiceDtoUI createServiceDtoUI, CancellationToken token)
         {
             if (createServiceDtoUI is null)
                 throw new ElementNullReferenceException();
 
             var createServiceBL = CreateServiceMapperUI.Map<AcceptCreateServiceDtoBL>(createServiceDtoUI);
-            var serviceDtoBL = await serviceCrudBL.CreateService(createServiceBL);
+            var serviceDtoBL = await serviceCrudBL.CreateService(createServiceBL, token);
             var serviceDtoUI = CreateServiceMapperUI.Map<ResponseServiceDtoUI>(serviceDtoBL);
 
             return new JsonResult(serviceDtoUI);
@@ -76,13 +76,13 @@ namespace ServiceAccountingUI.Controllers
         [HttpPut]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.Admin)]
-        public async Task<ActionResult<ResponseServiceDtoUI>> Update([FromBody] AcceptUpdateServiceDtoUI updateServiceDtoUI)
+        public async Task<ActionResult<ResponseServiceDtoUI>> Update([FromBody] AcceptUpdateServiceDtoUI updateServiceDtoUI, CancellationToken token)
         {
             if (updateServiceDtoUI is null)
                 throw new ElementNullReferenceException();
 
             var updateServiceBL = UpdateServiceMapperUI.Map<AcceptUpdateServiceDtoBL>(updateServiceDtoUI);
-            var serviceDtoBL = await serviceCrudBL.UpdateService(updateServiceBL);
+            var serviceDtoBL = await serviceCrudBL.UpdateService(updateServiceBL, token);
             var serviceDtoUI = UpdateServiceMapperUI.Map<ResponseServiceDtoUI>(serviceDtoBL);
 
             return new JsonResult(serviceDtoUI);
@@ -91,12 +91,12 @@ namespace ServiceAccountingUI.Controllers
         [HttpDelete]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.Admin)]
-        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteServiceDtoUI deleteServiceDtoUI)
+        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteServiceDtoUI deleteServiceDtoUI, CancellationToken token)
         {
             if (deleteServiceDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            await serviceCrudBL.DeleteService(deleteServiceDtoUI.Id);
+            await serviceCrudBL.DeleteService(deleteServiceDtoUI.Id, token);
 
             return new JsonResult("Delete was success");
         }

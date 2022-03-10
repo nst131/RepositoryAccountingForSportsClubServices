@@ -1,0 +1,27 @@
+<table class="table table-striped">
+      <thead>
+          <tr>
+              <td *ngFor="let name of clubCardsName">{{name}}</td>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let clubCard of clubCards">
+              <ng-template [ngTemplateOutlet]="loadTemplate(clubCard)" [ngTemplateOutletContext]="{ $implicit: clubCard}">
+  
+              </ng-template>
+          </tr>
+      </tbody>
+  </table>
+  
+  <ng-template #readOnlyTemplate let-clubCard>
+      <td>{{clubCard.name}}</td>
+      <td>{{clubCard.price}} rub</td>
+      <td>{{clubCard.durationInDays}} days</td>
+      <td>{{clubCard.service}}</td>
+      <td>
+          <input type="button" value="Change" class="btn btn-primary" (click)="redirectOnEditClubCard(clubCard.id)" />
+      </td>
+      <td>
+          <input type="button" value="Delete" class="btn btn-danger" (click)="deleteClubCard(clubCard.id)" />
+      </td>
+  </ng-template>

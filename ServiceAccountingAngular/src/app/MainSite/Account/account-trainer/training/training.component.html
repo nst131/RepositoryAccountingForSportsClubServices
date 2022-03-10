@@ -1,0 +1,24 @@
+<table class="table table-striped">
+      <thead>
+          <tr>
+              <td *ngFor="let name of trainingsName">{{name}}</td>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let value of trainings">
+              <ng-template [ngTemplateOutlet]="loadTemplate(value)" [ngTemplateOutletContext]="{ $implicit: value}">
+  
+              </ng-template>
+          </tr>
+      </tbody>
+  </table>
+  
+  <ng-template #readOnlyTemplate let-value>
+      <td *ngFor="let key of trainingKeys">{{key}}</td>
+      <td>
+          <input type="button" value="Change" class="btn btn-primary" (click)="redirectOnEdit(value.id)" />
+      </td>
+      <td>
+          <input type="button" value="Delete" class="btn btn-danger" (click)="delete(value.id)" />
+      </td>
+  </ng-template>

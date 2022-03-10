@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RedisLibrary;
 using ServiceAccountingBL.Exceptions;
 using ServiceAccountingBL.Models.SubscriptionBLL.Aggregator;
 using ServiceAccountingBL.Models.SubscriptionBLL.Crud;
-using ServiceAccountingBL.Models.SubscriptionBLL.Dto;
 using ServiceAccountingBL.Models.SubscriptionBLL.Fetchers;
 using ServiceAccountingUI.BaseModels;
 using ServiceAccountingUI.Models.SubscriptionUI.Dto;
-using ServiceAccountingUI.Models.SubscriptionUI.Mapper;
+using ServiceAccountingUI.Models.SubscriptionUI.Request;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ServiceAccountingUI.Controllers
 {
@@ -19,84 +19,86 @@ namespace ServiceAccountingUI.Controllers
     public class SubscriptionController : ControllerBase
     {
         private readonly ISubscriptionCrudBL subscriptionCrudBL;
-        private readonly ISubscriptionFetchersBL subscriptionFetchers;
+        private readonly IRedisGetElements<ResponseGetSubscriptionDtoUI, ISubscriptionFetchersBL> redisGetElement;
+        private readonly IModifierElementsInRedis<ResponseGetSubscriptionDtoUI, ISubscriptionCrudBL> redisAddOrUpdateElement;
 
-        public SubscriptionController(IAggregatorSubscriptionBL aggregatorSubscriptionBL)
+        public SubscriptionController(IAggregatorSubscriptionBL aggregatorSubscriptionBL,
+            IRedisGetElements<ResponseGetSubscriptionDtoUI, ISubscriptionFetchersBL> redisGetElement,
+            IModifierElementsInRedis<ResponseGetSubscriptionDtoUI, ISubscriptionCrudBL> redisAddOrUpdateElement)
         {
             this.subscriptionCrudBL = aggregatorSubscriptionBL.SubscriptionCrudBL;
-            this.subscriptionFetchers = aggregatorSubscriptionBL.SubscriptionFetchersBL;
+            this.redisGetElement = redisGetElement;
+            this.redisAddOrUpdateElement = redisAddOrUpdateElement;
         }
 
         [HttpGet]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.AllAccess)]
-        public async Task<ActionResult<ICollection<ResponseGetSubscriptionDtoUI>>> GetAll()
+        public async Task<ActionResult<ICollection<ResponseGetSubscriptionDtoUI>>> GetAll(
+            CancellationToken token)
         {
-            var allSubscriptionsDtoBL = await subscriptionFetchers.GetSubscriptionAll();
+            var response = await redisGetElement.TryGetElementsAsync(
+                SubscriptionRequest.GetAll, token);
 
-            if (allSubscriptionsDtoBL is null)
-                throw new ElementByIdNotFoundException();
-
-            var allSubscriptionDtoUI = ReadSubscriptionMapperUI.Map<ICollection<ResponseGetSubscriptionDtoUI>>(allSubscriptionsDtoBL);
-            return new JsonResult(allSubscriptionDtoUI);
+            return new JsonResult(response);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.AllAccess)]
-        public async Task<ActionResult<ResponseGetSubscriptionDtoUI>> Get([FromRoute] AcceptGetSubscriptionDtoUI acceptGetSubscriptionDtoUI)
+        public async Task<ActionResult<ResponseGetSubscriptionDtoUI>> Get([FromRoute] AcceptGetSubscriptionDtoUI acceptGetSubscriptionDtoUI,
+            CancellationToken token)
         {
             if (acceptGetSubscriptionDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var subscriptionDtoBL = await subscriptionCrudBL.GetSubscription(Convert.ToInt32(acceptGetSubscriptionDtoUI.Id));
+            var response = await SubscriptionRequest.Get(acceptGetSubscriptionDtoUI,
+                subscriptionCrudBL, token);
 
-            if (subscriptionDtoBL is null)
-                throw new ElementByIdNotFoundException();
-
-            var subscriptionDtoUI = ReadSubscriptionMapperUI.Map<ResponseGetSubscriptionDtoUI>(subscriptionDtoBL);
-            return new JsonResult(subscriptionDtoUI);
+            return new JsonResult(response);
         }
 
         [HttpPost]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.Admin)]
-        public async Task<ActionResult<ResponseSubscriptionDtoUI>> Create([FromBody] AcceptCreateSubscriptionDtoUI createSubscriptionDtoUI)
+        public async Task<ActionResult<ResponseGetSubscriptionDtoUI>> Create([FromBody] AcceptCreateSubscriptionDtoUI createSubscriptionDtoUI,
+            CancellationToken token)
         {
             if (createSubscriptionDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var createSubscriptionBL = CreateSubscriptionMapperUI.Map<AcceptCreateSubscriptionDtoBL>(createSubscriptionDtoUI);
-            var subscriptionDtoBL = await subscriptionCrudBL.CreateSubscription(createSubscriptionBL);
-            var subscriptionDtoUI = CreateSubscriptionMapperUI.Map<ResponseSubscriptionDtoUI>(subscriptionDtoBL);
+            var response = await this.redisAddOrUpdateElement.TryChangeRedisComponentsAsync(createSubscriptionDtoUI,
+                SubscriptionRequest.Add, token);
 
-            return new JsonResult(subscriptionDtoUI);
+            return new JsonResult(response);
         }
 
         [HttpPut]
         [Route("[action]")]
         [Authorize(Policy = PolicyService.Admin)]
-        public async Task<ActionResult<ResponseSubscriptionDtoUI>> Update([FromBody] AcceptUpdateSubscriptionDtoUI updateSubscriptionDtoUI)
+        public async Task<ActionResult<ResponseGetSubscriptionDtoUI>> Update([FromBody] AcceptUpdateSubscriptionDtoUI updateSubscriptionDtoUI,
+            CancellationToken token)
         {
             if (updateSubscriptionDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            var updateSubscriptionBL = UpdateSubscriptionMapperUI.Map<AcceptUpdateSubscriptionDtoBL>(updateSubscriptionDtoUI);
-            var subscriptionDtoBL = await subscriptionCrudBL.UpdateSubscription(updateSubscriptionBL);
-            var subscriptionDtoUI = UpdateSubscriptionMapperUI.Map<ResponseSubscriptionDtoUI>(subscriptionDtoBL);
+            var response = await this.redisAddOrUpdateElement.TryChangeRedisComponentsAsync(updateSubscriptionDtoUI,
+                SubscriptionRequest.Update, token);
 
-            return new JsonResult(subscriptionDtoUI);
+            return new JsonResult(response);
         }
 
         [HttpDelete]
         [Route("[action]/{Id:int}")]
         [Authorize(Policy = PolicyService.Admin)]
-        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteSubscriptionDtoUI deleteSubscriptionDtoUI)
+        public async Task<ActionResult<string>> Delete([FromRoute] AcceptDeleteSubscriptionDtoUI deleteSubscriptionDtoUI,
+            CancellationToken token)
         {
             if (deleteSubscriptionDtoUI is null)
                 throw new ElementNullReferenceException();
 
-            await subscriptionCrudBL.DeleteSubscription(deleteSubscriptionDtoUI.Id);
+            await this.redisAddOrUpdateElement.TryChangeRedisComponentsAsync(deleteSubscriptionDtoUI,
+                SubscriptionRequest.Delete, token);
 
             return new JsonResult("Delete was success");
         }

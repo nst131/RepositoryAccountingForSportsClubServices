@@ -22,7 +22,7 @@ namespace ServiceAccountingUI.Models.ClientUI.Dto
         public string Telephone { get; set; }
 
         [JsonProperty(PropertyName = "typeSexId", Order = 4, Required = Required.Always)]
-        [Range(1, 2, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]
+        [Range(1, 3, ErrorMessage = "Значение вышло за пределы допустимого диапозона")]
         public int TypeSexId { get; set; }
     }
 }

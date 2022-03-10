@@ -14,8 +14,8 @@ namespace ServiceAccountingUI.Models.ClubCardUI.Mapper
             {
                 Id = clubCard.Id,
                 Name = clubCard.Name,
-                Price = clubCard.Price + " rub",
-                DurationInDays = clubCard.DurationInDays.ToString() + " days",
+                Price = clubCard.Price.ToString(),
+                DurationInDays = clubCard.DurationInDays.ToString(),
                 Service = clubCard.Service
             };
         }

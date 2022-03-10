@@ -27,7 +27,8 @@ namespace ServiceAccountingUI.Models.TrainingUI.Mapper
             {
                 Id = dto.Id,
                 Name = dto.Name,
-                StartTraining = dto.StartTraining
+                StartTraining = dto.StartTraining,
+                ClientsHasExpired = dto.ClientsHasExpired
             };
         }
     }

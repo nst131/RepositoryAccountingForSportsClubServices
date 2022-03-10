@@ -14,6 +14,7 @@ namespace Application.User.Registration
 
         [JsonProperty(PropertyName = "Name", Order = 1, Required = Required.Always)]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Длина строки Name должна быть от 3 до 20 символов")]
+        [UniqueName]
         public string Name { get; set; }
 
         [JsonProperty(PropertyName = "Password", Order = 2, Required = Required.Always)]

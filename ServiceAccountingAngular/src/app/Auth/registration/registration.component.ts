@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { emailValidator } from '../validators/email.validators';
 import { RegistrationUserService } from '../services/registration-user.service';
 import { RegistrationUserModel } from '../models/registrationUser.model';
+import { AuthActivateService } from '../services/auth-activate.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-registration',
@@ -10,15 +12,21 @@ import { RegistrationUserModel } from '../models/registrationUser.model';
   styleUrls: ['./registration.component.css'],
   providers: [RegistrationUserService]
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent implements OnInit, OnDestroy {
 
-  public registrationForm: FormGroup = new FormGroup({});
+  public registrationForm: FormGroup;
   public response: any;
+  public messageError: string;
+  public showError: boolean;
+  private subscription: Subscription;
 
-  public messageError: string = "";
-  public showError: boolean = false;
-
-  constructor( private registrationUserService: RegistrationUserService) {  }
+  constructor(private registrationUserService: RegistrationUserService,
+    private authActivateService: AuthActivateService) {
+    this.registrationForm = new FormGroup({});
+    this.messageError = "";
+    this.showError = false;
+    this.subscription =new Subscription();
+  }
 
   ngOnInit(): void {
     this.registrationForm = new FormGroup({
@@ -31,19 +39,23 @@ export class RegistrationComponent implements OnInit {
   onSubmit() {
     if (this.registrationForm.valid) {
       let obj = this.registrationForm.value;
-      this.registrationUserService.TryRegistrationUser(new RegistrationUserModel(obj.email, obj.name, obj.password)).subscribe(x => {
+      this.subscription = this.registrationUserService.tryRegistrationUser(new RegistrationUserModel(obj.email, obj.name, obj.password)).subscribe(x => {
         if (x.error) {
           this.messageError = x.messageError;
           this.showError = true;
           this.registrationForm.reset()
         }
         else {
-          this.response = x.response;
+          x.subscribe((data: any) => { this.response = data.response });
           this.showError = false;
           this.registrationForm.reset();
+          this.authActivateService.redirectOnMainSite();
         }
       });
     }
   };
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }
