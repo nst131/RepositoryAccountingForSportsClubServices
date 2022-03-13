@@ -10,8 +10,8 @@ using ServiceAccountingDA.Context;
 namespace ServiceAccountingDA.Migrations
 {
     [DbContext(typeof(ServiceAccountingContext))]
-    [Migration("20211226122302_ChangerKeyInTableSubscriptionToClientMigration")]
-    partial class ChangerKeyInTableSubscriptionToClientMigration
+    [Migration("20220311215449_InitialMigrationServiceAccounting")]
+    partial class InitialMigrationServiceAccounting
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,21 +20,6 @@ namespace ServiceAccountingDA.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ClientTraining", b =>
-                {
-                    b.Property<int>("ClientsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TrainingsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ClientsId", "TrainingsId");
-
-                    b.HasIndex("TrainingsId");
-
-                    b.ToTable("ClientsToTrainings");
-                });
 
             modelBuilder.Entity("ServiceAccountingDA.Models.Client", b =>
                 {
@@ -45,6 +30,9 @@ namespace ServiceAccountingDA.Migrations
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -71,32 +59,6 @@ namespace ServiceAccountingDA.Migrations
                     b.HasIndex("TypeSexId");
 
                     b.ToTable("Client");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Alexander",
-                            SerName = "Nikylskiy",
-                            Telephone = "29 613-89-57",
-                            TypeSexId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Vitaliy",
-                            SerName = "Romanovskiy",
-                            Telephone = "29 713-80-90",
-                            TypeSexId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Maria",
-                            SerName = "Gavrilova",
-                            Telephone = "29 786-13-44",
-                            TypeSexId = 2
-                        });
                 });
 
             modelBuilder.Entity("ServiceAccountingDA.Models.ClientCard", b =>
@@ -269,6 +231,9 @@ namespace ServiceAccountingDA.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -286,22 +251,6 @@ namespace ServiceAccountingDA.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Responsible");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Safia",
-                            SerName = "Mirinina",
-                            Telephone = "44 786-12-12"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Lera",
-                            SerName = "Shablovskai",
-                            Telephone = "33 514-17-21"
-                        });
                 });
 
             modelBuilder.Entity("ServiceAccountingDA.Models.Service", b =>
@@ -414,7 +363,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 1,
                             AmountWorkouts = 1,
-                            Name = "One Lesson",
+                            Name = "Crossfit One",
                             Price = 10f,
                             ServiceId = 1
                         },
@@ -422,7 +371,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 2,
                             AmountWorkouts = 4,
-                            Name = "Four Lesson",
+                            Name = "Crossfit Four",
                             Price = 35f,
                             ServiceId = 1
                         },
@@ -430,7 +379,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 3,
                             AmountWorkouts = 8,
-                            Name = "Eight Lesson",
+                            Name = "Crossfit Eight",
                             Price = 65f,
                             ServiceId = 1
                         },
@@ -438,7 +387,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 4,
                             AmountWorkouts = 1,
-                            Name = "One Lesson",
+                            Name = "BodyBuilding One",
                             Price = 10f,
                             ServiceId = 2
                         },
@@ -446,7 +395,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 5,
                             AmountWorkouts = 4,
-                            Name = "Four Lesson",
+                            Name = "BodyBuilding Four",
                             Price = 35f,
                             ServiceId = 2
                         },
@@ -454,7 +403,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 6,
                             AmountWorkouts = 8,
-                            Name = "Eight Lesson",
+                            Name = "BodyBuilding Eight",
                             Price = 65f,
                             ServiceId = 2
                         },
@@ -462,7 +411,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 7,
                             AmountWorkouts = 1,
-                            Name = "One Lesson",
+                            Name = "Yoga One",
                             Price = 9f,
                             ServiceId = 3
                         },
@@ -470,7 +419,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 8,
                             AmountWorkouts = 4,
-                            Name = "Four Lesson",
+                            Name = "Yoga Four",
                             Price = 30f,
                             ServiceId = 3
                         },
@@ -478,7 +427,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 9,
                             AmountWorkouts = 8,
-                            Name = "Eight Lesson",
+                            Name = "Yoga Eight",
                             Price = 55f,
                             ServiceId = 3
                         },
@@ -486,7 +435,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 10,
                             AmountWorkouts = 1,
-                            Name = "One Lesson",
+                            Name = "Stretching One",
                             Price = 9f,
                             ServiceId = 4
                         },
@@ -494,7 +443,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 11,
                             AmountWorkouts = 4,
-                            Name = "Four Lesson",
+                            Name = "Stretching Four",
                             Price = 30f,
                             ServiceId = 4
                         },
@@ -502,7 +451,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 12,
                             AmountWorkouts = 8,
-                            Name = "Eight Lesson",
+                            Name = "Stretching Eight",
                             Price = 55f,
                             ServiceId = 4
                         },
@@ -510,7 +459,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 13,
                             AmountWorkouts = 1,
-                            Name = "One Lesson",
+                            Name = "Karate One",
                             Price = 10f,
                             ServiceId = 5
                         },
@@ -518,7 +467,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 14,
                             AmountWorkouts = 4,
-                            Name = "Four Lesson",
+                            Name = "Karate Four",
                             Price = 35f,
                             ServiceId = 5
                         },
@@ -526,7 +475,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 15,
                             AmountWorkouts = 8,
-                            Name = "Eight Lesson",
+                            Name = "Karate Eight",
                             Price = 65f,
                             ServiceId = 5
                         },
@@ -534,7 +483,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 16,
                             AmountWorkouts = 1,
-                            Name = "One Lesson",
+                            Name = "MMA One",
                             Price = 12f,
                             ServiceId = 6
                         },
@@ -542,7 +491,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 17,
                             AmountWorkouts = 4,
-                            Name = "Four Lesson",
+                            Name = "MMA Four",
                             Price = 40f,
                             ServiceId = 6
                         },
@@ -550,7 +499,7 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 18,
                             AmountWorkouts = 8,
-                            Name = "Eight Lesson",
+                            Name = "MMA Eight",
                             Price = 75f,
                             ServiceId = 6
                         });
@@ -578,6 +527,10 @@ namespace ServiceAccountingDA.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -588,7 +541,7 @@ namespace ServiceAccountingDA.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("ServiceId")
+                    b.Property<int?>("ServiceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Telephone")
@@ -605,62 +558,6 @@ namespace ServiceAccountingDA.Migrations
                     b.HasIndex("TypeSexId");
 
                     b.ToTable("Trainer");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Valeriy",
-                            SerName = "Petrenko",
-                            ServiceId = 1,
-                            Telephone = "33 567-13-09",
-                            TypeSexId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Vitaliy",
-                            SerName = "Zazyla",
-                            ServiceId = 2,
-                            Telephone = "33 457-13-31",
-                            TypeSexId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Nastya",
-                            SerName = "Nesterenko",
-                            ServiceId = 3,
-                            Telephone = "33 187-20-93",
-                            TypeSexId = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Olga",
-                            SerName = "Bogdan",
-                            ServiceId = 4,
-                            Telephone = "44 782-67-96",
-                            TypeSexId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Alexey",
-                            SerName = "Kikta",
-                            ServiceId = 5,
-                            Telephone = "29 148-20-90",
-                            TypeSexId = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Ivan",
-                            SerName = "Mazyrin",
-                            ServiceId = 6,
-                            Telephone = "29 504-70-29",
-                            TypeSexId = 1
-                        });
                 });
 
             modelBuilder.Entity("ServiceAccountingDA.Models.Training", b =>
@@ -696,6 +593,21 @@ namespace ServiceAccountingDA.Migrations
                     b.ToTable("Training");
                 });
 
+            modelBuilder.Entity("ServiceAccountingDA.Models.TrainingToClient", b =>
+                {
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrainingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClientId", "TrainingId");
+
+                    b.HasIndex("TrainingId");
+
+                    b.ToTable("TrainingToClient");
+                });
+
             modelBuilder.Entity("ServiceAccountingDA.Models.TypeOfSex", b =>
                 {
                     b.Property<int>("Id")
@@ -703,8 +615,8 @@ namespace ServiceAccountingDA.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.HasKey("Id");
 
@@ -720,6 +632,11 @@ namespace ServiceAccountingDA.Migrations
                         {
                             Id = 2,
                             Name = "Woman"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "NoGender"
                         });
                 });
 
@@ -746,21 +663,6 @@ namespace ServiceAccountingDA.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("Visit");
-                });
-
-            modelBuilder.Entity("ClientTraining", b =>
-                {
-                    b.HasOne("ServiceAccountingDA.Models.Client", null)
-                        .WithMany()
-                        .HasForeignKey("ClientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ServiceAccountingDA.Models.Training", null)
-                        .WithMany()
-                        .HasForeignKey("TrainingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ServiceAccountingDA.Models.Client", b =>
@@ -878,7 +780,7 @@ namespace ServiceAccountingDA.Migrations
                     b.HasOne("ServiceAccountingDA.Models.Subscription", "Subscription")
                         .WithMany("Clients")
                         .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Client");
@@ -891,8 +793,7 @@ namespace ServiceAccountingDA.Migrations
                     b.HasOne("ServiceAccountingDA.Models.Service", "Service")
                         .WithMany("Trainers")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ServiceAccountingDA.Models.TypeOfSex", "TypeSex")
                         .WithMany("Trainers")
@@ -924,6 +825,25 @@ namespace ServiceAccountingDA.Migrations
                     b.Navigation("Trainer");
                 });
 
+            modelBuilder.Entity("ServiceAccountingDA.Models.TrainingToClient", b =>
+                {
+                    b.HasOne("ServiceAccountingDA.Models.Client", "Client")
+                        .WithMany("Trainings")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceAccountingDA.Models.Training", "Training")
+                        .WithMany("Clients")
+                        .HasForeignKey("TrainingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Training");
+                });
+
             modelBuilder.Entity("ServiceAccountingDA.Models.Visit", b =>
                 {
                     b.HasOne("ServiceAccountingDA.Models.Client", "Client")
@@ -950,6 +870,8 @@ namespace ServiceAccountingDA.Migrations
                     b.Navigation("Deals");
 
                     b.Navigation("Subscriptions");
+
+                    b.Navigation("Trainings");
 
                     b.Navigation("Visits");
                 });
@@ -996,6 +918,11 @@ namespace ServiceAccountingDA.Migrations
             modelBuilder.Entity("ServiceAccountingDA.Models.Trainer", b =>
                 {
                     b.Navigation("Trainings");
+                });
+
+            modelBuilder.Entity("ServiceAccountingDA.Models.Training", b =>
+                {
+                    b.Navigation("Clients");
                 });
 
             modelBuilder.Entity("ServiceAccountingDA.Models.TypeOfSex", b =>

@@ -12,6 +12,12 @@ namespace ServiceAccountingDA.Context
     {
         public ServiceAccountingContext(DbContextOptions<ServiceAccountingContext> options) : base(options) { }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+                optionsBuilder.UseSqlServer("Server =.\\SQLEXPRESS; Database = ServiceAccountingDatabase; Trusted_Connection = True; MultipleActiveResultSets = True");
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ClientConfiguration());

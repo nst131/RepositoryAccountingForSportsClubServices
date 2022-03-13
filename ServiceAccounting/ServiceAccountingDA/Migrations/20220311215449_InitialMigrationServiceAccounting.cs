@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ServiceAccountingDA.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialMigrationServiceAccounting : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,7 +29,8 @@ namespace ServiceAccountingDA.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     SerName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Telephone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,7 +42,7 @@ namespace ServiceAccountingDA.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,6 +80,7 @@ namespace ServiceAccountingDA.Migrations
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     SerName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Telephone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TypeSexId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -147,8 +149,9 @@ namespace ServiceAccountingDA.Migrations
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     SerName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Telephone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TypeSexId = table.Column<int>(type: "int", nullable: false),
-                    ServiceId = table.Column<int>(type: "int", nullable: false)
+                    ServiceId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -230,38 +233,14 @@ namespace ServiceAccountingDA.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClientToSubscriptions",
-                columns: table => new
-                {
-                    ClientsId = table.Column<int>(type: "int", nullable: false),
-                    SubscriptionsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClientToSubscriptions", x => new { x.ClientsId, x.SubscriptionsId });
-                    table.ForeignKey(
-                        name: "FK_ClientToSubscriptions_Client_ClientsId",
-                        column: x => x.ClientsId,
-                        principalTable: "Client",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ClientToSubscriptions_Subscription_SubscriptionsId",
-                        column: x => x.SubscriptionsId,
-                        principalTable: "Subscription",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Deal",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PurchaseDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
-                    SubscriptionId = table.Column<int>(type: "int", nullable: false),
-                    ClubCardId = table.Column<int>(type: "int", nullable: false),
+                    SubscriptionId = table.Column<int>(type: "int", nullable: true),
+                    ClubCardId = table.Column<int>(type: "int", nullable: true),
                     ClientId = table.Column<int>(type: "int", nullable: false),
                     ResponsibleId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -295,6 +274,30 @@ namespace ServiceAccountingDA.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SubscriptionToClient",
+                columns: table => new
+                {
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    SubscriptionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubscriptionToClient", x => new { x.ClientId, x.SubscriptionId });
+                    table.ForeignKey(
+                        name: "FK_SubscriptionToClient_Client_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Client",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SubscriptionToClient_Subscription_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalTable: "Subscription",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Training",
                 columns: table => new
                 {
@@ -324,24 +327,24 @@ namespace ServiceAccountingDA.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClientsToTrainings",
+                name: "TrainingToClient",
                 columns: table => new
                 {
-                    ClientsId = table.Column<int>(type: "int", nullable: false),
-                    TrainingsId = table.Column<int>(type: "int", nullable: false)
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    TrainingId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClientsToTrainings", x => new { x.ClientsId, x.TrainingsId });
+                    table.PrimaryKey("PK_TrainingToClient", x => new { x.ClientId, x.TrainingId });
                     table.ForeignKey(
-                        name: "FK_ClientsToTrainings_Client_ClientsId",
-                        column: x => x.ClientsId,
+                        name: "FK_TrainingToClient_Client_ClientId",
+                        column: x => x.ClientId,
                         principalTable: "Client",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClientsToTrainings_Training_TrainingsId",
-                        column: x => x.TrainingsId,
+                        name: "FK_TrainingToClient_Training_TrainingId",
+                        column: x => x.TrainingId,
                         principalTable: "Training",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -358,31 +361,13 @@ namespace ServiceAccountingDA.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Responsible",
-                columns: new[] { "Id", "Name", "SerName", "Telephone" },
-                values: new object[,]
-                {
-                    { 1, "Safia", "Mirinina", "447861212" },
-                    { 2, "Lera", "Shablovskai", "335141721" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "TypeOfSex",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
                     { 1, "Man" },
-                    { 2, "Woman" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Client",
-                columns: new[] { "Id", "CreatedAt", "Name", "SerName", "Telephone", "TypeSexId", "UpdatedAt" },
-                values: new object[,]
-                {
-                    { 1, null, "Alexander", "Nikylskiy", "296138957", 1, null },
-                    { 2, null, "Vitaliy", "Romanovskiy", "297138090", 1, null },
-                    { 3, null, "Maria", "Gavrilova", "297861344", 2, null }
+                    { 2, "Woman" },
+                    { 3, "NoGender" }
                 });
 
             migrationBuilder.InsertData(
@@ -413,37 +398,24 @@ namespace ServiceAccountingDA.Migrations
                 columns: new[] { "Id", "AmountWorkouts", "Name", "Price", "ServiceId" },
                 values: new object[,]
                 {
-                    { 3, 0, "Eight Lesson", 65f, 1 },
-                    { 17, 0, "Four Lesson", 40f, 6 },
-                    { 16, 0, "One Lesson", 12f, 6 },
-                    { 1, 0, "One Lesson", 10f, 1 },
-                    { 15, 0, "Eight Lesson", 65f, 5 },
-                    { 14, 0, "Four Lesson", 35f, 5 },
-                    { 13, 0, "One Lesson", 10f, 5 },
-                    { 12, 0, "Eight Lesson", 55f, 4 },
-                    { 11, 0, "Four Lesson", 30f, 4 },
-                    { 2, 0, "Four Lesson", 35f, 1 },
-                    { 10, 0, "One Lesson", 9f, 4 },
-                    { 9, 0, "Eight Lesson", 55f, 3 },
-                    { 8, 0, "Four Lesson", 30f, 3 },
-                    { 7, 0, "One Lesson", 9f, 3 },
-                    { 6, 0, "Eight Lesson", 65f, 2 },
-                    { 5, 0, "Four Lesson", 35f, 2 },
-                    { 4, 0, "One Lesson", 10f, 2 },
-                    { 18, 0, "Eight Lesson", 75f, 6 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Trainer",
-                columns: new[] { "Id", "Name", "SerName", "ServiceId", "Telephone", "TypeSexId" },
-                values: new object[,]
-                {
-                    { 3, "Nastya", "Nesterenko", 3, "331872093", 2 },
-                    { 4, "Olga", "Bogdan", 4, "447826796", 2 },
-                    { 2, "Vitaliy", "Zazyla", 2, "334571331", 1 },
-                    { 5, "Alexey", "Kikta", 5, "201482090", 1 },
-                    { 1, "Valeriy", "Petrenko", 1, "335671309", 1 },
-                    { 6, "Ivan", "Mazyrin", 6, "295047029", 1 }
+                    { 3, 8, "Crossfit Eight", 65f, 1 },
+                    { 16, 1, "MMA One", 12f, 6 },
+                    { 1, 1, "Crossfit One", 10f, 1 },
+                    { 15, 8, "Karate Eight", 65f, 5 },
+                    { 14, 4, "Karate Four", 35f, 5 },
+                    { 13, 1, "Karate One", 10f, 5 },
+                    { 12, 8, "Stretching Eight", 55f, 4 },
+                    { 11, 4, "Stretching Four", 30f, 4 },
+                    { 10, 1, "Stretching One", 9f, 4 },
+                    { 17, 4, "MMA Four", 40f, 6 },
+                    { 9, 8, "Yoga Eight", 55f, 3 },
+                    { 8, 4, "Yoga Four", 30f, 3 },
+                    { 7, 1, "Yoga One", 9f, 3 },
+                    { 6, 8, "BodyBuilding Eight", 65f, 2 },
+                    { 5, 4, "BodyBuilding Four", 35f, 2 },
+                    { 4, 1, "BodyBuilding One", 10f, 2 },
+                    { 2, 4, "Crossfit Four", 35f, 1 },
+                    { 18, 8, "MMA Eight", 75f, 6 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -466,16 +438,6 @@ namespace ServiceAccountingDA.Migrations
                 name: "IX_ClientCard_ServiceId",
                 table: "ClientCard",
                 column: "ServiceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientsToTrainings_TrainingsId",
-                table: "ClientsToTrainings",
-                column: "TrainingsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientToSubscriptions_SubscriptionsId",
-                table: "ClientToSubscriptions",
-                column: "SubscriptionsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClubCard_ServiceId",
@@ -513,6 +475,11 @@ namespace ServiceAccountingDA.Migrations
                 column: "ServiceId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SubscriptionToClient_SubscriptionId",
+                table: "SubscriptionToClient",
+                column: "SubscriptionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Trainer_ServiceId",
                 table: "Trainer",
                 column: "ServiceId");
@@ -533,6 +500,11 @@ namespace ServiceAccountingDA.Migrations
                 column: "TrainerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TrainingToClient_TrainingId",
+                table: "TrainingToClient",
+                column: "TrainingId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Visit_ClientId",
                 table: "Visit",
                 column: "ClientId");
@@ -549,19 +521,16 @@ namespace ServiceAccountingDA.Migrations
                 name: "ClientCard");
 
             migrationBuilder.DropTable(
-                name: "ClientsToTrainings");
-
-            migrationBuilder.DropTable(
-                name: "ClientToSubscriptions");
-
-            migrationBuilder.DropTable(
                 name: "Deal");
 
             migrationBuilder.DropTable(
-                name: "Visit");
+                name: "SubscriptionToClient");
 
             migrationBuilder.DropTable(
-                name: "Training");
+                name: "TrainingToClient");
+
+            migrationBuilder.DropTable(
+                name: "Visit");
 
             migrationBuilder.DropTable(
                 name: "ClubCard");
@@ -571,6 +540,9 @@ namespace ServiceAccountingDA.Migrations
 
             migrationBuilder.DropTable(
                 name: "Subscription");
+
+            migrationBuilder.DropTable(
+                name: "Training");
 
             migrationBuilder.DropTable(
                 name: "Client");

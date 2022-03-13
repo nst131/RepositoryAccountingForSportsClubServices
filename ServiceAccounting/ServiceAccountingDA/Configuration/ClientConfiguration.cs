@@ -36,12 +36,12 @@ namespace ServiceAccountingDA.Configuration
                 .HasForeignKey(x => x.ClientId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasData(new Client[]
-            {
-                new Client(){Id = 1, Name = "Alexander", SerName = "Nikylskiy", Telephone = "29 613-89-57", Email = "alexander@mail.ru", TypeSexId = 1},
-                new Client(){Id = 2, Name = "Vitaliy", SerName = "Romanovskiy", Telephone = "29 713-80-90", Email = "vitaliy@mail.ru", TypeSexId = 1},
-                new Client(){Id = 3, Name = "Maria", SerName = "Gavrilova", Telephone = "29 786-13-44", Email = "maria@mail.ru", TypeSexId = 2}
-            });
+            //builder.HasData(new Client[]
+            //{
+            //    new Client(){Id = 1, Name = "Alexander", SerName = "Nikylskiy", Telephone = "29 613-89-57", Email = "alexander@mail.ru", TypeSexId = 1},
+            //    new Client(){Id = 2, Name = "Vitaliy", SerName = "Romanovskiy", Telephone = "29 713-80-90", Email = "vitaliy@mail.ru", TypeSexId = 1},
+            //    new Client(){Id = 3, Name = "Maria", SerName = "Gavrilova", Telephone = "29 786-13-44", Email = "maria@mail.ru", TypeSexId = 2}
+            //});
         }
     }
 }
