@@ -1,0 +1,51 @@
+<div style=" margin-top: 20px;">
+      <h1 style="text-align: center;">Create Subscription</h1>
+
+      <form style="width: 100%;" novalidate [formGroup]="editSubscriptionModelForm" (ngSubmit)="onSubmit()">
+            <div style="display: flex; flex-direction: column;">
+
+                  <label for="Namr">Name</label>
+                  <input class="form-control" type="text" name="Name" formControlName="name" />
+                  <div *ngIf="editSubscriptionModelForm.controls['name'].invalid && editSubscriptionModelForm.controls['name'].touched">
+                        <p class="alert" *ngIf="editSubscriptionModelForm.controls['name'].errors?.['required']">
+                              Обязательное поле.
+                        </p>
+                        <p class="alert" *ngIf="editSubscriptionModelForm.controls['name'].errors?.['minlength']">
+                              Длина строки должна быть не менее {{
+                              editSubscriptionModelForm.controls['name'].errors?.['minlength'].requiredLength }} символов.
+                              Сейчас {{ editSubscriptionModelForm.controls['name'].errors?.['minlength'].actualLength }}
+                        </p>
+                  </div>
+
+                  <label for="price">Price</label>
+                  <input class="form-control" type="text" name="price" formControlName="price" />
+                  <div *ngIf="editSubscriptionModelForm.controls['price'].invalid && editSubscriptionModelForm.controls['price'].touched">
+                        <p class="alert" *ngIf="editSubscriptionModelForm.controls['price'].errors?.['required']">
+                              Обязательное поле.
+                        </p>
+                        <p class="alert" *ngIf="editSubscriptionModelForm.controls['price'].errors?.['pattern']">
+                              Поле должно целое
+                        </p>
+                  </div>
+
+                  <label for="amountWorkouts">Amount Workouts</label>
+                  <input class="form-control" type="text" name="amountWorkouts" formControlName="amountWorkouts" />
+                  <div
+                        *ngIf="editSubscriptionModelForm.controls['amountWorkouts'].invalid && editSubscriptionModelForm.controls['amountWorkouts'].touched">
+                        <p class="alert" *ngIf="editSubscriptionModelForm.controls['amountWorkouts'].errors?.['required']">
+                              Обязательное поле.
+                        </p>
+                        <p class="alert" *ngIf="editSubscriptionModelForm.controls['amountWorkouts'].errors?.['pattern']">
+                              Поле должно быть целое
+                        </p>
+                  </div>
+
+                  <label for="serviceId">Services</label>
+                  <select class="form-select" name="serviceId" style="margin-top: 10px;" formControlName="serviceId">
+                        <option *ngFor="let serve of allServes" [value]="serve.id">{{serve.name}}</option>
+                  </select>
+
+                  <input class="btn btn-primary" style="margin-top: 10px;" type="submit" [disabled]="editSubscriptionModelForm.invalid" value="Create">
+            </div>
+      </form>
+</div>

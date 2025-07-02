@@ -1,0 +1,25 @@
+<div class="accountUser row">
+      <img class="col-3" src="../../../../assets/avatar.png" width="200" height="200"/>
+      <div class="col-3">
+            <h2>Personal Data</h2>
+            <div>Name: {{clientInf.name}}</div>
+            <div>SerName: {{clientInf.serName}}</div>
+            <div>Telephone: {{clientInf.telephone}}</div>
+            <div>TypeSex: {{clientInf.typeSexName}}</div>
+      </div>
+      <div class="col-3">
+            <h2>ClubCard Information</h2>
+            <div>Activate: {{clientCardInf.dateActivation}}</div>
+            <div>Expirate: {{clientCardInf.dateExpiration}}</div>
+            <div>Service: {{clientCardInf.serviceName}}</div>
+            <div>ClubCard: {{clientCardInf.clubCardName}}</div>
+      </div>
+</div>
+<div class="row" style="margin-top: 10px">
+      <button style="margin-left: 3%;" class="btn btn-primary col-2" (click)="redirectOnShowTrainings()">Trainings</button>
+      <button style="margin-left: 3%;" class="btn btn-primary col-2" (click)="redirectOnShowVisits()">Visits</button>
+      <button style="margin-left: 3%;" class="btn btn-primary col-2" (click)="redirectOnShowSubscriptions()">Subscriptions</button>
+      <button style="margin-left: 3%;" class="btn btn-primary col-2" (click)="redirectOnShowDeals()">Deals</button>
+</div>
+<router-outlet name="account"></router-outlet>
+

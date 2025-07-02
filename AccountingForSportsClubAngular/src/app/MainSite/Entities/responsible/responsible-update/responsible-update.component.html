@@ -1,0 +1,31 @@
+<h1 style="text-align: center;">Edit Responsible</h1>
+
+<form style="width: 100%;" novalidate [formGroup]="editResponsibleForm" (ngSubmit)="onSubmit()">
+    <div style="display: flex; flex-direction: column;">
+
+        <label for="serNamr">SerName</label>
+        <input class="form-control" type="text" name="serName" formControlName="serName"/>
+        <div *ngIf="editResponsibleForm.controls['serName'].invalid && editResponsibleForm.controls['serName'].touched">
+            <p class="alert" *ngIf="editResponsibleForm.controls['serName'].errors?.['required']">
+                Обязательное поле.
+            </p>
+            <p class="alert" *ngIf="editResponsibleForm.controls['serName'].errors?.['minlength']">
+                Длина строки должна быть не менее {{ editResponsibleForm.controls['serName'].errors?.['minlength'].requiredLength }} символов. 
+                Сейчас {{ editResponsibleForm.controls['serName'].errors?.['minlength'].actualLength }}
+            </p>
+        </div>
+
+        <label for="telephone">Telephone</label>
+        <input class="form-control" type="text" name="telephone" formControlName="telephone" />
+        <div *ngIf="editResponsibleForm.controls['telephone'].invalid && editResponsibleForm.controls['telephone'].touched">
+            <p class="alert" *ngIf="editResponsibleForm.controls['telephone'].errors?.['required']">
+                Обязательное поле.
+            </p>
+            <p class="alert" *ngIf="editResponsibleForm.controls['telephone'].errors?.['pattern']">
+                Телефон должен быть типа ** ***-**-**
+            </p>
+        </div>
+
+        <input class="btn btn-primary" style="margin-top: 10px;" type="submit" [disabled]="editResponsibleForm.invalid" value="Edit"> 
+    </div>
+</form>

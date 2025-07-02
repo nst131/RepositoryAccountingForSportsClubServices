@@ -1,0 +1,24 @@
+<table class="table table-striped">
+      <thead>
+          <tr>
+              <td *ngFor="let name of visitNames">{{name}}</td>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let value of visits">
+              <ng-template [ngTemplateOutlet]="loadTemplate(value)" [ngTemplateOutletContext]="{ $implicit: value}">
+  
+              </ng-template>
+          </tr>
+      </tbody>
+  </table>
+  
+  <ng-template #readOnlyTemplate let-value>
+      <td *ngFor="let key of visitKeys">{{key}}</td>
+      <td>
+          <input type="button" value="Change" class="btn btn-primary" (click)="redirectOnEditVisit(value.id)" />
+      </td>
+      <td>
+          <input type="button" value="Delete" class="btn btn-danger" (click)="deleteVisit(value.id)" />
+      </td>
+  </ng-template>

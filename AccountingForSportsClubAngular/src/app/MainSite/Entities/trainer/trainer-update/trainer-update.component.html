@@ -1,0 +1,41 @@
+<h1 style="text-align: center;">Edit Trainer</h1>
+
+<form style="width: 100%;" novalidate [formGroup]="editTrainerForm" (ngSubmit)="onSubmit()">
+    <div style="display: flex; flex-direction: column;">
+
+        <label for="serNamr">SerName</label>
+        <input class="form-control" type="text" name="serName" formControlName="serName"/>
+        <div *ngIf="editTrainerForm.controls['serName'].invalid && editTrainerForm.controls['serName'].touched">
+            <p class="alert" *ngIf="editTrainerForm.controls['serName'].errors?.['required']">
+                Обязательное поле.
+            </p>
+            <p class="alert" *ngIf="editTrainerForm.controls['serName'].errors?.['minlength']">
+                Длина строки должна быть не менее {{ editTrainerForm.controls['serName'].errors?.['minlength'].requiredLength }} символов. 
+                Сейчас {{ editTrainerForm.controls['serName'].errors?.['minlength'].actualLength }}
+            </p>
+        </div>
+
+        <label for="telephone">Telephone</label>
+        <input class="form-control" type="text" name="telephone" formControlName="telephone" />
+        <div *ngIf="editTrainerForm.controls['telephone'].invalid && editTrainerForm.controls['telephone'].touched">
+            <p class="alert" *ngIf="editTrainerForm.controls['telephone'].errors?.['required']">
+                Обязательное поле.
+            </p>
+            <p class="alert" *ngIf="editTrainerForm.controls['telephone'].errors?.['pattern']">
+                Телефон должен быть типа ** ***-**-**
+            </p>
+        </div>
+
+        <label for="typeSex">TypeSex</label>
+        <select class="form-select" style="margin-top: 10px;" name="typeSex" formControlName="typeSexId">
+            <option *ngFor="let typeSex of viewsTypeOfSex" [value]="typeSex.value" >{{typeSex.name}}</option>
+        </select>
+
+        <label for="services">Services</label>
+        <select class="form-select" style="margin-top: 10px;" name="services" formControlName="serviceId">
+            <option *ngFor="let serve of viewsTypeOfServe" [value]="serve.value" >{{serve.name}}</option>
+        </select>
+
+        <input class="btn btn-primary" style="margin-top: 10px;" type="submit" [disabled]="editTrainerForm.invalid" value="Edit"> 
+    </div>
+</form>

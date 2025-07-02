@@ -1,0 +1,27 @@
+<table class="table table-striped">
+      <thead>
+          <tr>
+              <td *ngFor="let name of servesName">{{name}}</td>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let serve of serves">
+              <ng-template [ngTemplateOutlet]="loadTemplate(serve)" [ngTemplateOutletContext]="{ $implicit: serve}">
+  
+              </ng-template>
+          </tr>
+      </tbody>
+  </table>
+  
+  <ng-template #readOnlyTemplate let-serve>
+      <td>{{serve.name}}</td>
+      <td>{{serve.price}} rub</td>
+      <td>{{serve.durationInMinutes}} minutes</td>
+      <td>{{serve.placeName}}</td>
+      <td>
+          <input type="button" value="Change" class="btn btn-primary" (click)="redirectOnEditServe(serve.id)" />
+      </td>
+      <td>
+          <input type="button" value="Delete" class="btn btn-danger" (click)="deleteServe(serve.id)" />
+      </td>
+  </ng-template>

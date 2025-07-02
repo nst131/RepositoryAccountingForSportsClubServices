@@ -1,0 +1,17 @@
+<table class="table table-striped">
+      <thead>
+          <tr>
+              <td *ngFor="let name of trainingsInfsName">{{name}}</td>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let value of trainingsInfs">
+              <ng-template [ngTemplateOutlet]="loadTemplate(value)" [ngTemplateOutletContext]="{ $implicit: value}">
+              </ng-template>
+          </tr>
+      </tbody>
+  </table>
+
+  <ng-template #readOnlyTemplate let-value>
+      <td *ngFor="let key of trainingsInfKeys">{{key}}</td>
+  </ng-template>

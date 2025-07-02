@@ -1,0 +1,24 @@
+<table class="table table-striped">
+      <thead>
+          <tr>
+              <td *ngFor="let name of responsiblesName">{{name}}</td>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let responsible of responsibles">
+              <ng-template [ngTemplateOutlet]="loadTemplate(responsible)" [ngTemplateOutletContext]="{ $implicit: responsible}">
+  
+              </ng-template>
+          </tr>
+      </tbody>
+  </table>
+  
+  <ng-template #readOnlyTemplate let-responsible>
+      <td *ngFor="let value of responsibleKeys">{{value}}</td>
+      <td>
+          <input type="button" value="Change" class="btn btn-primary" (click)="redirectOnEditResponsible(responsible.id)" />
+      </td>
+      <td>
+          <input type="button" value="Delete" class="btn btn-danger" (click)="deleteResponsible(responsible.id)" />
+      </td>
+  </ng-template>

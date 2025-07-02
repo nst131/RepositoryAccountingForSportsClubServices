@@ -1,0 +1,26 @@
+<div class="container">
+
+  <div class="row">
+    <h1 class="col-11">Accounting For Sports Club Services</h1>
+    <button class="btn btn-danger col" (click)="logout()">Sign Out</button>
+  </div>
+  
+  <main style="margin-top: 10px;">
+    <nav>
+      <button class="btn" (click)="redirectOnPageAccount()">Account</button>      
+      <h3></h3>
+      <button class="btn" (click)="redirectOnPageUsers()">Show All Users</button>
+      <button class="btn" (click)="redirectOnPageTrainers()">Show All Trainers</button>
+      <button class="btn" (click)="redirectOnPageResponsibles()">Show All Responsibles</button>
+      <h3></h3>
+      <button class="btn" (click)="redirectOnPageServices()">Show All Services</button>
+      <button class="btn" (click)="redirectOnPagePlaces()">Show All Places</button>
+      <button class="btn" (click)="redirectOnPageClubCard()">Show All ClubCard</button>
+      <button class="btn" (click)="redirectOnPageSubscription()">Show All Subscription</button>
+    </nav>
+    <div style="width: 75%;">
+      <router-outlet name="main-site"></router-outlet>
+    </div>
+  </main>
+
+</div>
