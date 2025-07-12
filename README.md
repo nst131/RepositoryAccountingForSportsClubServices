@@ -1,6 +1,30 @@
-Автоматизируется работа операторов фитнес-клуба:
-ведение клиентской базы;
-создание различных видов клубных карт;
-регистрация посещений клиентов, формирование журнала посещений за любой интервал времени по любому залу и клиенту;
-предварительная запись клиентов;
-обеспечение ввода, удаления, хранения и редактирования информации, которая содержится в таблицах данных.
+Automation of fitness club operators' work includes:
+1.maintaining a customer database;
+2.creating various types of membership cards;
+3.registering client visits and generating visit logs for any time interval, by hall or by client;
+4.scheduling client appointments in advance;
+5.enabling input, deletion, storage, and editing of information stored in data tables
+
+Backend: ASP.NET Core
+Designed and implemented modular Web APIs:
+WebApiService (main business logic)
+AuthService (authentication and authorization)
+Built secure JWT-based authentication and role-based
+authorization using ASP.NET Core Identity and policies.
+Configured Entity Framework Core with two independent
+databases:
+AuthDatabase
+ServiceAccountingDatabase
+Created and integrated microservices:
+RedisService — general-purpose caching module
+RabbitService — asynchronous communication
+using RabbitMQ
+Followed best practices such as layered architecture,
+dependency injection, and modular configuration
+Frontend: Angular (TypeScript)
+Created a role-based UI for 4 types of users: Admin, User,
+Trainer, Responsible
+Admin login is pre-configured (email: admin@mail.ru,
+password: admin)
+Used Angular features: Router, HTTPClient, and Reactive
+Forms for API communication and form handling
